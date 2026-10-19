@@ -23,6 +23,8 @@ interface Props {
   specValue: string;
   specDetail: string;
   specId: string;
+  location?: string;
+  year?: string;
 }
 
 const {
@@ -42,6 +44,8 @@ const {
   specValue,
   specDetail,
   specId,
+  location = 'Anuradhapura, Sri Lanka',
+  year = 'Overview',
 } = Astro.props;
 
 const focusRing =
@@ -74,10 +78,10 @@ const focusRing =
     <div class="absolute bottom-3 left-4 right-4 flex items-center justify-between text-on-primary text-xs">
       <span class="flex items-center gap-1 font-label-sm text-label-sm">
         <span class={`material-symbols-outlined text-[16px] ${locationIcon}`}>location_on</span>
-        Sample location
+        {location}
       </span>
       <span class="font-label-caps text-label-caps bg-inverse-surface/60 px-2 py-0.5 rounded"
-        >20XX</span
+        >{year}</span
       >
     </div>
   </div>
@@ -110,7 +114,7 @@ const focusRing =
           aria-expanded="false"
           aria-controls={specId}
         >
-          <span>View Project Specs</span>
+          <span>View Scope Details</span>
           <span
             class="material-symbols-outlined text-[18px] spec-icon transition-transform duration-200"
             >expand_more</span

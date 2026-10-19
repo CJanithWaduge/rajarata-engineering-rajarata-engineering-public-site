@@ -17,7 +17,8 @@
  *   #contact        — Contact page, not started
  *   #services-list  — Services grid, step 4.1 must add `id="services-list"`
  *
- * The local illustration is intentionally labeled as sample artwork.
+ * The local illustration stands in for real project photography until
+ * genuine site assets are sourced.
  *
  * Deliberately no `width`/`height` on the images: each sits in a fixed-height
  * container at `h-full object-cover`, so the box never reflows and there is no
@@ -38,6 +39,9 @@
  */
 import Container from '../Container.astro';
 import Button from '../ui/Button.astro';
+import { getPublicContactActions } from '../../lib/publicContact';
+
+const { primary: primaryContactAction } = getPublicContactActions();
 ---
 
 <section
@@ -56,15 +60,15 @@ import Button from '../ui/Button.astro';
           >
         </p>
 
-        <h1 class="text-[34px] sm:text-[46px] lg:text-[56px] leading-[1.12] tracking-tight font-display-hero text-on-surface">Reliable Electrical Solutions Built for <span class="text-primary-container">Safety &amp; Performance</span></h1>
+        <h1 class="text-[34px] sm:text-[46px] lg:text-[56px] leading-[1.12] tracking-tight font-display-hero text-on-surface">Reliable Electrical Solutions Built for Safety &amp; Performance</h1>
 
-        <p class="w-full max-w-xl font-body-lg text-body-lg text-secondary leading-relaxed">
-          Sample electrical engineering and contracting content for this website template. Replace it with an owner-approved company introduction before real-world use.
+        <p class="w-full max-w-[36rem] font-body-lg text-body-lg text-secondary leading-relaxed">
+          Rajarata Engineering is an electrical engineering and contracting company based in Anuradhapura. We design, install, test, and commission MV/LV distribution, industrial installations, and ELV systems for residential, commercial, and industrial clients.
         </p>
 
         <div class="w-full sm:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
-          <Button variant="primary" href="/contact#quotation">
-            <span>VIEW SAMPLE CONTACT</span>
+          <Button variant="primary" href={primaryContactAction.href}>
+            <span>{primaryContactAction.label}</span>
             <span class="material-symbols-outlined text-lg" aria-hidden="true">arrow_forward</span>
           </Button>
           <Button variant="secondary" href="#services-list">EXPLORE SERVICES</Button>
@@ -75,14 +79,14 @@ import Button from '../ui/Button.astro';
             <span class="material-symbols-outlined text-primary-container text-xl" aria-hidden="true"
               >verified</span
             >
-            <span class="font-label-sm text-label-sm text-on-surface">Example compliance content</span>
+            <span class="font-label-sm text-label-sm text-on-surface">Testing &amp; commissioning on every system</span>
           </div>
           <div class="flex items-center gap-2">
             <span
               class="material-symbols-outlined text-primary-container text-xl"
               aria-hidden="true">precision_manufacturing</span
             >
-            <span class="font-label-sm text-label-sm text-on-surface">Verify standards before use</span>
+            <span class="font-label-sm text-label-sm text-on-surface">MV &amp; LV distribution specialists</span>
           </div>
         </div>
       </div>
@@ -93,8 +97,8 @@ import Button from '../ui/Button.astro';
         >
           <img
             class="w-full h-full object-cover object-center"
-            src="/images/sample-engineering.svg"
-            alt="Sample engineering illustration showing electrical distribution panels; not a photograph of a company project"
+            src="/images/engineering-panels.svg"
+            alt="Illustration of electrical distribution panels representing Rajarata Engineering's core installation work"
             loading="eager"
             fetchpriority="high"
             decoding="async"
@@ -115,10 +119,10 @@ import Button from '../ui/Button.astro';
               </div>
               <div class="flex flex-col flex-1 min-w-0">
               <span class="font-title-md text-title-md text-on-surface leading-tight"
-                >Example safety content</span
+                >Safety-First Site Work</span
               >
                 <span class="font-label-sm text-label-sm text-secondary truncate"
-                  >Replace with verified policy</span
+                  >Planned, supervised installation</span
                 >
               </div>
             </div>
@@ -126,7 +130,7 @@ import Button from '../ui/Button.astro';
               class="absolute top-5 right-5 z-10 px-3 py-1.5 rounded-lg bg-inverse-surface/90 text-on-primary font-label-caps text-label-caps uppercase flex items-center gap-2"
             >
               <span class="w-2 h-2 rounded-full bg-emerald-400" aria-hidden="true"></span>
-              <span>SAMPLE TEMPLATE</span>
+              <span>TESTED &amp; COMMISSIONED</span>
             </div>
           </div>
         </div>

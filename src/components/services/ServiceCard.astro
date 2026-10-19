@@ -4,6 +4,10 @@
  * Number, category badge, title, "What It Is" copy, expandable details,
  * suitable-for chips, and contact link.
  */
+import { getPublicContactActions } from '../../lib/publicContact';
+
+const { primary: primaryContactAction } = getPublicContactActions();
+
 interface Props {
   id: string;
   number: string;
@@ -13,6 +17,8 @@ interface Props {
   description: string;
   scope: string;
   suitableFor: string[];
+  imageSrc?: string;
+  imageAlt?: string;
   accent?: 'secondary' | 'error' | 'surface' | 'tertiary';
 }
 
@@ -25,6 +31,8 @@ const {
   description,
   scope,
   suitableFor,
+  imageSrc,
+  imageAlt = '',
   accent = 'secondary',
 } = Astro.props;
 
@@ -50,6 +58,14 @@ const detailId = `service-detail-${parseInt(number, 10)}`;
 ---
 
 <article class="card-interactive card-tilt group flex flex-col justify-between p-6 sm:p-8 rounded-2xl bg-surface-container-lowest shadow-sm" id={id} data-card-tilt>
+  {imageSrc && (
+    <img
+      class="mb-6 h-48 w-full rounded-xl border border-outline-variant bg-surface-container-low object-cover"
+      src={imageSrc}
+      alt={imageAlt}
+      loading="lazy"
+    />
+  )}
   <div>
     <div class="flex items-center justify-between pb-6 mb-6">
       <span class={`font-headline-lg text-headline-sm sm:text-headline-md ${numberClass} font-extrabold tracking-tight`}>{number}</span>
@@ -97,7 +113,7 @@ const detailId = `service-detail-${parseInt(number, 10)}`;
       <span class="btn-text">Read Detailed Specifications</span>
       <span class="material-symbols-outlined text-[18px] transition-transform duration-200 expand-icon">keyboard_arrow_down</span>
     </button>
-    <a class="p-2 rounded-xl bg-surface-container hover:bg-primary-container hover:text-on-primary text-secondary transition-all" data-path="contact" href="/contact#quotation">
+    <a class="p-2 rounded-xl bg-surface-container hover:bg-primary-container hover:text-on-primary text-secondary transition-all focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container" data-path="contact" aria-label={primaryContactAction.label} href={primaryContactAction.href}>
       <span class="material-symbols-outlined text-[20px] block">arrow_forward</span>
     </a>
   </div>

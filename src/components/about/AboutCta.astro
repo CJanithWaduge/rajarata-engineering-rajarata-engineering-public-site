@@ -4,6 +4,10 @@
  * Inverse CTA panel, grid background motif, actions, and contact methods.
  */
 import Container from '../Container.astro';
+import { getPublicContactActions } from '../../lib/publicContact';
+
+const { phone: phoneContact, whatsapp: whatsappContact, primary: primaryContactAction } =
+  getPublicContactActions();
 ---
 
 <section class="w-full py-16 bg-surface-container-lowest" data-scroll-reveal>
@@ -23,17 +27,17 @@ import Container from '../Container.astro';
       <div class="relative z-10 max-w-3xl">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-on-surface/20 text-error-container font-label-caps text-label-caps uppercase tracking-wider mb-6">
           <span class="material-symbols-outlined text-[16px]">engineering</span>
-          Sample Consultation Layout
+          Engineering Consultation
         </div>
         <h2 class="font-headline-lg text-headline-md lg:text-headline-lg text-white tracking-tight mb-4">
-          Example Contact Call to Action
+          Plan Your Next Electrical Installation
         </h2>
         <p class="font-body-lg text-body-lg text-gray-300 leading-relaxed mb-8">
-          This sample call to action demonstrates a consultation layout. Replace it with a verified service description and contact path before real-world use.
+          Reach the team directly by WhatsApp or phone to discuss MV/LV distribution, panel installation, cable work, testing and commissioning, or ELV and automation for your site.
         </p>
         <div class="flex flex-wrap items-center gap-4">
-          <a class="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-primary text-on-primary font-label-md text-label-md shadow-lg hover:bg-primary-container transition-all active:translate-y-[1px] focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container" data-path="contact" href="/contact#quotation">
-            <span>View Sample Contact Section</span>
+          <a class="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-primary text-on-primary font-label-md text-label-md shadow-lg hover:bg-primary-container transition-all active:translate-y-[1px] focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container" data-path="contact" href={primaryContactAction.href}>
+            <span>{primaryContactAction.label}</span>
             <span class="material-symbols-outlined text-[20px]">send</span>
           </a>
           <a class="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-on-surface/20 text-white font-label-md text-label-md hover:bg-on-surface/30 transition-colors focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container"           data-path="projects" href="/projects">
@@ -46,15 +50,23 @@ import Container from '../Container.astro';
           <div class="flex items-center gap-3">
             <span class="material-symbols-outlined text-primary text-[24px]">call</span>
             <div>
-              <div class="font-label-caps text-label-caps uppercase text-gray-400">Sample Phone</div>
-              <div class="font-title-md text-title-md text-white">No live number configured</div>
+              <div class="font-label-caps text-label-caps uppercase text-gray-400">Phone</div>
+              {phoneContact.status === 'ready' ? (
+                <a class="font-title-md text-title-md text-white underline-offset-4 hover:underline" href={phoneContact.href}>{phoneContact.displayNumber}</a>
+              ) : (
+                <div class="font-title-md text-title-md text-white">Phone contact unavailable</div>
+              )}
             </div>
           </div>
           <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-primary text-[24px]">mail</span>
+            <span class="material-symbols-outlined text-primary text-[24px]">chat</span>
             <div>
-              <div class="font-label-caps text-label-caps uppercase text-gray-400">Sample Email</div>
-              <div class="font-title-md text-title-md text-white">sample@example.invalid</div>
+              <div class="font-label-caps text-label-caps uppercase text-gray-400">WhatsApp</div>
+              {whatsappContact.status === 'ready' ? (
+                <a class="font-title-md text-title-md text-white underline-offset-4 hover:underline" href={whatsappContact.href}>{whatsappContact.displayNumber}</a>
+              ) : (
+                <div class="font-title-md text-title-md text-white">WhatsApp contact unavailable</div>
+              )}
             </div>
           </div>
         </div>

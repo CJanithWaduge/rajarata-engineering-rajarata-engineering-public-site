@@ -3,6 +3,9 @@
  * Services CTA (Steps S3.44–S3.51)
  * Section shell, panel, content layout, trust indicators, and actions.
  */
+import { getPublicContactActions } from '../../lib/publicContact';
+
+const { phone: phoneContact, primary: primaryContactAction } = getPublicContactActions();
 ---
 
 <section class="w-full py-16 sm:py-24 bg-surface" data-scroll-reveal>
@@ -21,28 +24,30 @@
             Need a Customized Electrical Solution?
           </h2>
           <p class="font-body-lg text-body-lg text-surface-variant max-w-[42rem] leading-relaxed">
-            Sample consultation copy for this template. Replace with verified service details and qualifications before publication.
+            Tell us about the building, the load, or the fault you are dealing with. We will talk through the scope, arrange a site visit where one is needed, and set out the work involved before anything begins.
           </p>
           <div class="flex flex-wrap items-center gap-6 pt-2 font-body-sm text-body-sm text-surface-variant">
             <span class="flex items-center gap-2">
               <span class="material-symbols-outlined text-primary-fixed-dim text-[20px]">verified</span>
-              Example qualifications — verify before use
+              MV/LV distribution and MDB/SMDB panel installation
             </span>
             <span class="flex items-center gap-2">
               <span class="material-symbols-outlined text-primary-fixed-dim text-[20px]">security</span>
-              Verify insurance and applicable standards
+              Testing, commissioning, and ELV systems
             </span>
           </div>
         </div>
         <div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-4 justify-end">
-          <a class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-primary-container text-on-primary font-label-md text-label-md hover:bg-primary shadow-md transition-all duration-150 active:translate-y-[1px] gap-2" data-path="contact" href="/contact#quotation">
-            <span>View Sample Contact Section</span>
+          <a class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-primary-container text-on-primary font-label-md text-label-md hover:bg-primary shadow-md transition-all duration-150 active:translate-y-[1px] gap-2" data-path="contact" href={primaryContactAction.href}>
+            <span>{primaryContactAction.label}</span>
             <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
           </a>
-          <span class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-surface-container-highest/20 text-on-primary/70 font-label-md text-label-md gap-2">
-            <span class="material-symbols-outlined text-[18px]">call</span>
-            <span>No live contact is configured</span>
-          </span>
+          {phoneContact.status === 'ready' && (
+            <a class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-surface-container-highest/20 text-on-primary/70 font-label-md text-label-md gap-2 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-fixed" href={phoneContact.href}>
+              <span class="material-symbols-outlined text-[18px]">call</span>
+              <span>Call {phoneContact.displayNumber}</span>
+            </a>
+          )}
         </div>
       </div>
     </div>

@@ -5,6 +5,9 @@
  * and verification overlay.
  */
 import Container from '../Container.astro';
+import { getPublicContactActions } from '../../lib/publicContact';
+
+const { primary: primaryContactAction } = getPublicContactActions();
 ---
 
 <section class="relative w-full overflow-hidden bg-surface-container-lowest pb-16 pt-8 sm:pb-24 sm:pt-12" data-scroll-reveal>
@@ -26,47 +29,47 @@ import Container from '../Container.astro';
       <div class="lg:col-span-6 flex flex-col space-y-6">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-secondary-container text-on-secondary-fixed font-label-caps text-label-caps tracking-widest uppercase self-start">
           <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-          Electrical Infrastructure Authority
+          Electrical Engineering &amp; Contracting
         </div>
         <h1 class="font-display-hero text-headline-lg lg:text-display-hero text-on-surface tracking-tight leading-none text-balance">
           About Rajarata Engineering
         </h1>
         <p class="font-body-lg text-body-lg text-secondary leading-relaxed">
-          Sample company introduction for the website template. Replace with owner-approved history, capabilities, and service-area information before real-world use.
+          Rajarata Engineering is an electrical engineering and contracting company based in Anuradhapura. The practice plans, installs, tests, and commissions MV/LV distribution, industrial installations, MDB/SMDB panels, cable tray and cable laying, lightning protection systems, ELV and automation, and residential and commercial wiring.
         </p>
         <div class="flex flex-wrap items-center gap-4 pt-2">
           <a
             class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary-container text-on-primary font-label-md text-label-md shadow-sm hover:bg-primary hover:shadow-md transition-all active:translate-y-[1px] focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container"
             data-path="contact"
-            href="/contact#quotation"
+            href={primaryContactAction.href}
           >
-            <span>Consult Our Team</span>
+            <span>{primaryContactAction.label}</span>
             <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
           </a>
           <a
             class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-surface-container-high text-on-surface font-label-md text-label-md hover:bg-surface-variant transition-colors focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container"
             href="#story"
           >
-            <span>Our Legacy &amp; Methodology</span>
+            <span>Our Approach &amp; Methodology</span>
             <span class="material-symbols-outlined text-[18px]">south</span>
           </a>
         </div>
         <!-- Company snapshot / telemetry badges -->
         <div class="grid grid-cols-3 gap-4 pt-6">
           <div class="card-interactive card-tilt p-4 rounded-xl bg-surface-container-low flex flex-col" data-card-tilt>
-            <span class="font-label-caps text-label-caps text-secondary uppercase">Example</span>
-            <span class="font-title-lg text-title-lg text-on-surface mt-1">Compliance</span>
-            <span class="font-body-sm text-body-sm text-secondary mt-0.5">Verify standards</span>
+            <span class="font-label-caps text-label-caps text-secondary uppercase">Scope</span>
+            <span class="font-title-lg text-title-lg text-on-surface mt-1">MV/LV Distribution</span>
+            <span class="font-body-sm text-body-sm text-secondary mt-0.5">Panels, cable tray and laying</span>
           </div>
           <div class="card-interactive card-tilt p-4 rounded-xl bg-surface-container-low flex flex-col" data-card-tilt>
-            <span class="font-label-caps text-label-caps text-secondary uppercase">Example</span>
-            <span class="font-title-lg text-title-lg text-primary mt-1">Safety</span>
-            <span class="font-body-sm text-body-sm text-secondary mt-0.5">Add verified policy</span>
+            <span class="font-label-caps text-label-caps text-secondary uppercase">Scope</span>
+            <span class="font-title-lg text-title-lg text-primary mt-1">Testing &amp; Commissioning</span>
+            <span class="font-body-sm text-body-sm text-secondary mt-0.5">Checks before handover</span>
           </div>
           <div class="card-interactive card-tilt p-4 rounded-xl bg-surface-container-low flex flex-col" data-card-tilt>
-            <span class="font-label-caps text-label-caps text-secondary uppercase">Example</span>
-            <span class="font-title-lg text-title-lg text-on-surface mt-1">Service Scope</span>
-            <span class="font-body-sm text-body-sm text-secondary mt-0.5">Replace with real scope</span>
+            <span class="font-label-caps text-label-caps text-secondary uppercase">Scope</span>
+            <span class="font-title-lg text-title-lg text-on-surface mt-1">ELV &amp; Automation</span>
+            <span class="font-body-sm text-body-sm text-secondary mt-0.5">Structured cabling and controls</span>
           </div>
         </div>
       </div>
@@ -74,9 +77,9 @@ import Container from '../Container.astro';
         <!-- Hero visual with telemetry overlay -->
         <div class="relative rounded-2xl overflow-hidden shadow-xl bg-surface-container-high">
           <img
-            alt="Sample engineering illustration for a website template; not a real engineer or project"
+            alt="Stylised electrical distribution panels with indicator lights and a lightning symbol on a dark grid background"
             class="w-full h-[460px] object-cover object-center"
-            src="/images/sample-engineering.svg"
+            src="/images/engineering-panels.svg"
           />
           <div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/80 via-inverse-surface/20 to-transparent"></div>
           <!-- Precision Overlay Card -->
@@ -86,13 +89,13 @@ import Container from '../Container.astro';
                 <span class="material-symbols-outlined text-[24px]">verified</span>
               </div>
               <div>
-                <div class="font-title-md text-title-md text-on-surface">Sample Commissioning Panel</div>
-                <div class="font-body-sm text-body-sm text-secondary">Example content — verify before use</div>
+                <div class="font-title-md text-title-md text-on-surface">Commissioning Panel Checks</div>
+                <div class="font-body-sm text-body-sm text-secondary">Insulation, earthing, and functional testing before handover</div>
               </div>
             </div>
             <div class="hidden sm:flex flex-col items-end">
-              <span class="font-label-caps text-label-caps text-primary uppercase">Sample</span>
-              <span class="font-title-md text-title-md text-on-surface">Technical Standard</span>
+              <span class="font-label-caps text-label-caps text-primary uppercase">Work Stage</span>
+              <span class="font-title-md text-title-md text-on-surface">Test &amp; Handover</span>
             </div>
           </div>
         </div>

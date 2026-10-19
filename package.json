@@ -6,34 +6,21 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "astro dev",
+    "dev": "node --env-file-if-exists=.env node_modules/astro/bin/astro.mjs dev",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "node --env-file-if-exists=.env node_modules/astro/bin/astro.mjs preview",
     "check": "astro check",
-    "test:content": "node --experimental-strip-types --test tests/content-model.test.mjs",
-    "test:rules": "firebase emulators:exec --project demo-rajarata-engineering --only firestore,storage \"node --test tests/firebase-rules.test.mjs tests/draft-repository.test.mjs tests/media-repository.test.mjs\"",
-    "test:phase14": "npm run build && npm run test:content && npm run test:rules",
-    "test:phase15": "npm run check && npm run build && npm run test:content && npm run test:rules",
-    "test:preview": "firebase emulators:exec --project demo-rajarata-engineering --only auth,firestore,storage \"node --test tests/draft-preview.test.mjs\"",
-    "test:phase16": "npm run check && npm run build && npm run test:content && npm run test:rules && npm run test:preview",
-    "test:publishing": "firebase emulators:exec --project demo-rajarata-engineering --only firestore,storage \"node --test tests/cloud-build.test.mjs tests/release-repository.test.mjs\"",
-    "test:phase17": "npm run check && npm run build && npm run test:content && npm run test:rules && npm run test:preview && npm run test:publishing",
-    "test:contact": "node --test tests/contact-function.test.mjs",
-    "test:contact:emulator": "firebase emulators:exec --project demo-rajarata-engineering --only firestore,functions \"node --test tests/contact-function.test.mjs tests/contact-callable-emulator.test.mjs\"",
-    "test:phase18": "npm run check && npm run build && npm run test:content && npm run test:rules && npm run test:preview && npm run test:publishing && npm run test:contact:emulator",
     "test:whatsapp": "node --experimental-strip-types --test tests/whatsapp.test.mjs",
-    "test:phase19": "npm run check && npm run build && npm run test:whatsapp",
-    "build:spark": "node scripts/build-spark.mjs",
-    "deploy:spark": "node scripts/deploy-spark.mjs",
+    "test:phone": "node --experimental-strip-types --test tests/phone.test.mjs",
     "test:spark": "node --test tests/spark-hosting.test.mjs",
+    "test:site": "npm run check && npm run build && npm run test:spark && npm run test:whatsapp && npm run test:phone",
+    "build:spark": "node --env-file-if-exists=.env scripts/build-spark.mjs",
+    "deploy:spark": "node --env-file-if-exists=.env scripts/deploy-spark.mjs",
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/node": "^11.1.7",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.5",
-    "firebase": "^13.0.0",
-    "firebase-admin": "^14.5.0",
     "tailwindcss": "^4.3.3"
   },
   "allowScripts": {
@@ -41,7 +28,6 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
-    "@firebase/rules-unit-testing": "^6.0.0",
     "firebase-tools": "^15.34.0",
     "typescript": "^6.0.3"
   },

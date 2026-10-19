@@ -11,13 +11,13 @@
  * surface-container-low (#f3f3f3); all pass WCAG AA. See the WhatsApp block
  * in global.css for the one deliberate exception to the palette.
  *
- * Business details are baked into the static build. Public pages do not read
- * Firestore at runtime; published content is supplied by the build pipeline.
+ * Business details are baked into the static build from build-time environment
+ * values; nothing is fetched at runtime.
  */
 import Container from './Container.astro';
 import Logo from './Logo.astro';
 import WhatsAppIcon from './ui/WhatsAppIcon.astro';
-import { parseWhatsAppNumber } from '../lib/whatsapp';
+import { phoneContact, whatsappContact } from '../lib/publicContact';
 
 const quickLinks = [
   { label: 'Home', href: '/' },
@@ -39,29 +39,12 @@ const services = [
   { label: 'Lightning Protection System', href: '/services#service-08' },
 ];
 
-const badges = ['Sample content', 'Verify before use'];
-
-const details = {
-  address: 'Sample address — no visitor location configured',
-  phone: 'Sample phone — demo only',
-  email: 'sample@example.invalid',
-  hours: 'Example schedule — verify before use',
-};
-
-const whatsapp = parseWhatsAppNumber(import.meta.env.PUBLIC_WHATSAPP_NUMBER);
-if (whatsapp.status === 'invalid') {
-  console.warn('PUBLIC_WHATSAPP_NUMBER must be 8–15 digits in international format.');
-}
-
-// Demo contact values are plain text, never active telephone or email links.
-const contact = [
-  { icon: 'location_on', key: 'address' },
-  { icon: 'call', key: 'phone' },
-  { icon: 'mail', key: 'email' },
-  { icon: 'schedule', key: 'hours' },
-] as const;
+const badges = ['Direct contact', 'WhatsApp & phone'];
 
 const year = new Date().getFullYear();
+const publicPhone = phoneContact;
+const publicWhatsApp = whatsappContact;
+const displayedServices = services;
 
 // Focus rings on a light footer need the ink outline, not the white one the
 // dark footer used.
@@ -88,8 +71,7 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
           </span>
         </a>
         <p class="text-secondary font-body-md text-body-md pr-4 leading-relaxed">
-          Sample company description for this website template. Replace it with owner-verified
-          services, qualifications, and commitments before real-world use.
+          Contact the team directly by WhatsApp or phone.
         </p>
         <div class="flex items-center gap-2 pt-2">
           {
@@ -130,7 +112,7 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
         >
         <ul class="space-y-2.5 mt-2">
           {
-            services.map((service) => (
+            displayedServices.map((service) => (
               <li class="h-7 flex items-center">
                 <a
                   href={service.href}
@@ -150,27 +132,27 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
           >Contact Info</span
         >
         <div class="space-y-3 mt-2">
-          {
-            contact.map((item) => (
-              <div class="flex items-start gap-3">
-                <span class="material-symbols-outlined text-primary text-[20px] mt-0.5">
-                  {item.icon}
-                </span>
-                <span class="break-words">
-                  {details[item.key]}
-                </span>
-              </div>
-            ))
-          }
-          {whatsapp.status === 'ready' && (
-            <div class="pt-2">
+          {publicPhone.status === 'ready' && (
+            <div>
               <a
-                href={whatsapp.href}
-                aria-label={`Chat with Rajarata Engineering on WhatsApp at ${whatsapp.displayNumber}`}
+                href={publicPhone.href}
+                aria-label={`Call Rajarata Engineering at ${publicPhone.displayNumber}`}
+                class={`inline-flex min-h-11 items-center gap-2 break-all font-label-md text-label-md text-on-surface underline-offset-4 hover:text-primary hover:underline ${focus}`}
+              >
+                <span class="material-symbols-outlined text-primary text-[20px]">call</span>
+                <span>{publicPhone.displayNumber}</span>
+              </a>
+            </div>
+          )}
+          {publicWhatsApp.status === 'ready' && (
+            <div>
+              <a
+                href={publicWhatsApp.href}
+                aria-label={`Chat with Rajarata Engineering on WhatsApp at ${publicWhatsApp.displayNumber}`}
                 class={`inline-flex min-h-11 max-w-full flex-wrap items-center gap-2 break-all rounded-control bg-whatsapp px-3 py-2 font-label-sm text-label-sm text-white transition-colors hover:bg-whatsapp-hover active:translate-y-px ${focus}`}
               >
                 <WhatsAppIcon class="h-5 w-5" />
-                <span>{whatsapp.displayNumber}</span>
+                <span>{publicWhatsApp.displayNumber}</span>
               </a>
             </div>
           )}
@@ -183,10 +165,7 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
       class="mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-outline-variant"
     >
       <p class="text-xs text-secondary">
-        &copy; {year} Rajarata Engineering sample template. Replace with verified company details.
-      </p>
-      <p class="text-xs text-secondary font-label-caps uppercase tracking-wider">
-        Demonstration content — verify before use
+        &copy; {year} Rajarata Engineering.
       </p>
     </div>
   </Container>

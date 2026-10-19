@@ -13,26 +13,20 @@ import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import ContactHero from '../components/contact/ContactHero.astro';
-import EmergencySupport from '../components/contact/EmergencySupport.astro';
 import OperationalDesks from '../components/contact/OperationalDesks.astro';
-import TechnicalQuotation from '../components/contact/TechnicalQuotation.astro';
-import VisitorInformation from '../components/contact/VisitorInformation.astro';
 
 export const prerender = true;
 ---
 
 <Base
   title="Rajarata Engineering | Contact"
-  description="Sample contact-page template. Contact information and service availability are illustrative and are not connected to a live business."
+  description="Contact Rajarata Engineering directly by WhatsApp or phone."
 >
   <Header />
 
   <main class="w-full pt-20 bg-surface">
     <ContactHero />
-    <EmergencySupport />
     <OperationalDesks />
-    <TechnicalQuotation />
-    <VisitorInformation />
   </main>
 
   <Footer />

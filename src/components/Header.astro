@@ -15,6 +15,7 @@
 import Container from './Container.astro';
 import Logo from './Logo.astro';
 import Button from './ui/Button.astro';
+import { getPublicContactActions } from '../lib/publicContact';
 
 const nav = [
   { label: 'Home', href: '/' },
@@ -30,6 +31,11 @@ const nav = [
 const path = Astro.url.pathname;
 const isActive = (href: string) =>
   href === path || (href !== '#' && href !== '/' && path.startsWith(`${href}/`));
+const {
+  phone: phoneContact,
+  primary: primaryContactAction,
+  whatsapp: whatsappContact,
+} = getPublicContactActions();
 
 const focusRing =
   'focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container';
@@ -75,7 +81,7 @@ const focusRing =
 
     <!-- Desktop actions -->
     <div class="hidden lg:flex items-center space-x-5">
-      <Button size="sm" href="/contact#quotation">View Sample Contact</Button>
+      <Button size="sm" href={primaryContactAction.href}>{primaryContactAction.label}</Button>
       <div
         class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"
         title="Account"
@@ -164,20 +170,32 @@ const focusRing =
     </nav>
 
     <div class="mt-8 pt-6">
-      <Button href="/contact#quotation" class="w-full">View Sample Contact</Button>
+      <Button href={primaryContactAction.href} class="w-full">{primaryContactAction.label}</Button>
     </div>
   </div>
 
   <div class="p-6 bg-surface-container-low">
     <div class="flex flex-col space-y-3 font-body-sm text-body-sm text-secondary">
-      <span class="flex items-center gap-3 py-1 text-on-surface">
-        <span class="material-symbols-outlined text-primary text-[20px]">call</span>
-        <span>Sample phone — demo only</span>
-      </span>
-      <span class="flex items-center gap-3 py-1 text-on-surface">
-        <span class="material-symbols-outlined text-primary text-[20px]">mail</span>
-        <span class="truncate">sample@example.invalid</span>
-      </span>
+      {whatsappContact.status === 'ready' && (
+        <a
+          class="flex min-h-11 items-center gap-3 py-1 text-on-surface underline-offset-4 hover:underline focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container"
+          href={whatsappContact.href}
+          aria-label={`Chat with Rajarata Engineering on WhatsApp at ${whatsappContact.displayNumber}`}
+        >
+          <span class="material-symbols-outlined text-primary text-[20px]">chat</span>
+          <span>WhatsApp {whatsappContact.displayNumber}</span>
+        </a>
+      )}
+      {phoneContact.status === 'ready' && (
+        <a
+          class="flex min-h-11 items-center gap-3 py-1 text-on-surface underline-offset-4 hover:underline focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container"
+          href={phoneContact.href}
+          aria-label={`Call Rajarata Engineering at ${phoneContact.displayNumber}`}
+        >
+          <span class="material-symbols-outlined text-primary text-[20px]">call</span>
+          <span>{phoneContact.displayNumber}</span>
+        </a>
+      )}
     </div>
   </div>
 </div>

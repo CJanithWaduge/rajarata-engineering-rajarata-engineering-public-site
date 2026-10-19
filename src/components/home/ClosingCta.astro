@@ -4,6 +4,9 @@
  * Added 64px red rule (w-16 h-1 bg-primary-container rounded-full)
  * and h2 "Have an Electrical Project in Mind?" at display-hero.
  */
+import { getPublicContactActions } from '../../lib/publicContact';
+
+const { phone: phoneContact, primary: primaryContactAction } = getPublicContactActions();
 ---
 
 <section class="w-full bg-[#111827] text-white py-16 lg:py-24 relative overflow-hidden" data-scroll-reveal>
@@ -14,33 +17,33 @@
         Have an Electrical Project in Mind?
       </h2>
       <p class="font-body-lg text-body-lg text-gray-300 max-w-3xl text-center leading-relaxed">
-        This sample call-to-action section demonstrates how a template may invite visitors to make contact.
+        Contact the team directly by WhatsApp or phone.
       </p>
       <div class="w-full sm:w-auto flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 pt-2">
         <a
           class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-primary-container text-on-primary font-label-md text-label-md shadow-lg hover:bg-primary transition-all duration-150 active:translate-y-[1px]"
           data-path="contact"
-          href="/contact#quotation">
-          <span>VIEW SAMPLE CONTACT</span>
-          <span class="material-symbols-outlined ml-2 text-base">request_quote</span>
+          href={primaryContactAction.href}>
+          <span>{primaryContactAction.label}</span>
+          <span class="material-symbols-outlined ml-2 text-base">chat</span>
         </a>
-        <a
+        {phoneContact.status === 'ready' && <a
           class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white/10 hover:bg-white/20 text-white font-label-md text-label-md transition-all duration-150 active:translate-y-[1px]"
           data-path="contact"
-          href="/contact#quotation">
-          <span>CONTACT PAGE EXAMPLE</span>
-          <span class="material-symbols-outlined ml-2 text-base">support_agent</span>
-        </a>
+          href={phoneContact.href}>
+          <span>Call {phoneContact.displayNumber}</span>
+          <span class="material-symbols-outlined ml-2 text-base">call</span>
+        </a>}
       </div>
       <!-- Immediate Contact Details Pill -->
       <div class="pt-6 flex flex-wrap items-center justify-center gap-8 text-gray-400 font-body-sm text-body-sm">
         <div class="flex items-center gap-2">
           <span class="material-symbols-outlined text-primary-container text-lg">call</span>
-          <span>No emergency service is represented</span>
+          <span>Direct WhatsApp &amp; phone contact</span>
         </div>
         <div class="flex items-center gap-2">
           <span class="material-symbols-outlined text-primary-container text-lg">verified</span>
-          <span>Verify licenses and standards before use</span>
+          <span>No inquiry form required</span>
         </div>
       </div>
     </div>
