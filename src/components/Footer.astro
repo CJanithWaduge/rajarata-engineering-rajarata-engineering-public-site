@@ -19,6 +19,7 @@ import Logo from './Logo.astro';
 import FacebookIcon from './ui/FacebookIcon.astro';
 import WhatsAppIcon from './ui/WhatsAppIcon.astro';
 import { phoneContact, whatsappContact } from '../lib/publicContact';
+import { parseEmail, parseHttpUrl, isUnset } from '../lib/siteSettings';
 
 const quickLinks = [
   { label: 'Home', href: '/' },
@@ -46,6 +47,15 @@ const year = new Date().getFullYear();
 const publicPhone = phoneContact;
 const publicWhatsApp = whatsappContact;
 const displayedServices = services;
+
+// Build-time values are the initial paint; `watchSiteSettings` replaces them
+// with the live Firestore values once the client hydrates. Kept in env so the
+// static HTML is correct before JavaScript runs.
+const emailContact = parseEmail(import.meta.env.PUBLIC_EMAIL ?? '');
+const facebookContact = parseHttpUrl(import.meta.env.PUBLIC_FACEBOOK_URL ?? '');
+const locationDisplay = isUnset(import.meta.env.PUBLIC_LOCATION)
+  ? 'Location details to be confirmed'
+  : import.meta.env.PUBLIC_LOCATION;
 
 // Focus rings on a light footer need the ink outline, not the white one the
 // dark footer used.
@@ -134,9 +144,10 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
         >
         <div class="space-y-3 mt-2">
           {publicPhone.status === 'ready' && (
-            <div>
+            <div data-site-row>
               <a
                 href={publicPhone.href}
+                data-site-phone
                 aria-label={`Call Rajarata Engineering at ${publicPhone.displayNumber}`}
                 class={`inline-flex min-h-11 items-center gap-2 break-all font-label-md text-label-md text-on-surface underline-offset-4 hover:text-primary hover:underline ${focus}`}
               >
@@ -146,9 +157,11 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
             </div>
           )}
           {publicWhatsApp.status === 'ready' && (
-            <div>
+            <div data-site-row>
               <a
                 href={publicWhatsApp.href}
+                data-site-whatsapp
+                data-site-format="whatsapp"
                 aria-label={`Chat with Rajarata Engineering on WhatsApp at ${publicWhatsApp.displayNumber}`}
                 class={`inline-flex min-h-11 max-w-full flex-wrap items-center gap-2 break-all rounded-control bg-whatsapp px-3 py-2 font-label-sm text-label-sm text-white transition-colors hover:bg-whatsapp-hover active:translate-y-px ${focus}`}
               >
@@ -157,17 +170,25 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
               </a>
             </div>
           )}
-          <div class="flex items-start gap-2 font-body-sm text-body-sm text-secondary">
+          <div class="flex items-start gap-2 font-body-sm text-body-sm text-secondary" data-site-row>
             <span class="material-symbols-outlined text-primary text-[20px]" aria-hidden="true">mail</span>
-            <span>Email address to be confirmed</span>
+            <a
+              class="break-all underline-offset-4 hover:text-primary hover:underline"
+              data-site-email
+              href={`mailto:${emailContact.status === 'ready' ? emailContact.value : ''}`}
+            >{emailContact.status === 'ready' ? emailContact.value : 'Email address to be confirmed'}</a>
           </div>
-          <div class="flex items-start gap-2 font-body-sm text-body-sm text-secondary">
+          <div class="flex items-start gap-2 font-body-sm text-body-sm text-secondary" data-site-row>
             <span class="material-symbols-outlined text-primary text-[20px]" aria-hidden="true">location_on</span>
-            <span>Business address to be confirmed</span>
+            <span class="whitespace-pre-line" data-site-address>{locationDisplay}</span>
           </div>
-          <div class="flex items-start gap-2 font-body-sm text-body-sm text-secondary">
+          <div class="flex items-start gap-2 font-body-sm text-body-sm text-secondary" data-site-row>
             <FacebookIcon class="h-5 w-5 text-tertiary" />
-            <span>Facebook page link to be confirmed</span>
+            <a
+              class="break-all underline-offset-4 hover:text-primary hover:underline"
+              data-site-facebookUrl
+              href={facebookContact.status === 'ready' ? facebookContact.value : '#'}
+            >{facebookContact.status === 'ready' ? 'Facebook' : 'Facebook page link to be confirmed'}</a>
           </div>
         </div>
       </div>

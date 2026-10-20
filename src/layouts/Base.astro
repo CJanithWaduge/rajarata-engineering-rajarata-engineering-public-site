@@ -42,9 +42,12 @@ const { title, description } = Astro.props;
     <script>
       import { initCardTilt } from '../lib/cardTilt';
       import { initScrollReveal } from '../lib/scrollReveal';
+      import { watchSiteSettings } from '../lib/watchSiteSettings';
 
       initCardTilt();
       initScrollReveal();
+      // Keeps contact details in sync with the admin panel without a rebuild.
+      watchSiteSettings();
     </script>
   </body>
 </html>
