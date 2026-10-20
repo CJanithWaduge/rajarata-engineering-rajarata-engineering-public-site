@@ -16,6 +16,7 @@
  */
 import Container from './Container.astro';
 import Logo from './Logo.astro';
+import FacebookIcon from './ui/FacebookIcon.astro';
 import WhatsAppIcon from './ui/WhatsAppIcon.astro';
 import { phoneContact, whatsappContact } from '../lib/publicContact';
 
@@ -71,7 +72,7 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
           </span>
         </a>
         <p class="text-secondary font-body-md text-body-md pr-4 leading-relaxed">
-          Contact the team directly by WhatsApp or phone.
+          Contact the team directly by WhatsApp or phone. Email and Facebook details are being confirmed.
         </p>
         <div class="flex items-center gap-2 pt-2">
           {
@@ -156,6 +157,18 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
               </a>
             </div>
           )}
+          <div class="flex items-start gap-2 font-body-sm text-body-sm text-secondary">
+            <span class="material-symbols-outlined text-primary text-[20px]" aria-hidden="true">mail</span>
+            <span>Email address to be confirmed</span>
+          </div>
+          <div class="flex items-start gap-2 font-body-sm text-body-sm text-secondary">
+            <span class="material-symbols-outlined text-primary text-[20px]" aria-hidden="true">location_on</span>
+            <span>Business address to be confirmed</span>
+          </div>
+          <div class="flex items-start gap-2 font-body-sm text-body-sm text-secondary">
+            <FacebookIcon class="h-5 w-5 text-tertiary" />
+            <span>Facebook page link to be confirmed</span>
+          </div>
         </div>
       </div>
     </div>
