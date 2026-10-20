@@ -20,6 +20,9 @@ import FacebookIcon from './ui/FacebookIcon.astro';
 import WhatsAppIcon from './ui/WhatsAppIcon.astro';
 import { phoneContact, whatsappContact } from '../lib/publicContact';
 import { parseEmail, parseHttpUrl, isUnset } from '../lib/siteSettings';
+import { Phone } from '@lucide/astro';
+import BrandIcon from './ui/BrandIcon.astro';
+import { siGmail, siGooglemaps } from 'simple-icons';
 
 const quickLinks = [
   { label: 'Home', href: '/' },
@@ -151,8 +154,8 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
                 aria-label={`Call Rajarata Engineering at ${publicPhone.displayNumber}`}
                 class={`inline-flex min-h-11 items-center gap-2 break-all font-label-md text-label-md text-on-surface underline-offset-4 hover:text-primary hover:underline ${focus}`}
               >
-                <span class="material-symbols-outlined text-primary text-[20px]">call</span>
-                <span>{publicPhone.displayNumber}</span>
+                <Phone class="h-5 w-5 text-primary" stroke-width="1.8" aria-hidden="true" />
+                <span data-site-value>{publicPhone.displayNumber}</span>
               </a>
             </div>
           )}
@@ -166,12 +169,12 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
                 class={`inline-flex min-h-11 max-w-full flex-wrap items-center gap-2 break-all rounded-control bg-whatsapp px-3 py-2 font-label-sm text-label-sm text-white transition-colors hover:bg-whatsapp-hover active:translate-y-px ${focus}`}
               >
                 <WhatsAppIcon class="h-5 w-5" />
-                <span>{publicWhatsApp.displayNumber}</span>
+                <span data-site-value>{publicWhatsApp.displayNumber}</span>
               </a>
             </div>
           )}
           <div class="flex items-start gap-2 font-body-sm text-body-sm text-secondary" data-site-row>
-            <span class="material-symbols-outlined text-primary text-[20px]" aria-hidden="true">mail</span>
+            <BrandIcon icon={siGmail} class="h-5 w-5 text-[#EA4335]" />
             <a
               class="break-all underline-offset-4 hover:text-primary hover:underline"
               data-site-email
@@ -179,7 +182,7 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
             >{emailContact.status === 'ready' ? emailContact.value : 'Email address to be confirmed'}</a>
           </div>
           <div class="flex items-start gap-2 font-body-sm text-body-sm text-secondary" data-site-row>
-            <span class="material-symbols-outlined text-primary text-[20px]" aria-hidden="true">location_on</span>
+            <BrandIcon icon={siGooglemaps} class="h-5 w-5 text-[#4285F4]" />
             <span class="whitespace-pre-line" data-site-address>{locationDisplay}</span>
           </div>
           <div class="flex items-start gap-2 font-body-sm text-body-sm text-secondary" data-site-row>

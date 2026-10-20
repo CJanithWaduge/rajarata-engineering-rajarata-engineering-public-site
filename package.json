@@ -19,9 +19,12 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@fortawesome/free-brands-svg-icons": "^7.3.1",
+    "@lucide/astro": "^1.60.0",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.5",
     "firebase": "^13.0.0",
+    "simple-icons": "^16.35.0",
     "tailwindcss": "^4.3.3"
   },
   "allowScripts": {

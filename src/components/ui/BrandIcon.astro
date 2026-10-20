@@ -1,0 +1,21 @@
+---
+import type { SimpleIcon } from 'simple-icons';
+
+interface Props {
+  icon: SimpleIcon;
+  class?: string;
+}
+
+const { icon, class: className = 'h-5 w-5' } = Astro.props;
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="currentColor"
+  class:list={['shrink-0', className]}
+  aria-hidden="true"
+  focusable="false"
+>
+  <path d={icon.path} />
+</svg>

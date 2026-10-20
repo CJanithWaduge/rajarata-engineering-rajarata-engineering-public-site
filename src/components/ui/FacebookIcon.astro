@@ -1,20 +1,22 @@
 ---
+import { faFacebook } from '@fortawesome/free-brands-svg-icons';
+
 interface Props {
   class?: string;
 }
 
 const { class: className = 'h-5 w-5' } = Astro.props;
+const [width, height, , , path] = faFacebook.icon;
+const pathData = Array.isArray(path) ? path.join(' ') : path;
 ---
 
 <svg
   xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 24 24"
+  viewBox={`0 0 ${width} ${height}`}
   fill="currentColor"
   class:list={['shrink-0', className]}
   aria-hidden="true"
   focusable="false"
 >
-  <path
-    d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073c0 6.02 4.388 11.019 10.125 11.927v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.696 4.533-4.696 1.312 0 2.686.236 2.686.236v2.98h-1.513c-1.49 0-1.956.93-1.956 1.885v2.258h3.328l-.532 3.49h-2.796V24C19.612 23.092 24 18.093 24 12.073Z"
-  />
+  <path d={pathData} />
 </svg>

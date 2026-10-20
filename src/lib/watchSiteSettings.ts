@@ -30,6 +30,9 @@ function applyField(field: Field, value: string) {
       return;
     }
 
+    const row = el.closest<HTMLElement>('[data-site-row]');
+    if (row) row.hidden = false;
+
     // Links need href/aria-label updated; plain fields only need text.
     if (el instanceof HTMLAnchorElement) {
       if (field === 'phone') {
@@ -39,11 +42,16 @@ function applyField(field: Field, value: string) {
         el.href = `https://wa.me/${digits}`;
       } else if (field === 'facebookUrl') {
         el.href = value;
+        el.setAttribute('aria-label', 'Visit Rajarata Engineering on Facebook');
       } else if (field === 'email') {
         el.href = `mailto:${value}`;
       }
-      el.setAttribute('aria-label', value);
+      if (field !== 'facebookUrl') {
+        el.setAttribute('aria-label', value);
+      }
     }
+
+    if (field === 'facebookUrl') return;
 
     // `data-site-format` keeps the displayed form separate from the raw value.
     const format = el.dataset.siteFormat;
@@ -51,7 +59,8 @@ function applyField(field: Field, value: string) {
       format === 'whatsapp'
         ? `+${value.replace(/[^\d]/g, '')}`
         : value;
-    el.textContent = text;
+    const valueTarget = el.querySelector<HTMLElement>('[data-site-value]') ?? el;
+    valueTarget.textContent = text;
   });
 }
 
