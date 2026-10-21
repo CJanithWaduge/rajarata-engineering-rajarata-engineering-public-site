@@ -16,6 +16,7 @@ export interface SiteSettings {
   email: string;
   address: string;
   facebookUrl: string;
+  facebookLabel: string;
   location: string;
 }
 
@@ -25,6 +26,7 @@ export const EMPTY_SETTINGS: SiteSettings = {
   email: '',
   address: '',
   facebookUrl: '',
+  facebookLabel: '',
   location: '',
 };
 
@@ -44,6 +46,7 @@ function toSettings(data: Record<string, unknown> | undefined): SiteSettings {
     email: read('email'),
     address: read('address'),
     facebookUrl: read('facebookUrl'),
+    facebookLabel: read('facebookLabel'),
     location: read('location'),
   };
 }
@@ -80,6 +83,24 @@ export function parseHttpUrl(value: string): { status: 'ready' | 'missing'; valu
   return /^https:\/\/\S+$/.test(value.trim())
     ? { status: 'ready', value: value.trim() }
     : { status: 'missing', value: '' };
+}
+
+/**
+ * Link text for a Facebook page, derived from the URL:
+ * `https://www.facebook.com/rajarata/` -> `facebook.com/rajarata`.
+ * Used when the optional `facebookLabel` field is empty, so the footer shows
+ * the address the owner actually entered instead of a generic word.
+ */
+export function formatFacebookUrl(value: string): string {
+  const trimmed = value.trim();
+  try {
+    const url = new URL(trimmed);
+    const host = url.hostname.replace(/^www\./i, '');
+    const path = url.pathname.replace(/\/+$/, '');
+    return `${host}${path}${url.search}`;
+  } catch {
+    return trimmed;
+  }
 }
 
 export type { PhoneContact, WhatsAppContact };

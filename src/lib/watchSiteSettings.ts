@@ -1,5 +1,6 @@
 import { doc, onSnapshot } from 'firebase/firestore';
 import { getFirebase } from './firebase';
+import { formatFacebookUrl } from './siteSettings';
 
 /**
  * Live hydration for contact details.
@@ -18,7 +19,7 @@ type Field = 'phone' | 'whatsapp' | 'email' | 'address' | 'facebookUrl' | 'locat
 
 const FIELDS: Field[] = ['phone', 'whatsapp', 'email', 'address', 'facebookUrl', 'location'];
 
-function applyField(field: Field, value: string) {
+function applyField(field: Field, value: string, facebookLabel = '') {
   const targets = document.querySelectorAll<HTMLElement>(`[data-site-${field}]`);
   const unset = value.trim() === '';
 
@@ -43,15 +44,17 @@ function applyField(field: Field, value: string) {
       } else if (field === 'facebookUrl') {
         el.href = value;
         el.setAttribute('aria-label', 'Visit Rajarata Engineering on Facebook');
+        // The owner can override the visible text; otherwise show the address
+        // they entered rather than the generic word "Facebook".
+        const label = facebookLabel.trim();
+        const valueTarget = el.querySelector<HTMLElement>('[data-site-value]') ?? el;
+        valueTarget.textContent = label || formatFacebookUrl(value);
+        return;
       } else if (field === 'email') {
         el.href = `mailto:${value}`;
       }
-      if (field !== 'facebookUrl') {
-        el.setAttribute('aria-label', value);
-      }
+      el.setAttribute('aria-label', value);
     }
-
-    if (field === 'facebookUrl') return;
 
     // `data-site-format` keeps the displayed form separate from the raw value.
     const format = el.dataset.siteFormat;
@@ -73,9 +76,11 @@ export function watchSiteSettings(): () => void {
       (snapshot) => {
         const data = snapshot.data();
         if (!data) return;
+        const facebookLabel =
+          typeof data.facebookLabel === 'string' ? data.facebookLabel : '';
         FIELDS.forEach((field) => {
           const value = data[field];
-          applyField(field, typeof value === 'string' ? value : '');
+          applyField(field, typeof value === 'string' ? value : '', facebookLabel);
         });
       },
       (error) => {

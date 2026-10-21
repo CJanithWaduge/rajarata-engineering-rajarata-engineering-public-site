@@ -19,7 +19,7 @@ import Logo from './Logo.astro';
 import FacebookIcon from './ui/FacebookIcon.astro';
 import WhatsAppIcon from './ui/WhatsAppIcon.astro';
 import { phoneContact, whatsappContact } from '../lib/publicContact';
-import { parseEmail, parseHttpUrl, isUnset } from '../lib/siteSettings';
+import { parseEmail, parseHttpUrl, formatFacebookUrl, isUnset } from '../lib/siteSettings';
 import { Phone } from '@lucide/astro';
 import BrandIcon from './ui/BrandIcon.astro';
 import { siGmail, siGooglemaps } from 'simple-icons';
@@ -191,7 +191,7 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
               class="break-all underline-offset-4 hover:text-primary hover:underline"
               data-site-facebookUrl
               href={facebookContact.status === 'ready' ? facebookContact.value : '#'}
-            >{facebookContact.status === 'ready' ? 'Facebook' : 'Facebook page link to be confirmed'}</a>
+            ><span data-site-value>{facebookContact.status === 'ready' ? formatFacebookUrl(facebookContact.value) : 'Facebook page link to be confirmed'}</span></a>
           </div>
         </div>
       </div>
