@@ -4,9 +4,12 @@
  *
  * Source: the first <section> in UI-UX-design/home_rajarata_engineering/code.html
  *
- * Structure. The grid is two 6-column halves at `lg`, stacked below it:
- *   - left  — eyebrow pill, h1, intro paragraph, CTA row
- *   - right — hero image, gradient scrim, telemetry badge, status tag
+ * Structure. Full-bleed background photograph with the content layered on top:
+ *   - image    — absolute, covers the whole section (`object-cover`)
+ *   - scrims   — flat tint plus left-to-right and bottom-up gradients so the
+ *                copy stays legible over the brighter parts of the photo
+ *   - content  — eyebrow pill, h1, intro paragraph, CTA row, and two glass
+ *                feature cards at the bottom
  *
  * Note: Astro does NOT strip HTML comments from templates, so nothing
  * explanatory belongs in the markup below — it would ship to production.
@@ -17,25 +20,22 @@
  *   #contact        — Contact page, not started
  *   #services-list  — Services grid, step 4.1 must add `id="services-list"`
  *
- * The local illustration stands in for real project photography until
- * genuine site assets are sourced.
+ * Hero photograph: the source PNG lives at the repo root
+ * (`Rajarata Engineering Electrical Panel Work.png`); the optimised WebP in
+ * `public/images/` is what ships.
  *
- * Deliberately no `width`/`height` on the images: each sits in a fixed-height
- * container at `h-full object-cover`, so the box never reflows and there is no
- * layout shift to prevent. Intrinsic dimensions would be ignored anyway.
+ * Cropping. The photo is 16:9 but the hero box is narrower than that on
+ * desktop, so `object-position` is biased right (62%) to keep the technician
+ * and the panel — the interesting half — inside the frame while the copy sits
+ * over the darker left side.
  *
- * Overlay stacking. The scrim, telemetry badge, and status tag are all
- * `absolute` siblings of the image. Order alone would put the badge and tag
- * above the scrim, but that is implicit and breaks the moment either is
- * reordered — so all three overlays carry `z-10`, which makes the intent
- * explicit and keeps the badge and tag at equal rank.
+ * Deliberately no `width`/`height` on the image: it fills the absolutely
+ * positioned box at `h-full object-cover`, so there is no layout shift to
+ * prevent and intrinsic dimensions would be ignored anyway.
  *
- * Badge text fitting. The title is kept to one line and truncated when the
- * badge is too narrow. The mobile insets keep the card within the image;
- * from `sm` upward it shrinks to its content and is capped at `max-w-xs`.
- *
- * On mobile, the badge's left and right insets bound its width without needing
- * an arbitrary `calc()` value.
+ * Overlay stacking. The image is `-z-20`, the scrims `-z-10`, and the
+ * Container is `relative` so the copy sits above all three without needing a
+ * z-index on every child.
  */
 import Container from '../Container.astro';
 import Button from '../ui/Button.astro';
@@ -45,95 +45,107 @@ const { primary: primaryContactAction } = getPublicContactActions();
 ---
 
 <section
-  class="relative w-full bg-surface-container-lowest overflow-hidden py-12 md:py-16 lg:py-24"
+  class="relative isolate w-full overflow-hidden bg-inverse-surface"
   data-scroll-reveal
 >
-  <Container>
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-      <div class="lg:col-span-6 flex flex-col items-start space-y-6">
-        <p class="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-error-container/40">
+  <img
+    class="absolute inset-0 -z-20 h-full w-full object-cover object-[62%_center]"
+    src="/images/hero-electrical-panel.webp"
+    alt="Rajarata Engineering technician in a safety helmet testing an electrical distribution panel"
+    loading="eager"
+    fetchpriority="high"
+    decoding="async"
+  />
+  <div class="absolute inset-0 -z-10 bg-inverse-surface/65" aria-hidden="true"></div>
+  <div
+    class="absolute inset-0 -z-10 bg-gradient-to-r from-inverse-surface via-inverse-surface/80 to-inverse-surface/15"
+    aria-hidden="true"
+  >
+  </div>
+  <div
+    class="absolute inset-x-0 bottom-0 -z-10 h-1/2 bg-gradient-to-t from-inverse-surface/85 to-transparent"
+    aria-hidden="true"
+  >
+  </div>
+
+  <Container class="relative">
+    <div
+      class="flex min-h-[480px] flex-col justify-center py-16 sm:min-h-[540px] sm:py-20 lg:min-h-[600px] lg:py-24"
+    >
+      <div class="flex max-w-3xl flex-col items-start space-y-6">
+        <p
+          class="inline-flex items-center gap-2.5 rounded-full border border-on-primary/20 bg-on-primary/10 px-3 py-1.5 backdrop-blur-sm"
+        >
           <span
-            class="w-2.5 h-2.5 rounded-full bg-primary-container animate-pulse"
+            class="h-2.5 w-2.5 rounded-full bg-primary-container animate-pulse"
             aria-hidden="true"></span>
-          <span class="font-label-caps text-label-caps uppercase tracking-wider text-primary"
+          <span class="font-label-caps text-label-caps uppercase tracking-wider text-on-primary"
             >Electrical Engineering &amp; Solutions</span
           >
         </p>
 
-        <h1 class="text-[34px] sm:text-[46px] lg:text-[56px] leading-[1.12] tracking-tight font-display-hero text-on-surface">Reliable Electrical Solutions Built for Safety &amp; Performance</h1>
+        <h1
+          class="text-[34px] leading-[1.12] tracking-tight text-on-primary sm:text-[46px] lg:text-[56px] font-display-hero"
+        >
+          Reliable Electrical Solutions Built for Safety &amp; Performance
+        </h1>
 
-        <p class="w-full max-w-[36rem] font-body-lg text-body-lg text-secondary leading-relaxed">
+        <p
+          class="w-full max-w-[36rem] font-body-lg text-body-lg leading-relaxed text-on-primary/80"
+        >
           Rajarata Engineering is an electrical engineering and contracting company based in Anuradhapura. We design, install, test, and commission MV/LV distribution, industrial installations, and ELV systems for residential, commercial, and industrial clients.
         </p>
 
-        <div class="w-full sm:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+        <div
+          class="flex w-full flex-col items-stretch gap-4 pt-2 sm:w-auto sm:flex-row sm:items-center"
+        >
           <Button variant="primary" href={primaryContactAction.href}>
             <span>{primaryContactAction.label}</span>
             <span class="material-symbols-outlined text-lg" aria-hidden="true">arrow_forward</span>
           </Button>
           <Button variant="secondary" href="#services-list">EXPLORE SERVICES</Button>
         </div>
+      </div>
 
-        <div class="flex items-center gap-6 pt-4 text-secondary">
-          <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-primary-container text-xl" aria-hidden="true"
+      <div class="mt-12 grid w-full max-w-[42rem] grid-cols-1 gap-4 sm:mt-14 sm:grid-cols-2">
+        <div
+          class="flex items-center gap-3.5 rounded-2xl border border-on-primary/15 bg-on-primary/10 p-4 backdrop-blur-md"
+        >
+          <div
+            class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-container text-on-primary"
+          >
+            <span class="material-symbols-outlined text-2xl" aria-hidden="true">shield</span>
+          </div>
+          <div class="flex min-w-0 flex-col">
+            <span class="font-title-md text-title-md leading-tight text-on-primary"
+              >Safety-First Site Work</span
+            >
+            <span class="font-label-sm text-label-sm text-on-primary/70"
+              >Planned, supervised installation</span
+            >
+          </div>
+        </div>
+
+        <div
+          class="flex items-center gap-3.5 rounded-2xl border border-on-primary/15 bg-on-primary/10 p-4 backdrop-blur-md"
+        >
+          <div
+            class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-container text-on-primary"
+          >
+            <span class="material-symbols-outlined text-2xl" aria-hidden="true"
               >verified</span
             >
-            <span class="font-label-sm text-label-sm text-on-surface">Testing &amp; commissioning on every system</span>
           </div>
-          <div class="flex items-center gap-2">
-            <span
-              class="material-symbols-outlined text-primary-container text-xl"
-              aria-hidden="true">precision_manufacturing</span
+          <div class="flex min-w-0 flex-col">
+            <span class="font-title-md text-title-md leading-tight text-on-primary"
+              >Tested &amp; Commissioned</span
             >
-            <span class="font-label-sm text-label-sm text-on-surface">MV &amp; LV distribution specialists</span>
+            <span class="font-label-sm text-label-sm text-on-primary/70"
+              >Every system verified before handover</span
+            >
           </div>
         </div>
       </div>
-
-      <div class="lg:col-span-6 relative w-full">
-        <div
-          class="relative w-full h-[360px] sm:h-[420px] lg:h-[480px] rounded-2xl overflow-hidden shadow-xl bg-surface-container"
-        >
-          <img
-            class="w-full h-full object-cover object-center"
-            src="/images/engineering-panels.svg"
-            alt="Illustration of electrical distribution panels representing Rajarata Engineering's core installation work"
-            loading="eager"
-            fetchpriority="high"
-            decoding="async"
-          />
-            <div
-              class="absolute inset-0 bg-gradient-to-t from-inverse-surface/80 via-inverse-surface/20 to-transparent"
-            >
-            </div>
-            <div
-              class="absolute bottom-6 left-6 z-10 w-[calc(100%-3rem)] sm:w-80 p-4 rounded-xl bg-surface-container-lowest/95 backdrop-blur-md shadow-lg flex items-center gap-3.5"
-            >
-              <div
-                class="w-12 h-12 rounded-lg bg-error-container/60 flex items-center justify-center text-primary-container shrink-0"
-              >
-                <span class="material-symbols-outlined text-2xl" aria-hidden="true"
-                  >shield</span
-                >
-              </div>
-              <div class="flex flex-col flex-1 min-w-0">
-              <span class="font-title-md text-title-md text-on-surface leading-tight"
-                >Safety-First Site Work</span
-              >
-                <span class="font-label-sm text-label-sm text-secondary truncate"
-                  >Planned, supervised installation</span
-                >
-              </div>
-            </div>
-            <div
-              class="absolute top-5 right-5 z-10 px-3 py-1.5 rounded-lg bg-inverse-surface/90 text-on-primary font-label-caps text-label-caps uppercase flex items-center gap-2"
-            >
-              <span class="w-2 h-2 rounded-full bg-emerald-400" aria-hidden="true"></span>
-              <span>TESTED &amp; COMMISSIONED</span>
-            </div>
-          </div>
-        </div>
     </div>
   </Container>
 </section>
