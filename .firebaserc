@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "rajarata-engineering-developer",
-    "staging": "rajarata-engineering-developer"
+    "default": "rajarata-engineering-admin",
+    "staging": "rajarata-engineering-admin"
   }
 }

@@ -42,12 +42,18 @@ const { title, description } = Astro.props;
     <script>
       import { initCardTilt } from '../lib/cardTilt';
       import { initScrollReveal } from '../lib/scrollReveal';
+      import { watchHomeContent } from '../lib/watchHomeContent';
+      import { watchServicesContent } from '../lib/watchServicesContent';
       import { watchSiteSettings } from '../lib/watchSiteSettings';
 
       initCardTilt();
       initScrollReveal();
       // Keeps contact details in sync with the admin panel without a rebuild.
       watchSiteSettings();
+      // Keeps the Home hero and featured cards in sync with site/home.
+      watchHomeContent();
+      // Keeps the Services page copy in sync with site/services.
+      watchServicesContent();
     </script>
   </body>
 </html>

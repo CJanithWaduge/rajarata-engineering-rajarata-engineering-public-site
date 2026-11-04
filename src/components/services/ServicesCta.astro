@@ -17,35 +17,35 @@ const { phone: phoneContact, primary: primaryContactAction } = getPublicContactA
       <div class="absolute -right-16 -bottom-16 w-80 h-80 rounded-full bg-primary/10 blur-3xl pointer-events-none"></div>
       <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
         <div class="lg:col-span-8 flex flex-col space-y-4">
-          <span class="font-label-caps text-label-caps uppercase tracking-widest text-primary-fixed-dim">
+          <span class="font-label-caps text-label-caps uppercase tracking-widest text-primary-fixed-dim" data-services-cta-eyebrow>
             Consultation &amp; Site Assessment
           </span>
-          <h2 class="font-headline-lg text-headline-md sm:text-headline-lg text-on-primary font-bold tracking-tight">
+          <h2 class="font-headline-lg text-headline-md sm:text-headline-lg text-on-primary font-bold tracking-tight" data-services-cta-title>
             Need a Customized Electrical Solution?
           </h2>
-          <p class="font-body-lg text-body-lg text-surface-variant max-w-[42rem] leading-relaxed">
+          <p class="font-body-lg text-body-lg text-surface-variant max-w-[42rem] leading-relaxed" data-services-cta-body>
             Tell us about the building, the load, or the fault you are dealing with. We will talk through the scope, arrange a site visit where one is needed, and set out the work involved before anything begins.
           </p>
           <div class="flex flex-wrap items-center gap-6 pt-2 font-body-sm text-body-sm text-surface-variant">
-            <span class="flex items-center gap-2">
+            <span class="flex items-center gap-2" data-services-cta-point="0">
               <span class="material-symbols-outlined text-primary-fixed-dim text-[20px]">verified</span>
-              MV/LV distribution and MDB/SMDB panel installation
+              <span data-services-cta-point-text>MV/LV distribution and MDB/SMDB panel installation</span>
             </span>
-            <span class="flex items-center gap-2">
+            <span class="flex items-center gap-2" data-services-cta-point="1">
               <span class="material-symbols-outlined text-primary-fixed-dim text-[20px]">security</span>
-              Testing, commissioning, and ELV systems
+              <span data-services-cta-point-text>Testing, commissioning, and ELV systems</span>
             </span>
           </div>
         </div>
         <div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-4 justify-end">
-          <a class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-primary-container text-on-primary font-label-md text-label-md hover:bg-primary shadow-md transition-all duration-150 active:translate-y-[1px] gap-2" data-path="contact" href={primaryContactAction.href}>
-            <span>{primaryContactAction.label}</span>
+          <a class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-primary-container text-on-primary font-label-md text-label-md hover:bg-primary shadow-md transition-all duration-150 active:translate-y-[1px] gap-2" data-path="contact" data-site-primary-contact href={primaryContactAction.href}>
+            <span data-site-primary-label>{primaryContactAction.label}</span>
             <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
           </a>
           {phoneContact.status === 'ready' && (
-            <a class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-surface-container-highest/20 text-on-primary/70 font-label-md text-label-md gap-2 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-fixed" href={phoneContact.href}>
+            <a class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-surface-container-highest/20 text-on-primary/70 font-label-md text-label-md gap-2 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-fixed" data-site-phone-call href={phoneContact.href}>
               <span class="material-symbols-outlined text-[18px]">call</span>
-              <span>Call {phoneContact.displayNumber}</span>
+              <span data-site-phone-call-value>Call {phoneContact.displayNumber}</span>
             </a>
           )}
         </div>

@@ -39,7 +39,7 @@ test('Spark contact page uses direct configured contact links without an inquiry
   assert.match(options, /w-full max-w-\[42rem\]/);
   assert.doesNotMatch(hero, /No forms|Message or call/);
   assert.doesNotMatch(options, /Prefer to start with a quick message/);
-  assert.match(options, /Location details to be confirmed/);
+  assert.match(options, /Business address to be confirmed/);
   assert.doesNotMatch(options, /maps\.google\.com|maps\.app\.goo\.gl/);
   assert.match(environmentExample, /^PUBLIC_WHATSAPP_NUMBER=94771234567$/m);
   assert.match(environmentExample, /^PUBLIC_CONTACT_PHONE=\+94 25 112 3456$/m);

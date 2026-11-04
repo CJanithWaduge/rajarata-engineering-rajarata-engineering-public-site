@@ -21,19 +21,28 @@ planning document. Where the two disagree, this file wins.
 flowchart LR
   V[Anonymous visitor] --> H[Firebase Hosting CDN]
   H -- "/ , /services , /about-us , /projects , /contact" --> D["dist/client/<br/>static HTML + CSS + JS"]
+  D --> B[Browser runtime]
+  B -- "public reads: site/settings, site/home, site/services" --> F[(Firestore)]
+  B -. "optional public image reads" .-> S[(Firebase Storage)]
 ```
 
 One delivery path, one codebase.
 
 | Path | Content | Delivery |
 | --- | --- | --- |
-| Public site | Marketing pages, design tokens, static images | Fully static `dist/client/` on Firebase Hosting's CDN |
+| Public site | Marketing pages, design tokens, fallback images | Fully static `dist/client/` on Firebase Hosting's CDN |
+| Runtime content | Contact details, Home hero image and cards, Services copy and icons | Public-read Firestore documents hydrated in the browser |
+| Media | Admin-uploaded Home images | Firebase Storage objects when available; otherwise compressed raster data URLs inside `site/home` |
 
 The public site is deliberately static. Astro pre-renders every route at build
-time, so there is no server runtime, no database, and no request-time rendering.
-Dynamic behaviour is limited to progressive enhancement in the browser: scroll
-reveal, card pointer interaction, the mobile navigation drawer, service-card
-specification disclosures, and project filtering.
+time, so there is no server runtime and no request-time rendering. The browser
+reads three public Firestore documents (`site/settings`, `site/home`, and
+`site/services`) and loads either public Firebase Storage images or inline
+raster data URLs; writes are admin-only and enforced by rules. If a read fails
+or a field is missing, the build-time markup stays in place — there is no
+placeholder fallback. Dynamic behaviour also includes progressive enhancement:
+scroll reveal, card pointer interaction, the mobile navigation drawer,
+service-card specification disclosures, and project filtering.
 
 ---
 
@@ -46,6 +55,7 @@ Fixed. Do not substitute a layer without asking first.
 | Front-end | Astro 7 + Tailwind CSS 4 (CSS-first `@theme`, no `tailwind.config.js`) | `implemented` |
 | Output | `output: 'static'`, written to `dist/client/` | `implemented` |
 | Hosting | Firebase Hosting serving `dist/client/`, no rewrites | `implemented`; not deployed |
+| Content | Public-read Firestore `site/settings`, `site/home`, and `site/services`; optional public Storage images | `implemented` (written by the admin panel) |
 | Contact | Direct WhatsApp and telephone links; no form, no backend | `implemented` |
 
 No client-side UI framework. Interactivity is progressive enhancement in small
@@ -126,22 +136,47 @@ dark sections.
 | `src/lib/publicContact.ts` | Builds the WhatsApp and telephone actions from the two public environment values | `implemented` |
 | `src/lib/whatsapp.ts` | WhatsApp number validation and `wa.me` link building | `implemented` |
 | `src/lib/phone.ts` | International phone number validation and `tel:` link building | `implemented` |
+| `src/lib/firebase.ts` | Lazily initialises the Firebase app and the named Firestore database | `implemented` |
+| `src/lib/siteSettings.ts` | Reads and normalises `site/settings` | `implemented` |
+| `src/lib/watchSiteSettings.ts` | Subscribes to `site/settings` and patches `data-site-*` elements, including the Services CTA actions | `implemented` |
+| `src/lib/homeContent.ts` | Reads and validates `site/home`; types for the hero and three cards | `implemented` |
+| `src/lib/watchHomeContent.ts` | Subscribes to `site/home` and patches `data-home-*` elements | `implemented` |
+| `src/lib/servicesContentParser.ts` | Firebase-free types and strict/partial parsers for `site/services` | `implemented` |
+| `src/lib/servicesContent.ts` | Static-Firebase wrapper; re-exports the parser and exposes `fetchServicesContent()` | `implemented` |
+| `src/lib/watchServicesContent.ts` | Subscribes to `site/services` and patches `data-services-*` / `data-service-*` elements | `implemented` |
 
-All rendered copy is resolved at build time by the component that owns it. No
-module fetches content.
+Every component still ships build-time copy and fallback artwork. Three client
+modules hydrate opted-in fields from Firestore: `watchSiteSettings` for contact
+details, `watchHomeContent` for the Home hero and three featured cards, and
+`watchServicesContent` for Services copy, quick links, metrics, cards, process
+steps, and CTA. A missing or malformed field is skipped, so the build-time
+markup remains. There is no placeholder fallback.
 
 ---
 
 ## 4. Content ownership
 
-Every published string, image reference, and link is owned by the component that
-renders it.
+Every published string, image reference, and link has a build-time value owned by
+the component that renders it. The admin panel can override three groups at
+runtime:
 
-- There is no runtime fetch and no external document.
-- Changing copy is a code change and a rebuild.
-- `git` is the only history for public content.
+- `site/settings` — contact details, links, and location label.
+- `site/home` — the Home hero image and the three Featured Engineering Projects
+  cards. Images are Firebase Storage URLs when a bucket exists; on the current
+  Spark project they are compressed raster data URLs stored inline in the
+  document.
+- `site/services` — Services page copy and icon names in fixed slots. Numbers,
+  anchors, accents, emphasis, contact actions, footer, header, images, and SEO
+  remain build-time or come from `site/settings`.
+
+Everything else is a code change and a rebuild.
+
+- The browser only reads; Firestore and Storage rules allow writes to active
+  admins only.
+- `git` is the history for the build-time content. Firestore is the runtime
+  history for the editable fields.
 - Facts the owner has not supplied stay out of the markup. The Contact page shows
-  a "location details to be confirmed" notice because no verified address exists,
+  a "Business address to be confirmed" notice because no verified address exists,
   and no prices are published anywhere.
 
 ---
@@ -150,14 +185,18 @@ renders it.
 
 | Boundary | Enforcement point | Never rely on |
 | --- | --- | --- |
-| Public content | Static `dist/client/` built from this repository | Runtime access control |
+| Public content | Static `dist/client/` plus public-read `site/settings`, `site/home`, and `site/services` | Runtime access control for reads |
+| Public media | Public-read Firebase Storage objects or raster data URLs in `site/home`; admin-only writes | Obscurity |
+| Writes | Firestore and Storage rules require an active admin record | Client-side validation alone |
 | Secrets | No credentials in the repository, and none in `PUBLIC_*` variables | Obscurity |
-| Forms | None exist, and no backend endpoints exist | — |
+| Forms | None exist; the site never writes to Firestore or Storage | — |
 | Deploy | The `build:spark` audit plus an explicit `deploy:spark` confirmation | Manual `firebase deploy` |
 
-The only environment values the site itself reads are `PUBLIC_WHATSAPP_NUMBER`
-and `PUBLIC_CONTACT_PHONE`. Both are deliberately public and ship in the HTML.
-`scripts/build-spark.mjs` also reads `PUBLIC_DEMO_MODE` for its content gate.
+The site reads `PUBLIC_WHATSAPP_NUMBER`, `PUBLIC_CONTACT_PHONE`, the six
+`PUBLIC_FIREBASE_*` web-config values (plus optional
+`PUBLIC_FIREBASE_DATABASE_ID`), and `PUBLIC_DEMO_MODE` for the build audit. All
+are public by design and ship in the HTML or the client bundle; access is
+enforced by rules, not by hiding them.
 
 `npm run build:spark` scans the built output for credential patterns, temporary
 image hosts, source maps, and placeholder markers, and verifies the five routes
@@ -170,10 +209,12 @@ and the direct contact links, before a deploy is allowed.
 **Actors:** anonymous visitor (untrusted); owner and operator (trusted humans with
 cloud access who deploy explicitly).
 
-The attack surface is small by construction: static files, no server, no database,
-no sessions, no secrets, and no write path reachable from the browser. The
-remaining risks are inaccurate content and an unauthorized deploy, and both are
-addressed procedurally rather than technically.
+The attack surface is small by construction: static files, no server, no
+sessions, no sensitive secrets, and no write path reachable from the browser.
+The browser has read-only access to three public Firestore documents and their
+public image sources (Storage or inline raster data URLs); writes are denied by
+rules. The remaining risks are inaccurate content and an unauthorized deploy,
+and both are addressed procedurally rather than technically.
 
 ---
 
@@ -182,13 +223,13 @@ addressed procedurally rather than technically.
 Per change:
 
 1. `npm run check` — 0 errors, 0 warnings, 0 hints.
-2. `npm run build` and then `npm run test:spark`, `npm run test:whatsapp`,
-   `npm run test:phone` — or `npm run test:site` for all of them.
+2. `npm run build` and then `npm run test:spark`, `npm run test:services`,
+   `npm run test:whatsapp`, `npm run test:phone` — or `npm run test:site` for all of them.
 3. `npm run build:spark` — build plus artifact audit.
 
 Release approval:
 
-- **Developer gate:** `check`, `build`, and all three test files pass.
+- **Developer gate:** `check`, `build`, and all four test files pass.
 - **Owner gate:** content facts (contact details, address, certifications,
   projects, performance claims) verified by the owner before the first production
   deploy.
@@ -201,7 +242,7 @@ Release approval:
 npm ci
 npm run check         # astro check — must report 0 errors, 0 warnings, 0 hints
 npm run build         # five static routes into dist/client/
-npm run test:site     # check + build + spark/whatsapp/phone tests
+npm run test:site     # check + build + spark/services/whatsapp/phone tests
 npm run build:spark   # check + build + audit the deployable artifact
 ```
 
@@ -217,8 +258,8 @@ These are unanswered. Do not assume an answer.
 | # | Item | Blocks |
 | --- | --- | --- |
 | O1 | Confirmed WhatsApp number and telephone number | They are currently placeholders in `.env.example`, so the Contact page links do not reach the business |
-| O2 | Verified business address | The Contact page shows a "location details to be confirmed" notice and does not link to a map |
-| O3 | Production Firebase project (id and billing owner) | Any production deploy. `rajarata-engineering-developer` is on the Spark plan with billing disabled |
+| O2 | Verified business address | The Contact page shows a "Business address to be confirmed" notice and does not link to a map |
+| O3 | Production Firebase project (id and billing owner) | Production deploy. The only project is `rajarata-engineering-admin` (Spark, billing disabled, no Storage bucket); Blaze needs a billing account, which is not configured. Home image saves work through the inline-media fallback meanwhile |
 | O4 | Who verifies factual claims (certifications, projects, metrics, years) before the first production deploy? | Owner gate |
 | O5 | Fixed price per service, or quoted per project? | No prices are published anywhere and no price shape has been agreed |
 | O6 | Should root `DESIGN.md` be restored? It was removed in commit `fc57401`. | Future UI work |

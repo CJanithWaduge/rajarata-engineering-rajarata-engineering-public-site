@@ -1,6 +1,9 @@
 import { doc, onSnapshot } from 'firebase/firestore';
 import { getFirebase } from './firebase';
+import { getPrimaryContactAction } from './publicContact';
+import { parsePhoneNumber } from './phone';
 import { formatFacebookUrl } from './siteSettings';
+import { parseWhatsAppNumber } from './whatsapp';
 
 /**
  * Live hydration for contact details.
@@ -67,6 +70,36 @@ function applyField(field: Field, value: string, facebookLabel = '') {
   });
 }
 
+/** Updates the Services CTA buttons from the same settings document. */
+function applyServicesCta(data: Record<string, unknown>) {
+  const phone = parsePhoneNumber(data.phone);
+  const whatsapp = parseWhatsAppNumber(data.whatsapp);
+
+  const primary = document.querySelector<HTMLAnchorElement>(
+    '[data-site-primary-contact]',
+  );
+  if (primary && (phone.status === 'ready' || whatsapp.status === 'ready')) {
+    const action = getPrimaryContactAction(whatsapp, phone);
+    primary.href = action.href;
+    primary.setAttribute('aria-label', action.label);
+    const label =
+      primary.querySelector<HTMLElement>('[data-site-primary-label]') ?? primary;
+    label.textContent = action.label;
+  }
+
+  const call = document.querySelector<HTMLAnchorElement>('[data-site-phone-call]');
+  if (call && phone.status === 'ready') {
+    call.href = phone.href;
+    call.setAttribute(
+      'aria-label',
+      `Call Rajarata Engineering at ${phone.displayNumber}`,
+    );
+    const value =
+      call.querySelector<HTMLElement>('[data-site-phone-call-value]') ?? call;
+    value.textContent = `Call ${phone.displayNumber}`;
+  }
+}
+
 /** Returns an unsubscribe function, or a no-op when Firebase is unavailable. */
 export function watchSiteSettings(): () => void {
   try {
@@ -82,6 +115,7 @@ export function watchSiteSettings(): () => void {
           const value = data[field];
           applyField(field, typeof value === 'string' ? value : '', facebookLabel);
         });
+        applyServicesCta(data);
       },
       (error) => {
         // Never fall back to placeholder content; leave the build-time HTML.

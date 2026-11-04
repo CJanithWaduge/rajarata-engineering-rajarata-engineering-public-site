@@ -4,29 +4,38 @@
  * Image slot, category chip, title, and metadata row.
  * Structure proven against the prototype's real project card markup.
  *
- * NOTE: imageSrc is a hotlinked placeholder for now — real assets must be
- * sourced into Firebase Storage before Home ships (see IMPLEMENTATION.md).
+ * NOTE: the props below are the build-time fallback. `watchHomeContent`
+ * replaces them from `site/home` once the admin has saved content.
  */
 interface Props {
+  projectIndex: number;
   imageSrc: string;
   imageAlt: string;
   category: string;
   location: string;
-  year: string;
+  tag: string;
   name: string;
 }
 
-const { imageSrc, imageAlt, category, location, year, name } = Astro.props;
+const { projectIndex, imageSrc, imageAlt, category, location, tag, name } = Astro.props;
 ---
 
 <div
   class="card-interactive card-tilt flex flex-col rounded-2xl overflow-hidden bg-surface-container-lowest shadow-sm"
   data-card-tilt
+  data-home-project={projectIndex}
 >
   <div class="relative w-full h-56 bg-surface-container">
-    <img class="w-full h-full object-cover" src={imageSrc} alt={imageAlt} loading="lazy" />
+    <img
+      class="w-full h-full object-cover"
+      data-home-project-image
+      src={imageSrc}
+      alt={imageAlt}
+      loading="lazy"
+    />
     <div
       class="absolute top-4 left-4 px-2.5 py-1 rounded-md bg-inverse-surface/80 text-white font-label-caps text-label-caps uppercase"
+      data-home-project-category
     >
       {category}
     </div>
@@ -36,11 +45,11 @@ const { imageSrc, imageAlt, category, location, year, name } = Astro.props;
       <div class="flex items-center justify-between text-secondary font-body-sm text-body-sm">
         <span class="flex items-center gap-1">
           <span class="material-symbols-outlined text-[16px]">location_on</span>
-          {location}
+          <span data-home-project-venue>{location}</span>
         </span>
-        <span>{year}</span>
+        <span data-home-project-tag>{tag}</span>
       </div>
-      <h3 class="font-title-lg text-title-lg text-on-surface">{name}</h3>
+      <h3 class="font-title-lg text-title-lg text-on-surface" data-home-project-topic>{name}</h3>
     </div>
     <div>
       <a

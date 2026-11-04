@@ -55,9 +55,10 @@ const badgeClass =
 const scopeLabelClass = accent === 'tertiary' ? 'text-tertiary' : 'text-primary';
 
 const detailId = `service-detail-${parseInt(number, 10)}`;
+const cardIndex = parseInt(number, 10) - 1;
 ---
 
-<article class="card-interactive card-tilt group flex flex-col justify-between p-6 sm:p-8 rounded-2xl bg-surface-container-lowest shadow-sm" id={id} data-card-tilt>
+<article class="card-interactive card-tilt group flex flex-col justify-between p-6 sm:p-8 rounded-2xl bg-surface-container-lowest shadow-sm" id={id} data-card-tilt data-service-card={cardIndex}>
   {imageSrc && (
     <img
       class="mb-6 h-48 w-full rounded-xl border border-outline-variant bg-surface-container-low object-cover"
@@ -70,17 +71,17 @@ const detailId = `service-detail-${parseInt(number, 10)}`;
     <div class="flex items-center justify-between pb-6 mb-6">
       <span class={`font-headline-lg text-headline-sm sm:text-headline-md ${numberClass} font-extrabold tracking-tight`}>{number}</span>
       <span class={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md ${badgeClass} font-label-caps text-label-caps uppercase`}>
-        <span class="material-symbols-outlined text-[14px]">{categoryIcon}</span>
-        {categoryLabel}
+        <span class="material-symbols-outlined text-[14px]" data-service-icon>{categoryIcon}</span>
+        <span data-service-category>{categoryLabel}</span>
       </span>
     </div>
-    <h3 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">
+    <h3 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors" data-service-title>
       {title}
     </h3>
     <div class="mt-4 space-y-4">
       <div>
         <span class="font-label-caps text-label-caps uppercase text-secondary">What It Is</span>
-        <p class="font-body-md text-body-md text-on-surface mt-1 leading-relaxed">
+        <p class="font-body-md text-body-md text-on-surface mt-1 leading-relaxed" data-service-description>
           {description}
         </p>
       </div>
@@ -88,15 +89,15 @@ const detailId = `service-detail-${parseInt(number, 10)}`;
       <div class="hidden flex-col space-y-4 pt-3" id={detailId}>
         <div class="p-4 rounded-xl bg-surface-container-low space-y-2">
           <span class={`font-label-caps text-label-caps uppercase ${scopeLabelClass} font-bold`}>Scope of Work Includes:</span>
-          <p class="font-body-sm text-body-sm text-on-surface leading-relaxed">
+          <p class="font-body-sm text-body-sm text-on-surface leading-relaxed" data-service-scope>
             {scope}
           </p>
         </div>
         <div>
           <span class="font-label-caps text-label-caps uppercase text-secondary">Suitable For</span>
           <div class="flex flex-wrap gap-2 mt-2">
-            {suitableFor.map((item) => (
-              <span class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface font-body-sm text-body-sm">{item}</span>
+            {suitableFor.map((item, chipIndex) => (
+              <span class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface font-body-sm text-body-sm" data-service-suitable={chipIndex}>{item}</span>
             ))}
           </div>
         </div>
