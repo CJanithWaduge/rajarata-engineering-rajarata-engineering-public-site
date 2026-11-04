@@ -18,15 +18,19 @@ const { title, description } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/fonts/plus-jakarta-sans-latin.woff2"
+      crossorigin
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/fonts/material-symbols-outlined.woff2"
+      crossorigin
     />
 
     <title>{title}</title>
@@ -42,18 +46,14 @@ const { title, description } = Astro.props;
     <script>
       import { initCardTilt } from '../lib/cardTilt';
       import { initScrollReveal } from '../lib/scrollReveal';
-      import { watchHomeContent } from '../lib/watchHomeContent';
-      import { watchServicesContent } from '../lib/watchServicesContent';
-      import { watchSiteSettings } from '../lib/watchSiteSettings';
+      import { startContentHydration } from '../lib/contentHydration';
 
       initCardTilt();
       initScrollReveal();
-      // Keeps contact details in sync with the admin panel without a rebuild.
-      watchSiteSettings();
-      // Keeps the Home hero and featured cards in sync with site/home.
-      watchHomeContent();
-      // Keeps the Services page copy in sync with site/services.
-      watchServicesContent();
+      // Keeps contact details, the Home hero and the Services copy in sync
+      // with the admin panel. Imports Firestore after load, on an idle slot,
+      // and only for the feeds this page actually renders.
+      startContentHydration();
     </script>
   </body>
 </html>

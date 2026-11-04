@@ -51,25 +51,23 @@ export function initScrollReveal(): void {
     { threshold: 0 },
   );
 
-  const initiallyVisibleTargets = new Set<HTMLElement>();
   revealTargets.forEach((element) => {
     const bounds = element.getBoundingClientRect();
     const isVisible = bounds.top < window.innerHeight && bounds.bottom > 0;
-    const state = isVisible ? 'hidden-down' : bounds.bottom <= 0 ? 'hidden-up' : 'hidden-down';
 
-    element.dataset.scrollRevealState = state;
-    if (isVisible) initiallyVisibleTargets.add(element);
+    // Anything already on screen at boot is shown outright. Passing it
+    // through a `hidden-*` state would make the browser paint the hero,
+    // blank it, then fade it back in once this script had run — which reads
+    // as a slow page even when the text painted immediately.
+    if (isVisible) {
+      element.dataset.scrollRevealState = 'visible';
+      return;
+    }
+
+    element.dataset.scrollRevealState = bounds.bottom <= 0 ? 'hidden-up' : 'hidden-down';
     observer.observe(element);
   });
 
   document.documentElement.setAttribute('data-scroll-reveal-ready', '');
   elements[0].getBoundingClientRect();
-
-  requestAnimationFrame(() => {
-    initiallyVisibleTargets.forEach((element) => {
-      if (element.dataset.scrollRevealState?.startsWith('hidden-')) {
-        element.dataset.scrollRevealState = 'visible';
-      }
-    });
-  });
 }

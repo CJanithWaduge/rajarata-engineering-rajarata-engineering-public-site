@@ -1,5 +1,49 @@
 @import "tailwindcss";
 
+/* -----------------------------------------------------------------------
+   Self-hosted webfonts
+   -----------------------------------------------------------------------
+   Both faces ship from this origin. The prototypes pull them from
+   fonts.googleapis.com, which costs two extra DNS + TLS handshakes before
+   the first paint and put a third party in the critical path.
+
+   The files are the same files Google serves, so the type looks identical:
+
+   - Plus Jakarta Sans is the variable woff2 (wght 200-800), split by
+     unicode-range. The browser only downloads the latin-ext file when a
+     character outside U+0000-00FF actually appears.
+   - Material Symbols is a static instance subset to the 67 symbols this site
+     uses: 8 KB instead of Google's 3.83 MB full variable font. The
+     regeneration recipe is in ARCHITECTURE.md under "Self-hosted webfonts".
+   ----------------------------------------------------------------------- */
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("/fonts/plus-jakarta-sans-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("/fonts/plus-jakarta-sans-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "Material Symbols Outlined";
+  font-style: normal;
+  font-weight: 400;
+  /* `block`, not `swap`: the fallback paints the literal ligature name
+     ("arrow_forward") as words, which is worse than 8 KB arriving late. */
+  font-display: block;
+  src: url("/fonts/material-symbols-outlined.woff2") format("woff2");
+}
+
 @theme {
   /* ---------------------------------------------------------------------
      Fonts
@@ -393,4 +437,31 @@
       --card-tilt-lift: 0px;
     }
   }
+}
+
+/* -----------------------------------------------------------------------
+   Material Symbols
+   -----------------------------------------------------------------------
+   Deliberately unlayered. Google used to ship this rule in its own
+   stylesheet, and unlayered declarations outrank every cascade layer — so
+   these icons render at a fixed 24px today and a `text-lg` / `text-2xl`
+   utility on the span has never changed that. Keeping the rule unlayered
+   reproduces the approved design exactly; moving it into `@layer
+   components` would silently resize every icon on the site.
+   ----------------------------------------------------------------------- */
+.material-symbols-outlined {
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-feature-settings: "liga";
+  -webkit-font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
 }

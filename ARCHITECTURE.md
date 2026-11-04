@@ -131,8 +131,9 @@ dark sections.
 
 | Module | Purpose | Status |
 | --- | --- | --- |
-| `src/lib/scrollReveal.ts` | Viewport reveal, respects `prefers-reduced-motion`, content visible without JS | `implemented` |
+| `src/lib/scrollReveal.ts` | Viewport reveal, respects `prefers-reduced-motion`, content visible without JS, never re-hides the first screen | `implemented` |
 | `src/lib/cardTilt.ts` | Progressive pointer interaction on cards | `implemented` |
+| `src/lib/contentHydration.ts` | Schedules the Firestore feeds after `load` on an idle slot, and only for feeds whose `data-*` hooks exist in the document | `implemented` |
 | `src/lib/publicContact.ts` | Builds the WhatsApp and telephone actions from the two public environment values | `implemented` |
 | `src/lib/whatsapp.ts` | WhatsApp number validation and `wa.me` link building | `implemented` |
 | `src/lib/phone.ts` | International phone number validation and `tel:` link building | `implemented` |
@@ -151,6 +152,53 @@ details, `watchHomeContent` for the Home hero and three featured cards, and
 `watchServicesContent` for Services copy, quick links, metrics, cards, process
 steps, and CTA. A missing or malformed field is skipped, so the build-time
 markup remains. There is no placeholder fallback.
+
+Firestore is **not** on the critical path. `contentHydration.ts` waits for the
+`load` event, takes an idle slot (capped at 2 s), and then dynamically imports
+only the feeds the current document needs. The page is already complete from
+static HTML before any of that happens, so the Firestore SDK (a ~140 KB gzipped
+chunk) never delays the first paint and a feed with no hooks is never fetched.
+
+### 3.6 Self-hosted webfonts
+
+Neither webfont comes from a third party. `src/layouts/Base.astro` preloads the
+two files it needs and `src/styles/global.css` declares the faces:
+
+| File | Size | Notes |
+| --- | --- | --- |
+| `public/fonts/plus-jakarta-sans-latin.woff2` | 27 KB | Variable `wght` 200-800, `unicode-range` limited to latin |
+| `public/fonts/plus-jakarta-sans-latin-ext.woff2` | 21 KB | Only downloaded when a latin-ext character appears |
+| `public/fonts/material-symbols-outlined.woff2` | 8 KB | Static instance, subset to the 67 icons in use |
+
+This replaced two render-blocking `fonts.googleapis.com` stylesheets and
+Google's 3.83 MB full Material Symbols variable font. Both originals are the
+same files Google serves, so the type is unchanged.
+
+`.material-symbols-outlined` lives **outside** every cascade layer on purpose.
+Google's stylesheet was unlayered, and unlayered declarations outrank all
+layers, so the icons have always rendered at a fixed 24 px regardless of any
+`text-*` utility on the span. Moving the rule into `@layer components` would
+silently resize every icon on the site.
+
+**Adding an icon.** The subset font only contains the names listed in the growth
+set. Adding a new `<span class="material-symbols-outlined">name</span>` without
+regenerating the font renders the literal word instead of a glyph. To rebuild:
+
+```bash
+pip install fonttools brotli          # one-off, not a project dependency
+# 1. collect every icon name from src/ + dist/client/ HTML, plus SERVICE_ICONS
+#    in src/lib/servicesContentParser.ts, into icons.txt (one name per line)
+# 2. download the full variable font from fonts.gstatic.com/s/materialsymbolsoutlined/
+# 3. instantiate FILL=0, GRAD=0, wght=400, opsz=24 with
+#    fontTools.varLib.instancer
+# 4. pyftsubset with layout_features=["*"], layout_closure=False and
+#    populate(text="\n".join(icons), glyphs=[resolved ligature targets])
+```
+
+`layout_closure=False` matters: with closure on, the ligature alphabet pulls
+every one of the font's 3,525 glyphs back in and the "subset" stays 250 KB.
+After rebuilding, assert that each name still collapses to a single glyph
+through the `liga` table and that the glyph draws at least one contour.
 
 ---
 
