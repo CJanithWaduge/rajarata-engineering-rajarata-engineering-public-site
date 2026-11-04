@@ -11,6 +11,11 @@
  * filter makes an element a containing block for `position: fixed`
  * descendants — nesting them would anchor the drawer to the header box
  * instead of the viewport. The prototype puts them at body level too.
+ *
+ * Brand. The prototype pairs a logo image with a stacked "Rajarata /
+ * Engineering" wordmark, so the logo here is the emblem only (`markOnly`).
+ * Passing the full lockup would print the company name twice. The drawer
+ * has no text beside its logo, so it keeps the complete lockup.
  */
 import Container from './Container.astro';
 import Logo from './Logo.astro';
@@ -45,9 +50,8 @@ const focusRing =
   class="fixed top-0 left-0 w-full z-50 bg-surface-container-lowest/95 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)] transition-all duration-200"
 >
   <Container class="h-20 flex items-center justify-between">
-    <!-- Brand -->
     <a href="/" class={`flex items-center gap-3 ${focusRing}`}>
-      <Logo class="h-9 lg:h-10 w-auto" />
+      <Logo markOnly class="h-9 lg:h-10 w-auto" />
       <span class="flex flex-col">
         <span class="font-title-lg text-title-lg tracking-tight text-on-surface uppercase"
           >Rajarata</span
