@@ -40,6 +40,17 @@ const HYDRATORS: Hydrator[] = [
     selector: '[data-service-card], [data-services-hero-title]',
     load: () => import('./watchServicesContent').then((module) => module.watchServicesContent()),
   },
+  {
+    // About page only.
+    selector:
+      '[data-about-hero-title], [data-about-hero-image], [data-about-heritage-title], [data-about-card], [data-about-pillar], [data-about-method-step], [data-about-sector], [data-about-cta-title]',
+    load: () => import('./watchAboutContent').then((module) => module.watchAboutContent()),
+  },
+  {
+    // Projects page only.
+    selector: '[data-project-card]',
+    load: () => import('./watchProjectsContent').then((module) => module.watchProjectsContent()),
+  },
 ];
 
 /** Upper bound on how long an idle slot may be postponed by a busy page. */

@@ -9,83 +9,83 @@ import Container from '../Container.astro';
 <section class="w-full py-16 lg:py-24 bg-surface" data-scroll-reveal>
   <Container>
     <div class="text-center max-w-3xl mx-auto mb-16">
-      <span class="font-label-caps text-label-caps tracking-widest text-primary uppercase">Where We Work</span>
-      <h2 class="font-headline-lg text-headline-md lg:text-headline-lg text-on-surface tracking-tight mt-2">
+      <span class="font-label-caps text-label-caps tracking-widest text-primary uppercase" data-about-industries-eyebrow>Where We Work</span>
+      <h2 class="font-headline-lg text-headline-md lg:text-headline-lg text-on-surface tracking-tight mt-2" data-about-industries-title>
         Sectors Our Services Cover
       </h2>
-      <p class="font-body-md text-body-md text-secondary mt-3">
+      <p class="font-body-md text-body-md text-secondary mt-3" data-about-industries-intro>
         Distribution, panels, cable installation, testing, and ELV systems apply across these settings, with each installation sized to the site in front of us.
       </p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       <!-- Sector 1: Factories & Manufacturing -->
-      <div class="card-interactive card-tilt bg-surface-container-lowest rounded-2xl p-6 shadow-sm flex items-start gap-4" data-card-tilt>
+      <div class="card-interactive card-tilt bg-surface-container-lowest rounded-2xl p-6 shadow-sm flex items-start gap-4" data-card-tilt data-about-sector="0">
         <div class="w-12 h-12 rounded-xl bg-surface-container flex-shrink-0 flex items-center justify-center text-primary">
-          <span class="material-symbols-outlined text-[28px]">precision_manufacturing</span>
+          <span class="material-symbols-outlined text-[28px]" data-about-sector-icon>precision_manufacturing</span>
         </div>
         <div>
-          <h3 class="font-title-lg text-title-lg text-on-surface mb-1">Factories &amp; Manufacturing</h3>
-          <p class="font-body-sm text-body-sm text-secondary leading-relaxed">
+          <h3 class="font-title-lg text-title-lg text-on-surface mb-1" data-about-sector-title>Factories &amp; Manufacturing</h3>
+          <p class="font-body-sm text-body-sm text-secondary leading-relaxed" data-about-sector-description>
             MV/LV distribution to plant and machinery, MDB/SMDB panels, cable tray and cable laying, and testing and commissioning for production sites.
           </p>
         </div>
       </div>
       <!-- Sector 2: Commercial & Retail -->
-      <div class="card-interactive card-tilt bg-surface-container-lowest rounded-2xl p-6 shadow-sm flex items-start gap-4" data-card-tilt>
+      <div class="card-interactive card-tilt bg-surface-container-lowest rounded-2xl p-6 shadow-sm flex items-start gap-4" data-card-tilt data-about-sector="1">
         <div class="w-12 h-12 rounded-xl bg-surface-container flex-shrink-0 flex items-center justify-center text-primary">
-          <span class="material-symbols-outlined text-[28px]">storefront</span>
+          <span class="material-symbols-outlined text-[28px]" data-about-sector-icon>storefront</span>
         </div>
         <div>
-          <h3 class="font-title-lg text-title-lg text-on-surface mb-1">Commercial &amp; Retail</h3>
-          <p class="font-body-sm text-body-sm text-secondary leading-relaxed">
+          <h3 class="font-title-lg text-title-lg text-on-surface mb-1" data-about-sector-title>Commercial &amp; Retail</h3>
+          <p class="font-body-sm text-body-sm text-secondary leading-relaxed" data-about-sector-description>
             Commercial wiring, distribution boards, and lighting and power circuits for shops, offices, and showrooms.
           </p>
         </div>
       </div>
       <!-- Sector 3: Residential Developers -->
-      <div class="card-interactive card-tilt bg-surface-container-lowest rounded-2xl p-6 shadow-sm flex items-start gap-4" data-card-tilt>
+      <div class="card-interactive card-tilt bg-surface-container-lowest rounded-2xl p-6 shadow-sm flex items-start gap-4" data-card-tilt data-about-sector="2">
         <div class="w-12 h-12 rounded-xl bg-surface-container flex-shrink-0 flex items-center justify-center text-primary">
-          <span class="material-symbols-outlined text-[28px]">apartment</span>
+          <span class="material-symbols-outlined text-[28px]" data-about-sector-icon>apartment</span>
         </div>
         <div>
-          <h3 class="font-title-lg text-title-lg text-on-surface mb-1">Residential Developers</h3>
-          <p class="font-body-sm text-body-sm text-secondary leading-relaxed">
+          <h3 class="font-title-lg text-title-lg text-on-surface mb-1" data-about-sector-title>Residential Developers</h3>
+          <p class="font-body-sm text-body-sm text-secondary leading-relaxed" data-about-sector-description>
             Residential wiring from board to final circuit, plus cable laying and lightning protection for houses and multi-unit buildings.
           </p>
         </div>
       </div>
       <!-- Sector 4: Hospitality & Hotels -->
-      <div class="card-interactive card-tilt bg-surface-container-lowest rounded-2xl p-6 shadow-sm flex items-start gap-4" data-card-tilt>
+      <div class="card-interactive card-tilt bg-surface-container-lowest rounded-2xl p-6 shadow-sm flex items-start gap-4" data-card-tilt data-about-sector="3">
         <div class="w-12 h-12 rounded-xl bg-surface-container flex-shrink-0 flex items-center justify-center text-primary">
-          <span class="material-symbols-outlined text-[28px]">hotel</span>
+          <span class="material-symbols-outlined text-[28px]" data-about-sector-icon>hotel</span>
         </div>
         <div>
-          <h3 class="font-title-lg text-title-lg text-on-surface mb-1">Hospitality &amp; Hotels</h3>
-          <p class="font-body-sm text-body-sm text-secondary leading-relaxed">
+          <h3 class="font-title-lg text-title-lg text-on-surface mb-1" data-about-sector-title>Hospitality &amp; Hotels</h3>
+          <p class="font-body-sm text-body-sm text-secondary leading-relaxed" data-about-sector-description>
             Power distribution, commercial wiring, and ELV systems for guest rooms, public areas, and back-of-house operations.
           </p>
         </div>
       </div>
       <!-- Sector 5: Warehouses & Logistics -->
-      <div class="card-interactive card-tilt bg-surface-container-lowest rounded-2xl p-6 shadow-sm flex items-start gap-4" data-card-tilt>
+      <div class="card-interactive card-tilt bg-surface-container-lowest rounded-2xl p-6 shadow-sm flex items-start gap-4" data-card-tilt data-about-sector="4">
         <div class="w-12 h-12 rounded-xl bg-surface-container flex-shrink-0 flex items-center justify-center text-primary">
-          <span class="material-symbols-outlined text-[28px]">warehouse</span>
+          <span class="material-symbols-outlined text-[28px]" data-about-sector-icon>warehouse</span>
         </div>
         <div>
-          <h3 class="font-title-lg text-title-lg text-on-surface mb-1">Warehouses &amp; Logistics</h3>
-          <p class="font-body-sm text-body-sm text-secondary leading-relaxed">
+          <h3 class="font-title-lg text-title-lg text-on-surface mb-1" data-about-sector-title>Warehouses &amp; Logistics</h3>
+          <p class="font-body-sm text-body-sm text-secondary leading-relaxed" data-about-sector-description>
             Cable tray and cable laying across large floor areas, distribution panels, lighting circuits, and lightning protection.
           </p>
         </div>
       </div>
       <!-- Sector 6: Educational & Healthcare -->
-      <div class="card-interactive card-tilt bg-surface-container-lowest rounded-2xl p-6 shadow-sm flex items-start gap-4" data-card-tilt>
+      <div class="card-interactive card-tilt bg-surface-container-lowest rounded-2xl p-6 shadow-sm flex items-start gap-4" data-card-tilt data-about-sector="5">
         <div class="w-12 h-12 rounded-xl bg-surface-container flex-shrink-0 flex items-center justify-center text-primary">
-          <span class="material-symbols-outlined text-[28px]">local_hospital</span>
+          <span class="material-symbols-outlined text-[28px]" data-about-sector-icon>local_hospital</span>
         </div>
         <div>
-          <h3 class="font-title-lg text-title-lg text-on-surface mb-1">Educational &amp; Healthcare</h3>
-          <p class="font-body-sm text-body-sm text-secondary leading-relaxed">
+          <h3 class="font-title-lg text-title-lg text-on-surface mb-1" data-about-sector-title>Educational &amp; Healthcare</h3>
+          <p class="font-body-sm text-body-sm text-secondary leading-relaxed" data-about-sector-description>
             Distribution, wiring, and ELV systems for classrooms, wards, and administration areas, tested before handover.
           </p>
         </div>

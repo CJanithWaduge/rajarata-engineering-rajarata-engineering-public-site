@@ -7,6 +7,7 @@
  * an accessible per-card specification disclosure.
  */
 interface Props {
+  index: number;
   category: string;
   categoryLabel: string;
   categoryChip: string;
@@ -28,6 +29,7 @@ interface Props {
 }
 
 const {
+  index,
   category,
   categoryLabel,
   categoryChip,
@@ -54,6 +56,7 @@ const focusRing =
 
 <article
   class="card-interactive card-tilt project-card group flex flex-col bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm"
+  data-project-card={index}
   data-category={category}
   data-card-tilt
 >
@@ -63,24 +66,28 @@ const focusRing =
       src={imgSrc}
       alt={imgAlt}
       loading="lazy"
+      data-project-image
     />
     <div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/80 via-transparent to-transparent"></div>
     <div class="absolute top-4 left-4 flex items-center gap-2">
       <span
         class={`px-2.5 py-1 rounded ${categoryChip} font-label-caps text-label-caps uppercase shadow-sm`}
+        data-project-category
         >{categoryLabel}</span
       >
       <span
         class="px-2 py-0.5 rounded bg-inverse-surface/80 text-on-primary font-label-caps text-label-caps tracking-widest backdrop-blur-sm"
+        data-project-subtag
         >{subTag}</span
       >
     </div>
     <div class="absolute bottom-3 left-4 right-4 flex items-center justify-between text-on-primary text-xs">
-      <span class="flex items-center gap-1 font-label-sm text-label-sm">
+      <span class="flex items-center gap-1 font-label-sm text-label-sm" data-project-location>
         <span class={`material-symbols-outlined text-[16px] ${locationIcon}`}>location_on</span>
         {location}
       </span>
       <span class="font-label-caps text-label-caps bg-inverse-surface/60 px-2 py-0.5 rounded"
+        data-project-year
         >{year}</span
       >
     </div>
@@ -90,14 +97,15 @@ const focusRing =
     <div>
       <div class="flex items-center justify-between gap-2 mb-2">
         <span class="font-label-caps text-label-caps text-secondary uppercase tracking-wider"
+          data-project-type
           >{typePlaceholder}</span
         >
-        <span class={`font-label-sm text-label-sm ${refColor} font-semibold`}>{ref}</span>
+        <span class={`font-label-sm text-label-sm ${refColor} font-semibold`} data-project-ref>{ref}</span>
       </div>
-      <h2 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">
+      <h2 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors" data-project-title>
         {titlePlaceholder}
       </h2>
-      <p class="mt-3 font-body-md text-body-md text-secondary leading-relaxed">
+      <p class="mt-3 font-body-md text-body-md text-secondary leading-relaxed" data-project-summary>
         {summaryPlaceholder}
       </p>
     </div>
@@ -105,8 +113,8 @@ const focusRing =
     <div class="mt-6 pt-4 bg-surface-container-low -mx-6 -mb-6 p-6">
       <div class="flex items-center justify-between">
         <div class="flex flex-col">
-          <span class="font-label-caps text-label-caps text-secondary uppercase">{specLabel}</span>
-          <span class="font-title-md text-title-md text-on-surface">{specValue}</span>
+          <span class="font-label-caps text-label-caps text-secondary uppercase" data-project-spec-label>{specLabel}</span>
+          <span class="font-title-md text-title-md text-on-surface" data-project-spec-value>{specValue}</span>
         </div>
         <button
           type="button"
@@ -121,7 +129,7 @@ const focusRing =
           >
         </button>
       </div>
-      <div id={specId} class="spec-panel font-body-sm text-body-sm text-secondary leading-relaxed mt-4 hidden">
+      <div id={specId} class="spec-panel font-body-sm text-body-sm text-secondary leading-relaxed mt-4 hidden" data-project-spec-detail>
         {specDetail}
       </div>
     </div>

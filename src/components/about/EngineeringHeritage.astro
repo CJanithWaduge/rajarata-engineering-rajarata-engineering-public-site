@@ -9,8 +9,8 @@ import Container from '../Container.astro';
 <section id="story" class="w-full py-16 lg:py-24 bg-surface" data-scroll-reveal>
   <Container>
     <div class="flex flex-col mb-12">
-      <span class="font-label-caps text-label-caps tracking-widest text-primary uppercase">Inside the Practice</span>
-      <h2 class="font-headline-lg text-headline-md lg:text-headline-lg text-on-surface tracking-tight mt-2">
+      <span class="font-label-caps text-label-caps tracking-widest text-primary uppercase" data-about-heritage-eyebrow>Inside the Practice</span>
+      <h2 class="font-headline-lg text-headline-md lg:text-headline-lg text-on-surface tracking-tight mt-2" data-about-heritage-title>
         How We Work &amp; What We Do
       </h2>
     </div>
@@ -28,7 +28,7 @@ import Container from '../Container.astro';
             </div>
           </div>
         </div>
-        <div class="font-body-lg text-body-lg text-secondary leading-relaxed">
+        <div class="font-body-lg text-body-lg text-secondary leading-relaxed" data-about-heritage-narrative>
           Rajarata Engineering is an electrical engineering and contracting company based in Anuradhapura. Each job follows the same route: review the site and its load requirements, design the distribution and protection scheme, install panels, cable tray and cabling, then test and commission before handover. MV/LV distribution, industrial installations, MDB/SMDB panel work, lightning protection systems, ELV and automation, and residential and commercial wiring make up the day-to-day scope of the practice.
         </div>
         <div class="p-5 rounded-xl bg-surface-container-low flex flex-col space-y-2">
@@ -36,7 +36,7 @@ import Container from '../Container.astro';
             <span class="material-symbols-outlined text-primary text-[20px]">military_tech</span>
             <span class="font-label-caps text-label-caps uppercase text-on-surface">Our Approach</span>
           </div>
-          <p class="font-body-md text-body-md text-on-surface font-medium">
+          <p class="font-body-md text-body-md text-on-surface font-medium" data-about-heritage-approach>
             Design, installation, and testing are treated as one continuous job, so responsibility stays clear from the first drawing to the final handover.
           </p>
         </div>
@@ -49,13 +49,13 @@ import Container from '../Container.astro';
             <div class="absolute -left-8 sm:-left-10 top-1.5 w-7 h-7 rounded-full bg-surface-container-lowest flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
               <div class="w-3.5 h-3.5 rounded-full bg-primary"></div>
             </div>
-            <div class="card-interactive card-tilt p-6 rounded-2xl bg-surface-container-lowest shadow-sm" data-card-tilt>
+            <div class="card-interactive card-tilt p-6 rounded-2xl bg-surface-container-lowest shadow-sm" data-card-tilt data-about-milestone="0">
               <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-                <span class="font-label-caps text-label-caps uppercase text-primary tracking-wider">Distribution Networks</span>
-                <span class="px-2.5 py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-secondary">MV / LV</span>
+                <span class="font-label-caps text-label-caps uppercase text-primary tracking-wider" data-about-milestone-kicker>Distribution Networks</span>
+                <span class="px-2.5 py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-secondary" data-about-milestone-badge>MV / LV</span>
               </div>
-              <h3 class="font-title-lg text-title-lg text-on-surface mb-2">Medium- and low-voltage distribution</h3>
-              <p class="font-body-md text-body-md text-secondary">
+              <h3 class="font-title-lg text-title-lg text-on-surface mb-2" data-about-milestone-title>Medium- and low-voltage distribution</h3>
+              <p class="font-body-md text-body-md text-secondary" data-about-milestone-description>
                 Design and installation of MV/LV distribution, from the incoming supply through MDB and SMDB panels to the final circuits.
               </p>
             </div>
@@ -65,13 +65,13 @@ import Container from '../Container.astro';
             <div class="absolute -left-8 sm:-left-10 top-1.5 w-7 h-7 rounded-full bg-surface-container-lowest flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
               <div class="w-3.5 h-3.5 rounded-full bg-primary-container"></div>
             </div>
-            <div class="card-interactive card-tilt p-6 rounded-2xl bg-surface-container-lowest shadow-sm" data-card-tilt>
+            <div class="card-interactive card-tilt p-6 rounded-2xl bg-surface-container-lowest shadow-sm" data-card-tilt data-about-milestone="1">
               <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-                <span class="font-label-caps text-label-caps uppercase text-primary tracking-wider">Industrial Installations</span>
-                <span class="px-2.5 py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-secondary">Panels &amp; Cable</span>
+                <span class="font-label-caps text-label-caps uppercase text-primary tracking-wider" data-about-milestone-kicker>Industrial Installations</span>
+                <span class="px-2.5 py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-secondary" data-about-milestone-badge>Panels &amp; Cable</span>
               </div>
-              <h3 class="font-title-lg text-title-lg text-on-surface mb-2">Panels, cable tray, and cable laying</h3>
-              <p class="font-body-md text-body-md text-secondary">
+              <h3 class="font-title-lg text-title-lg text-on-surface mb-2" data-about-milestone-title>Panels, cable tray, and cable laying</h3>
+              <p class="font-body-md text-body-md text-secondary" data-about-milestone-description>
                 MDB/SMDB panel installation, cable tray routing, and cable laying and termination across industrial and commercial sites.
               </p>
             </div>
@@ -81,13 +81,13 @@ import Container from '../Container.astro';
             <div class="absolute -left-8 sm:-left-10 top-1.5 w-7 h-7 rounded-full bg-surface-container-lowest flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
               <div class="w-3.5 h-3.5 rounded-full bg-tertiary"></div>
             </div>
-            <div class="card-interactive card-tilt p-6 rounded-2xl bg-surface-container-lowest shadow-sm" data-card-tilt>
+            <div class="card-interactive card-tilt p-6 rounded-2xl bg-surface-container-lowest shadow-sm" data-card-tilt data-about-milestone="2">
               <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-                <span class="font-label-caps text-label-caps uppercase text-tertiary tracking-wider">Protection &amp; ELV</span>
-                <span class="px-2.5 py-0.5 rounded bg-secondary-container font-label-sm text-label-sm text-on-secondary-fixed">ELV &amp; Automation</span>
+                <span class="font-label-caps text-label-caps uppercase text-tertiary tracking-wider" data-about-milestone-kicker>Protection &amp; ELV</span>
+                <span class="px-2.5 py-0.5 rounded bg-secondary-container font-label-sm text-label-sm text-on-secondary-fixed" data-about-milestone-badge>ELV &amp; Automation</span>
               </div>
-              <h3 class="font-title-lg text-title-lg text-on-surface mb-2">Lightning protection, ELV, and automation</h3>
-              <p class="font-body-md text-body-md text-secondary">
+              <h3 class="font-title-lg text-title-lg text-on-surface mb-2" data-about-milestone-title>Lightning protection, ELV, and automation</h3>
+              <p class="font-body-md text-body-md text-secondary" data-about-milestone-description>
                 Lightning protection systems, ELV networks, and automation controls are installed alongside the power distribution work.
               </p>
             </div>
@@ -97,13 +97,13 @@ import Container from '../Container.astro';
             <div class="absolute -left-8 sm:-left-10 top-1.5 w-7 h-7 rounded-full bg-surface-container-lowest flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
               <div class="w-3.5 h-3.5 rounded-full bg-on-surface"></div>
             </div>
-            <div class="card-interactive card-tilt p-6 rounded-2xl bg-inverse-surface text-on-primary shadow-md" data-card-tilt>
+            <div class="card-interactive card-tilt p-6 rounded-2xl bg-inverse-surface text-on-primary shadow-md" data-card-tilt data-about-milestone="3">
               <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-                <span class="font-label-caps text-label-caps uppercase text-error-container tracking-wider">Wiring &amp; Commissioning</span>
-                <span class="px-2.5 py-0.5 rounded bg-on-secondary-fixed-variant/40 font-label-sm text-label-sm text-white">Handover</span>
+                <span class="font-label-caps text-label-caps uppercase text-error-container tracking-wider" data-about-milestone-kicker>Wiring &amp; Commissioning</span>
+                <span class="px-2.5 py-0.5 rounded bg-on-secondary-fixed-variant/40 font-label-sm text-label-sm text-white" data-about-milestone-badge>Handover</span>
               </div>
-              <h3 class="font-title-lg text-title-lg text-white mb-2">Wiring, testing, and commissioning</h3>
-              <p class="font-body-md text-body-md text-gray-300">
+              <h3 class="font-title-lg text-title-lg text-white mb-2" data-about-milestone-title>Wiring, testing, and commissioning</h3>
+              <p class="font-body-md text-body-md text-gray-300" data-about-milestone-description>
                 Residential and commercial wiring is completed, then the installation is tested and commissioned before it is handed over.
               </p>
             </div>

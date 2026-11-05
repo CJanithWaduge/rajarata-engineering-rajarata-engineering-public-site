@@ -10,11 +10,11 @@ import Container from '../Container.astro';
   <Container>
     <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-6">
       <div>
-        <span class="font-label-caps text-label-caps tracking-widest text-primary uppercase">Execution Architecture</span>
-        <h2 class="font-headline-lg text-headline-md lg:text-headline-lg text-on-surface tracking-tight mt-2">
+        <span class="font-label-caps text-label-caps tracking-widest text-primary uppercase" data-about-methodology-eyebrow>Execution Architecture</span>
+        <h2 class="font-headline-lg text-headline-md lg:text-headline-lg text-on-surface tracking-tight mt-2" data-about-methodology-title>
           Our 5-Stage Project Methodology
         </h2>
-        <p class="font-body-md text-body-md text-secondary mt-2 max-w-[42rem]">
+        <p class="font-body-md text-body-md text-secondary mt-2 max-w-[42rem]" data-about-methodology-intro>
           Every project moves through the same five stages, from the first site survey to support after handover, so the client always knows what happens next.
         </p>
       </div>
@@ -25,93 +25,93 @@ import Container from '../Container.astro';
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 relative">
       <!-- Step 1: Understand -->
-      <div class="card-interactive card-tilt p-6 rounded-2xl bg-surface-container-low flex flex-col justify-between hover:bg-surface-container relative" data-card-tilt>
+      <div class="card-interactive card-tilt p-6 rounded-2xl bg-surface-container-low flex flex-col justify-between hover:bg-surface-container relative" data-card-tilt data-about-method-step="0">
         <div>
           <div class="flex items-center justify-between mb-4">
             <span class="font-headline-md text-headline-md text-outline font-extrabold opacity-40">01</span>
             <div class="w-10 h-10 rounded-lg bg-surface-container-lowest flex items-center justify-center text-primary shadow-sm">
-              <span class="material-symbols-outlined text-[22px]">manage_search</span>
+              <span class="material-symbols-outlined text-[22px]" data-about-method-step-icon>manage_search</span>
             </div>
           </div>
-          <h3 class="font-title-lg text-title-lg text-on-surface mb-2">Understand</h3>
-          <p class="font-body-sm text-body-sm text-secondary leading-relaxed">
+          <h3 class="font-title-lg text-title-lg text-on-surface mb-2" data-about-method-step-title>Understand</h3>
+          <p class="font-body-sm text-body-sm text-secondary leading-relaxed" data-about-method-step-description>
             In-depth requirement analysis, site constraints, load surveys, and environmental hazard evaluations.
           </p>
         </div>
         <div class="mt-6 pt-4 flex items-center gap-1 font-label-caps text-label-caps text-secondary uppercase">
-          <span>Audit &amp; Assessment</span>
+          <span data-about-method-step-footer>Audit &amp; Assessment</span>
         </div>
       </div>
       <!-- Step 2: Plan -->
-      <div class="card-interactive card-tilt p-6 rounded-2xl bg-surface-container-low flex flex-col justify-between hover:bg-surface-container relative" data-card-tilt>
+      <div class="card-interactive card-tilt p-6 rounded-2xl bg-surface-container-low flex flex-col justify-between hover:bg-surface-container relative" data-card-tilt data-about-method-step="1">
         <div>
           <div class="flex items-center justify-between mb-4">
             <span class="font-headline-md text-headline-md text-outline font-extrabold opacity-40">02</span>
             <div class="w-10 h-10 rounded-lg bg-surface-container-lowest flex items-center justify-center text-primary shadow-sm">
-              <span class="material-symbols-outlined text-[22px]">architecture</span>
+              <span class="material-symbols-outlined text-[22px]" data-about-method-step-icon>architecture</span>
             </div>
           </div>
-          <h3 class="font-title-lg text-title-lg text-on-surface mb-2">Plan</h3>
-          <p class="font-body-sm text-body-sm text-secondary leading-relaxed">
+          <h3 class="font-title-lg text-title-lg text-on-surface mb-2" data-about-method-step-title>Plan</h3>
+          <p class="font-body-sm text-body-sm text-secondary leading-relaxed" data-about-method-step-description>
             Detailed schematics, CAD layouts, load calculations, cable sizing, bill of quantities, and safety protocols.
           </p>
         </div>
         <div class="mt-6 pt-4 flex items-center gap-1 font-label-caps text-label-caps text-secondary uppercase">
-          <span>Engineering Design</span>
+          <span data-about-method-step-footer>Engineering Design</span>
         </div>
       </div>
       <!-- Step 3: Execute -->
-      <div class="card-interactive card-tilt p-6 rounded-2xl bg-surface-container-low flex flex-col justify-between hover:bg-surface-container relative" data-card-tilt>
+      <div class="card-interactive card-tilt p-6 rounded-2xl bg-surface-container-low flex flex-col justify-between hover:bg-surface-container relative" data-card-tilt data-about-method-step="2">
         <div>
           <div class="flex items-center justify-between mb-4">
             <span class="font-headline-md text-headline-md text-outline font-extrabold opacity-40">03</span>
             <div class="w-10 h-10 rounded-lg bg-surface-container-lowest flex items-center justify-center text-primary shadow-sm">
-              <span class="material-symbols-outlined text-[22px]">handyman</span>
+              <span class="material-symbols-outlined text-[22px]" data-about-method-step-icon>handyman</span>
             </div>
           </div>
-          <h3 class="font-title-lg text-title-lg text-on-surface mb-2">Execute</h3>
-          <p class="font-body-sm text-body-sm text-secondary leading-relaxed">
+          <h3 class="font-title-lg text-title-lg text-on-surface mb-2" data-about-method-step-title>Execute</h3>
+          <p class="font-body-sm text-body-sm text-secondary leading-relaxed" data-about-method-step-description>
             MDB/SMDB panels are installed, cable tray is routed, and cables are laid and terminated, with the work checked against the approved design as it progresses.
           </p>
         </div>
         <div class="mt-6 pt-4 flex items-center gap-1 font-label-caps text-label-caps text-secondary uppercase">
-          <span>Rigorous Deployment</span>
+          <span data-about-method-step-footer>Rigorous Deployment</span>
         </div>
       </div>
       <!-- Step 4: Test -->
-      <div class="card-interactive card-tilt p-6 rounded-2xl bg-surface-container-low flex flex-col justify-between hover:bg-surface-container relative" data-card-tilt>
+      <div class="card-interactive card-tilt p-6 rounded-2xl bg-surface-container-low flex flex-col justify-between hover:bg-surface-container relative" data-card-tilt data-about-method-step="3">
         <div>
           <div class="flex items-center justify-between mb-4">
             <span class="font-headline-md text-headline-md text-outline font-extrabold opacity-40">04</span>
             <div class="w-10 h-10 rounded-lg bg-surface-container-lowest flex items-center justify-center text-primary shadow-sm">
-              <span class="material-symbols-outlined text-[22px]">fact_check</span>
+              <span class="material-symbols-outlined text-[22px]" data-about-method-step-icon>fact_check</span>
             </div>
           </div>
-          <h3 class="font-title-lg text-title-lg text-on-surface mb-2">Test</h3>
-          <p class="font-body-sm text-body-sm text-secondary leading-relaxed">
+          <h3 class="font-title-lg text-title-lg text-on-surface mb-2" data-about-method-step-title>Test</h3>
+          <p class="font-body-sm text-body-sm text-secondary leading-relaxed" data-about-method-step-description>
             Rigorous electrical diagnostic testing, insulation resistance, earth fault loop impedance, and live calibration.
           </p>
         </div>
         <div class="mt-6 pt-4 flex items-center gap-1 font-label-caps text-label-caps text-secondary uppercase">
-          <span>Verification &amp; Sign-off</span>
+          <span data-about-method-step-footer>Verification &amp; Sign-off</span>
         </div>
       </div>
       <!-- Step 5: Support -->
-      <div class="card-interactive card-tilt p-6 rounded-2xl bg-surface-container-low flex flex-col justify-between hover:bg-surface-container relative" data-card-tilt>
+      <div class="card-interactive card-tilt p-6 rounded-2xl bg-surface-container-low flex flex-col justify-between hover:bg-surface-container relative" data-card-tilt data-about-method-step="4">
         <div>
           <div class="flex items-center justify-between mb-4">
             <span class="font-headline-md text-headline-md text-outline font-extrabold opacity-40">05</span>
             <div class="w-10 h-10 rounded-lg bg-surface-container-lowest flex items-center justify-center text-primary shadow-sm">
-              <span class="material-symbols-outlined text-[22px]">contact_support</span>
+              <span class="material-symbols-outlined text-[22px]" data-about-method-step-icon>contact_support</span>
             </div>
           </div>
-          <h3 class="font-title-lg text-title-lg text-on-surface mb-2">Support</h3>
-          <p class="font-body-sm text-body-sm text-secondary leading-relaxed">
+          <h3 class="font-title-lg text-title-lg text-on-surface mb-2" data-about-method-step-title>Support</h3>
+          <p class="font-body-sm text-body-sm text-secondary leading-relaxed" data-about-method-step-description>
             Once the system is in service, the client has a single point of contact for questions about the installed work and for any follow-on requirements.
           </p>
         </div>
         <div class="mt-6 pt-4 flex items-center gap-1 font-label-caps text-label-caps text-secondary uppercase">
-          <span>Continuous Lifecycle</span>
+          <span data-about-method-step-footer>Continuous Lifecycle</span>
         </div>
       </div>
     </div>

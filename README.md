@@ -6,16 +6,18 @@ installations, testing and commissioning, and ELV/automation.
 
 Astro pre-renders five public pages to plain HTML, CSS and JavaScript. Firebase
 Hosting serves that output from `dist/client/`. There is no server runtime. The
-browser reads three public-read Firestore documents (`site/settings`,
-`site/home`, and `site/services`) and their public image sources (Firebase
-Storage when available, or inline raster data URLs); writes are admin-only.
+browser reads five public-read Firestore documents (`site/settings`,
+`site/home`, `site/services`, `site/about`, and `site/projects`) and their
+public image sources
+(Firebase Storage when available, or inline raster data URLs); writes are
+admin-only.
 
 ## Stack
 
 - [Astro](https://astro.build/) 7 with `output: 'static'`
 - [Tailwind CSS 4](https://tailwindcss.com/) through `@tailwindcss/vite` —
   CSS-first `@theme`, so there is no `tailwind.config.js`
-- TypeScript for the shared browser behaviours (contact, Home content, and Services content hydration)
+- TypeScript for the shared browser behaviours (contact, Home, Services, About, and Projects content hydration)
 - Firebase Hosting (Spark plan) serving `dist/client/`
 
 No client-side UI framework is used.
@@ -47,9 +49,11 @@ never commit it.
 | `npm run check` | Run Astro and TypeScript diagnostics |
 | `npm run test:spark` | Verify the Hosting config, direct-contact links, and absence of form markup |
 | `npm run test:services` | Validate the Services parser, fallbacks, and built-page hydration hooks |
+| `npm run test:about` | Validate the About parser, fallbacks, and built-page hydration hooks |
+| `npm run test:projects` | Validate the Projects parser, fallbacks, and built-page hydration hooks |
 | `npm run test:whatsapp` | Validate WhatsApp number handling and `wa.me` link generation |
 | `npm run test:phone` | Validate international phone number handling and `tel:` link generation |
-| `npm run test:site` | `check` + `build` + `test:spark` + `test:services` + `test:whatsapp` + `test:phone` |
+| `npm run test:site` | `check` + `build` + `test:spark` + `test:services` + `test:about` + `test:projects` + `test:whatsapp` + `test:phone` |
 | `npm run build:spark` | Check, build, and audit the static artifact for Firebase Hosting |
 | `npm run deploy:spark -- --project <id> --confirm-static-hosting-deploy` | Deploy Hosting only, after the audit passes |
 
@@ -83,6 +87,8 @@ src/
     siteSettings.ts watchSiteSettings.ts
     homeContent.ts watchHomeContent.ts
     servicesContentParser.ts servicesContent.ts watchServicesContent.ts
+    aboutContentParser.ts aboutContent.ts watchAboutContent.ts
+    projectsContentParser.ts projectsContent.ts watchProjectsContent.ts
   styles/global.css      # Tailwind import, design tokens, shared styles
 public/                  # static assets served from the site root
 scripts/
@@ -91,6 +97,8 @@ scripts/
 tests/
   spark-hosting.test.mjs
   services-content.test.mjs
+  about-content.test.mjs
+  projects-content.test.mjs
   whatsapp.test.mjs
   phone.test.mjs
 firebase.json            # plain static Hosting configuration
@@ -129,8 +137,10 @@ be confirmed and does not link to a map.
 
 The component markup owns the build-time fallback for every string on the site.
 The admin panel can override contact details (`site/settings`), Home hero/cards
-(`site/home`), and Services copy/icons (`site/services`) at runtime. Before a
-real launch, the owner must confirm or replace:
+(`site/home`), Services copy/icons (`site/services`), About copy, icons, and
+the hero image (`site/about`), and Projects copy and fixed project cards
+(`site/projects`) at runtime. Before a real launch, the owner must
+confirm or replace:
 
 - the WhatsApp number and phone number in the build environment, which are
   currently placeholders;

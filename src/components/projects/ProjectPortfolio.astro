@@ -191,8 +191,9 @@ const demoProjects = [
 <section class="w-full bg-surface py-12 lg:py-16" data-scroll-reveal>
   <Container>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {demoProjects.map((p) => (
+      {demoProjects.map((p, index) => (
           <ProjectCard
+            index={index}
             category={p.category}
             categoryLabel={p.categoryLabel}
             categoryChip={p.categoryChip}

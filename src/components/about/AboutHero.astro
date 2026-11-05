@@ -29,12 +29,12 @@ const { primary: primaryContactAction } = getPublicContactActions();
       <div class="lg:col-span-6 flex flex-col space-y-6">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-secondary-container text-on-secondary-fixed font-label-caps text-label-caps tracking-widest uppercase self-start">
           <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-          Electrical Engineering &amp; Contracting
+          <span data-about-hero-eyebrow>Electrical Engineering &amp; Contracting</span>
         </div>
-        <h1 class="font-display-hero text-headline-lg lg:text-display-hero text-on-surface tracking-tight leading-none text-balance">
+        <h1 class="font-display-hero text-headline-lg lg:text-display-hero text-on-surface tracking-tight leading-none text-balance" data-about-hero-title>
           About Rajarata Engineering
         </h1>
-        <p class="font-body-lg text-body-lg text-secondary leading-relaxed">
+        <p class="font-body-lg text-body-lg text-secondary leading-relaxed" data-about-hero-intro>
           Rajarata Engineering is an electrical engineering and contracting company based in Anuradhapura. The practice plans, installs, tests, and commissions MV/LV distribution, industrial installations, MDB/SMDB panels, cable tray and cable laying, lightning protection systems, ELV and automation, and residential and commercial wiring.
         </p>
         <div class="flex flex-wrap items-center gap-4 pt-2">
@@ -56,20 +56,20 @@ const { primary: primaryContactAction } = getPublicContactActions();
         </div>
         <!-- Company snapshot / telemetry badges -->
         <div class="grid grid-cols-3 gap-4 pt-6">
-          <div class="card-interactive card-tilt p-4 rounded-xl bg-surface-container-low flex flex-col" data-card-tilt>
+          <div class="card-interactive card-tilt p-4 rounded-xl bg-surface-container-low flex flex-col" data-card-tilt data-about-snapshot="0">
             <span class="font-label-caps text-label-caps text-secondary uppercase">Scope</span>
-            <span class="font-title-lg text-title-lg text-on-surface mt-1">MV/LV Distribution</span>
-            <span class="font-body-sm text-body-sm text-secondary mt-0.5">Panels, cable tray and laying</span>
+            <span class="font-title-lg text-title-lg text-on-surface mt-1" data-about-snapshot-title>MV/LV Distribution</span>
+            <span class="font-body-sm text-body-sm text-secondary mt-0.5" data-about-snapshot-description>Panels, cable tray and laying</span>
           </div>
-          <div class="card-interactive card-tilt p-4 rounded-xl bg-surface-container-low flex flex-col" data-card-tilt>
+          <div class="card-interactive card-tilt p-4 rounded-xl bg-surface-container-low flex flex-col" data-card-tilt data-about-snapshot="1">
             <span class="font-label-caps text-label-caps text-secondary uppercase">Scope</span>
-            <span class="font-title-lg text-title-lg text-primary mt-1">Testing &amp; Commissioning</span>
-            <span class="font-body-sm text-body-sm text-secondary mt-0.5">Checks before handover</span>
+            <span class="font-title-lg text-title-lg text-primary mt-1" data-about-snapshot-title>Testing &amp; Commissioning</span>
+            <span class="font-body-sm text-body-sm text-secondary mt-0.5" data-about-snapshot-description>Checks before handover</span>
           </div>
-          <div class="card-interactive card-tilt p-4 rounded-xl bg-surface-container-low flex flex-col" data-card-tilt>
+          <div class="card-interactive card-tilt p-4 rounded-xl bg-surface-container-low flex flex-col" data-card-tilt data-about-snapshot="2">
             <span class="font-label-caps text-label-caps text-secondary uppercase">Scope</span>
-            <span class="font-title-lg text-title-lg text-on-surface mt-1">ELV &amp; Automation</span>
-            <span class="font-body-sm text-body-sm text-secondary mt-0.5">Structured cabling and controls</span>
+            <span class="font-title-lg text-title-lg text-on-surface mt-1" data-about-snapshot-title>ELV &amp; Automation</span>
+            <span class="font-body-sm text-body-sm text-secondary mt-0.5" data-about-snapshot-description>Structured cabling and controls</span>
           </div>
         </div>
       </div>
@@ -79,6 +79,7 @@ const { primary: primaryContactAction } = getPublicContactActions();
           <img
             alt="Electrical engineer inspecting a control panel in an industrial facility"
             class="w-full h-[460px] object-cover object-center"
+            data-about-hero-image
             height="1100"
             src="/images/about.png"
             width="1429"
@@ -91,13 +92,13 @@ const { primary: primaryContactAction } = getPublicContactActions();
                 <span class="material-symbols-outlined text-[24px]">verified</span>
               </div>
               <div>
-                <div class="font-title-md text-title-md text-on-surface">Commissioning Panel Checks</div>
-                <div class="font-body-sm text-body-sm text-secondary">Insulation, earthing, and functional testing before handover</div>
+                <div class="font-title-md text-title-md text-on-surface" data-about-overlay-title>Commissioning Panel Checks</div>
+                <div class="font-body-sm text-body-sm text-secondary" data-about-overlay-description>Insulation, earthing, and functional testing before handover</div>
               </div>
             </div>
             <div class="hidden sm:flex flex-col items-end">
               <span class="font-label-caps text-label-caps text-primary uppercase">Work Stage</span>
-              <span class="font-title-md text-title-md text-on-surface">Test &amp; Handover</span>
+              <span class="font-title-md text-title-md text-on-surface" data-about-overlay-stage>Test &amp; Handover</span>
             </div>
           </div>
         </div>

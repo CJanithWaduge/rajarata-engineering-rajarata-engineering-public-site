@@ -22,7 +22,7 @@ flowchart LR
   V[Anonymous visitor] --> H[Firebase Hosting CDN]
   H -- "/ , /services , /about-us , /projects , /contact" --> D["dist/client/<br/>static HTML + CSS + JS"]
   D --> B[Browser runtime]
-  B -- "public reads: site/settings, site/home, site/services" --> F[(Firestore)]
+  B -- "public reads: site/settings, site/home, site/services, site/about, site/projects" --> F[(Firestore)]
   B -. "optional public image reads" .-> S[(Firebase Storage)]
 ```
 
@@ -31,13 +31,13 @@ One delivery path, one codebase.
 | Path | Content | Delivery |
 | --- | --- | --- |
 | Public site | Marketing pages, design tokens, fallback images | Fully static `dist/client/` on Firebase Hosting's CDN |
-| Runtime content | Contact details, Home hero image and cards, Services copy and icons | Public-read Firestore documents hydrated in the browser |
+| Runtime content | Contact details, Home hero image and cards, Services copy and icons, About copy/icons/hero, Projects copy and fixed project cards | Public-read Firestore documents hydrated in the browser |
 | Media | Admin-uploaded Home images | Firebase Storage objects when available; otherwise compressed raster data URLs inside `site/home` |
 
 The public site is deliberately static. Astro pre-renders every route at build
 time, so there is no server runtime and no request-time rendering. The browser
-reads three public Firestore documents (`site/settings`, `site/home`, and
-`site/services`) and loads either public Firebase Storage images or inline
+reads five public Firestore documents (`site/settings`, `site/home`, `site/services`,
+`site/about`, and `site/projects`) and loads either public Firebase Storage images or inline
 raster data URLs; writes are admin-only and enforced by rules. If a read fails
 or a field is missing, the build-time markup stays in place — there is no
 placeholder fallback. Dynamic behaviour also includes progressive enhancement:
@@ -55,7 +55,7 @@ Fixed. Do not substitute a layer without asking first.
 | Front-end | Astro 7 + Tailwind CSS 4 (CSS-first `@theme`, no `tailwind.config.js`) | `implemented` |
 | Output | `output: 'static'`, written to `dist/client/` | `implemented` |
 | Hosting | Firebase Hosting serving `dist/client/`, no rewrites | `implemented`; not deployed |
-| Content | Public-read Firestore `site/settings`, `site/home`, and `site/services`; optional public Storage images | `implemented` (written by the admin panel) |
+| Content | Public-read Firestore `site/settings`, `site/home`, `site/services`, `site/about`, and `site/projects`; optional public Storage images | `implemented` (written by the admin panel) |
 | Contact | Direct WhatsApp and telephone links; no form, no backend | `implemented` |
 
 No client-side UI framework. Interactivity is progressive enhancement in small
@@ -145,13 +145,22 @@ dark sections.
 | `src/lib/servicesContentParser.ts` | Firebase-free types and strict/partial parsers for `site/services` | `implemented` |
 | `src/lib/servicesContent.ts` | Static-Firebase wrapper; re-exports the parser and exposes `fetchServicesContent()` | `implemented` |
 | `src/lib/watchServicesContent.ts` | Subscribes to `site/services` and patches `data-services-*` / `data-service-*` elements | `implemented` |
+| `src/lib/aboutContentParser.ts` | Firebase-free types and strict/partial parsers for `site/about` | `implemented` |
+| `src/lib/aboutContent.ts` | Static-Firebase wrapper; re-exports the parser and exposes `fetchAboutContent()` | `implemented` |
+| `src/lib/watchAboutContent.ts` | Subscribes to `site/about` and patches `data-about-*` elements | `implemented` |
+| `src/lib/projectsContentParser.ts` | Firebase-free types and strict/partial parsers for `site/projects` | `implemented` |
+| `src/lib/projectsContent.ts` | Static-Firebase wrapper; re-exports the parser and exposes `fetchProjectsContent()` | `implemented` |
+| `src/lib/watchProjectsContent.ts` | Subscribes to `site/projects` and patches `data-project-*` / `data-projects-*` elements | `implemented` |
 
-Every component still ships build-time copy and fallback artwork. Three client
+Every component still ships build-time copy and fallback artwork. Five client
 modules hydrate opted-in fields from Firestore: `watchSiteSettings` for contact
-details, `watchHomeContent` for the Home hero and three featured cards, and
-`watchServicesContent` for Services copy, quick links, metrics, cards, process
-steps, and CTA. A missing or malformed field is skipped, so the build-time
-markup remains. There is no placeholder fallback.
+details, `watchHomeContent` for the Home hero and three featured cards, `watchServicesContent`
+for Services copy, quick links, metrics, cards, process steps, and CTA,
+`watchAboutContent` for the About hero, snapshots, overlay, story, vision/mission,
+pillars, methodology, industries, and CTA, and `watchProjectsContent` for the
+Projects hero, the six fixed project cards, the track-record columns, and CTA.
+A missing or malformed field is
+skipped, so the build-time markup remains. There is no placeholder fallback.
 
 Firestore is **not** on the critical path. `contentHydration.ts` waits for the
 `load` event, takes an idle slot (capped at 2 s), and then dynamically imports
@@ -259,7 +268,7 @@ cloud access who deploy explicitly).
 
 The attack surface is small by construction: static files, no server, no
 sessions, no sensitive secrets, and no write path reachable from the browser.
-The browser has read-only access to three public Firestore documents and their
+The browser has read-only access to five public Firestore documents and their
 public image sources (Storage or inline raster data URLs); writes are denied by
 rules. The remaining risks are inaccurate content and an unauthorized deploy,
 and both are addressed procedurally rather than technically.
@@ -272,7 +281,9 @@ Per change:
 
 1. `npm run check` — 0 errors, 0 warnings, 0 hints.
 2. `npm run build` and then `npm run test:spark`, `npm run test:services`,
-   `npm run test:whatsapp`, `npm run test:phone` — or `npm run test:site` for all of them.
+   `npm run test:about`, `npm run test:projects`, `npm run test:whatsapp`,
+   `npm run test:phone` — or
+   `npm run test:site` for all of them.
 3. `npm run build:spark` — build plus artifact audit.
 
 Release approval:
@@ -290,7 +301,7 @@ Release approval:
 npm ci
 npm run check         # astro check — must report 0 errors, 0 warnings, 0 hints
 npm run build         # five static routes into dist/client/
-npm run test:site     # check + build + spark/services/whatsapp/phone tests
+npm run test:site     # check + build + spark/services/about/projects/whatsapp/phone tests
 npm run build:spark   # check + build + audit the deployable artifact
 ```
 
