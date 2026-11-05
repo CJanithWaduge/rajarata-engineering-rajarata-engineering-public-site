@@ -1,8 +1,9 @@
 ---
 /**
- * Contact hero (Steps C6.2–C6.7)
- * Section shell, background treatment, breadcrumb, eyebrow, heading,
- * introduction, and standards indicator.
+ * Contact hero.
+ *
+ * Breadcrumb, main heading, and the engineering-consultation value
+ * proposition. No eyebrow pill — the design spec leads with the heading.
  */
 import Container from '../Container.astro';
 ---
@@ -34,22 +35,17 @@ import Container from '../Container.astro';
       <span class="text-on-surface font-title-md">Contact</span>
     </nav>
     <div class="flex flex-col space-y-4">
-      <div
-        class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-surface-container text-on-surface w-fit"
-      >
-        <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-        <span class="font-label-caps text-label-caps uppercase tracking-wider text-secondary">
-          Direct Contact
-        </span>
-      </div>
       <h1
         class="font-headline-lg text-headline-lg lg:text-[48px] lg:leading-[56px] text-on-surface tracking-tight font-extrabold"
       >
-        Let's Talk About Your
-        <span class="text-primary underline decoration-primary/20 underline-offset-8"> Project</span>
+        Let's Talk About Your{' '}
+        <span class="text-primary underline decoration-primary/20 underline-offset-8">
+          Project
+        </span>
       </h1>
       <p class="font-body-lg text-body-lg text-secondary max-w-[42rem] leading-relaxed">
-        Contact us directly by WhatsApp or phone. Email and Facebook details are currently being confirmed.
+        Get in touch with our engineering team for fast project consultations,
+        MV/LV distribution quotes, or custom industrial installations.
       </p>
     </div>
   </Container>

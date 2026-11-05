@@ -2,14 +2,10 @@
 /**
  * Site footer.
  *
- * Light surface. The prototypes use a near-black footer (#0b0f17) with
- * colours that are not in DESIGN.md — a second red (#ef4444) and a grey
- * (#9ca3af) that exists nowhere else in the system. That palette has been
- * dropped in favour of the approved tokens.
+ * Dark terminal surface, matching the approved contact-page prototype.
  *
- * Every foreground/background pair below was contrast-checked against
- * surface-container-low (#f3f3f3); all pass WCAG AA. See the WhatsApp block
- * in global.css for the one deliberate exception to the palette.
+ * The foreground uses inverse tokens for readable contrast on the dark
+ * surface. See the WhatsApp block in global.css for the deliberate CTA color.
  *
  * Business details are baked into the static build from build-time environment
  * values; nothing is fetched at runtime.
@@ -64,37 +60,35 @@ const locationDisplay = isUnset(import.meta.env.PUBLIC_LOCATION)
   ? 'Location details to be confirmed'
   : import.meta.env.PUBLIC_LOCATION;
 
-// Focus rings on a light footer need the ink outline, not the white one the
-// dark footer used.
-const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container';
+const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-inverse-primary';
 ---
 
 <footer
-  class="w-full bg-surface-container-low text-secondary font-body-sm text-body-sm border-t border-outline-variant"
+  class="w-full bg-footer text-inverse-on-surface/75 font-body-sm text-body-sm"
 >
   <Container class="pt-16 pb-12">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
       <!-- Column 1 — brand -->
       <div class="lg:col-span-4 flex flex-col space-y-4">
         <a href="/" class={`flex items-center gap-3 w-fit ${focus}`}>
-          <Logo markOnly class="h-10 w-auto" />
+          <Logo markOnly variant="dark" class="h-10 w-auto" />
           <span class="flex flex-col">
-            <span class="font-title-lg text-title-lg tracking-tight text-on-surface uppercase"
+            <span class="font-title-lg text-title-lg tracking-tight text-inverse-on-surface uppercase"
               >Rajarata</span
             >
             <span
-              class="font-label-caps text-label-caps tracking-widest text-primary uppercase"
+              class="font-label-caps text-label-caps tracking-widest text-inverse-primary uppercase"
               >Engineering</span
             >
           </span>
         </a>
-        <p class="text-secondary font-body-md text-body-md pr-4 leading-relaxed">
+        <p class="font-body-md text-body-md pr-4 leading-relaxed">
           Contact the team directly by WhatsApp or phone. Email and Facebook details are being confirmed.
         </p>
         <div class="flex items-center gap-2 pt-2">
           {
             badges.map((badge) => (
-              <span class="inline-flex items-center px-2.5 py-1 rounded bg-surface-container-high text-on-surface font-label-caps text-label-caps uppercase">
+              <span class="inline-flex items-center px-2.5 py-1 rounded bg-white/10 text-inverse-on-surface font-label-caps text-label-caps uppercase">
                 {badge}
               </span>
             ))
@@ -104,7 +98,7 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
 
       <!-- Column 2 — quick links -->
       <nav class="lg:col-span-2 flex flex-col space-y-3" aria-label="Footer">
-        <span class="font-title-md text-title-md text-on-surface tracking-wide"
+        <span class="font-title-md text-title-md text-inverse-on-surface tracking-wide"
           >Quick Links</span
         >
         <ul class="space-y-2.5 mt-2">
@@ -113,7 +107,7 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
               <li class="h-7 flex items-center">
                 <a
                   href={item.href}
-                  class={`hover:text-on-surface transition-colors ${focus}`}
+                  class={`hover:text-inverse-on-surface transition-colors ${focus}`}
                 >
                   {item.label}
                 </a>
@@ -125,7 +119,7 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
 
       <!-- Column 3 — services -->
       <nav class="lg:col-span-3 flex flex-col space-y-3" aria-label="Services">
-        <span class="font-title-md text-title-md text-on-surface tracking-wide"
+        <span class="font-title-md text-title-md text-inverse-on-surface tracking-wide"
           >Our Services</span
         >
         <ul class="space-y-2.5 mt-2">
@@ -134,7 +128,7 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
               <li class="h-7 flex items-center">
                 <a
                   href={service.href}
-                  class={`hover:text-on-surface transition-colors truncate ${focus}`}
+                  class={`hover:text-inverse-on-surface transition-colors truncate ${focus}`}
                 >
                   {service.label}
                 </a>
@@ -146,7 +140,7 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
 
       <!-- Column 4 — contact -->
       <div class="lg:col-span-3 flex flex-col space-y-3">
-        <span class="font-title-md text-title-md text-on-surface tracking-wide"
+        <span class="font-title-md text-title-md text-inverse-on-surface tracking-wide"
           >Contact Info</span
         >
         <div class="space-y-3 mt-2">
@@ -156,9 +150,9 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
                 href={publicPhone.href}
                 data-site-phone
                 aria-label={`Call Rajarata Engineering at ${publicPhone.displayNumber}`}
-                class={`inline-flex min-h-11 items-center gap-2 break-all font-label-md text-label-md text-on-surface underline-offset-4 hover:text-primary hover:underline ${focus}`}
+                class={`inline-flex min-h-11 items-center gap-2 break-all font-label-md text-label-md text-inverse-on-surface underline-offset-4 hover:text-inverse-primary hover:underline ${focus}`}
               >
-                <Phone class="h-5 w-5 text-primary" stroke-width="1.8" aria-hidden="true" />
+                <Phone class="h-5 w-5 text-inverse-primary" stroke-width="1.8" aria-hidden="true" />
                 <span data-site-value>{publicPhone.displayNumber}</span>
               </a>
             </div>
@@ -177,22 +171,22 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
               </a>
             </div>
           )}
-          <div class="flex items-start gap-2 font-body-sm text-body-sm text-secondary" data-site-row>
+          <div class="flex items-start gap-2 font-body-sm text-body-sm" data-site-row>
             <BrandIcon icon={siGmail} class="h-5 w-5 text-[#EA4335]" />
             <a
-              class="break-all underline-offset-4 hover:text-primary hover:underline"
+              class="break-all underline-offset-4 hover:text-inverse-primary hover:underline"
               data-site-email
               href={`mailto:${emailContact.status === 'ready' ? emailContact.value : ''}`}
             >{emailContact.status === 'ready' ? emailContact.value : 'Email address to be confirmed'}</a>
           </div>
-          <div class="flex items-start gap-2 font-body-sm text-body-sm text-secondary" data-site-row>
+          <div class="flex items-start gap-2 font-body-sm text-body-sm" data-site-row>
             <BrandIcon icon={siGooglemaps} class="h-5 w-5 text-[#4285F4]" />
             <span class="whitespace-pre-line" data-site-address>{locationDisplay}</span>
           </div>
-          <div class="flex items-start gap-2 font-body-sm text-body-sm text-secondary" data-site-row>
-            <FacebookIcon class="h-5 w-5 text-tertiary" />
+          <div class="flex items-start gap-2 font-body-sm text-body-sm" data-site-row>
+            <FacebookIcon class="h-5 w-5 text-tertiary-fixed" />
             <a
-              class="break-all underline-offset-4 hover:text-primary hover:underline"
+              class="break-all underline-offset-4 hover:text-inverse-primary hover:underline"
               data-site-facebookUrl
               href={facebookContact.status === 'ready' ? facebookContact.value : '#'}
             ><span data-site-value>{facebookContact.status === 'ready' ? formatFacebookUrl(facebookContact.value) : 'Facebook page link to be confirmed'}</span></a>
@@ -203,9 +197,9 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
 
     <!-- Bottom bar -->
     <div
-      class="mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-outline-variant"
+      class="mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-white/15"
     >
-      <p class="text-xs text-secondary">
+      <p class="text-xs">
         &copy; {year} Rajarata Engineering.
       </p>
     </div>
