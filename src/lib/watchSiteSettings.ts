@@ -70,6 +70,29 @@ function applyField(field: Field, value: string, facebookLabel = '') {
   });
 }
 
+/** Patches the header logo image when the admin supplies one. */
+function applyLogo(data: Record<string, unknown>) {
+  const url =
+    typeof data.logoUrl === 'string' ? data.logoUrl.trim() : '';
+  const alt =
+    typeof data.logoAlt === 'string' ? data.logoAlt.trim() : '';
+  const img = document.querySelector<HTMLImageElement>(
+    '[data-site-logo-image]',
+  );
+  const svg = document.querySelector<HTMLElement>('[data-site-logo-svg]');
+  if (!img || !svg) return;
+
+  if (url) {
+    img.src = url;
+    if (alt) img.alt = alt;
+    img.hidden = false;
+    svg.hidden = true;
+  } else {
+    img.hidden = true;
+    svg.hidden = false;
+  }
+}
+
 /** Updates the Services CTA buttons from the same settings document. */
 function applyServicesCta(data: Record<string, unknown>) {
   const phone = parsePhoneNumber(data.phone);
@@ -115,6 +138,7 @@ export function watchSiteSettings(): () => void {
           const value = data[field];
           applyField(field, typeof value === 'string' ? value : '', facebookLabel);
         });
+        applyLogo(data);
         applyServicesCta(data);
       },
       (error) => {
