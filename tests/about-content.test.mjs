@@ -306,6 +306,17 @@ test('rejects wrong fixed counts without inventing slots', () => {
   assert.equal(parseAboutContent(data), null);
 });
 
+test('About hero scope cards fit narrow screens and wrap long text', async () => {
+  const hero = await readFile(
+    new URL('../src/components/about/AboutHero.astro', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(hero, /grid-cols-2 sm:grid-cols-3/);
+  assert.equal((hero.match(/min-w-0 break-words font-title-md/g) ?? []).length, 3);
+  assert.equal((hero.match(/min-w-0 break-words font-body-sm/g) ?? []).length, 3);
+});
+
 test('builds the expected About hydration hooks', async () => {
   const html = await readFile(
     new URL('../dist/client/about-us/index.html', import.meta.url),

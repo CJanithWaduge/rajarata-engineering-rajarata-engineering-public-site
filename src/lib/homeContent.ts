@@ -1,5 +1,6 @@
 import { doc, getDoc } from 'firebase/firestore';
 import { getFirebase } from './firebase';
+import { readHomeServices, type HomeService } from './homeServices';
 
 /**
  * Home page content written by the admin panel at `site/home`.
@@ -21,7 +22,8 @@ export interface HomeImage {
 }
 
 export interface HomeProject {
-  image: HomeImage;
+  /** Null keeps the build-time fallback artwork in the featured project card. */
+  image: HomeImage | null;
   category: string;
   venue: string;
   topic: string;
@@ -32,6 +34,7 @@ export interface HomeProject {
 export interface HomeContent {
   hero: HomeImage;
   featuredProjects: HomeProject[];
+  featuredServices: HomeService[];
 }
 
 function readString(value: unknown): string {
@@ -72,15 +75,16 @@ export function readHomeProject(value: unknown): HomeProject | null {
   if (!value || typeof value !== 'object') return null;
 
   const record = value as Record<string, unknown>;
-  const image = readHomeImage(record);
+  const imageUrl = readString(record.imageUrl).trim();
+  const image = imageUrl ? readHomeImage(record) : null;
   const category = readString(record.category).trim();
   const venue = readString(record.venue).trim();
   const topic = readString(record.topic).trim();
   const tag = readString(record.tag).trim();
 
-  // A card without its required text or image would render a half-empty card;
-  // skip it and leave the build-time card in place instead.
-  if (!image || !category || !venue || !topic) return null;
+  // Keep the build-time illustration when a seeded card has no uploaded photo.
+  // Reject malformed non-empty URLs rather than silently accepting unsafe data.
+  if ((imageUrl && !image) || !category || !venue || !topic) return null;
 
   return { image, category, venue, topic, tag };
 }
@@ -100,7 +104,11 @@ export function parseHomeContent(
         .filter((project): project is HomeProject => project !== null)
     : [];
 
-  return { hero, featuredProjects: projects };
+  return {
+    hero,
+    featuredProjects: projects,
+    featuredServices: readHomeServices(data.featuredServices),
+  };
 }
 
 /**

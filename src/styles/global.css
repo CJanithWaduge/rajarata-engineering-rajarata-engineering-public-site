@@ -314,11 +314,11 @@
   }
 
   html[data-scroll-reveal-ready] [data-scroll-reveal] {
-    transition: transform 1000ms cubic-bezier(0.2, 0, 0, 1);
+    transition: transform 500ms cubic-bezier(0.2, 0, 0, 1);
   }
 
   html[data-scroll-reveal-ready] [data-scroll-reveal-item] {
-    transition: opacity 450ms cubic-bezier(0.2, 0, 0, 1);
+    transition: opacity 250ms cubic-bezier(0.2, 0, 0, 1);
   }
 
   html[data-scroll-reveal-ready] [data-scroll-reveal-item][data-scroll-reveal-state^="hidden-"] {
@@ -410,7 +410,12 @@
     [data-projects-track-record-column],
     [data-projects-cta-eyebrow],
     [data-projects-cta-title],
-    [data-projects-cta-body]
+    [data-projects-cta-body],
+    [data-home-service],
+    [data-home-service-icon],
+    [data-home-service-title],
+    [data-home-service-description],
+    [data-home-service-link]
   ) {
     visibility: hidden;
   }

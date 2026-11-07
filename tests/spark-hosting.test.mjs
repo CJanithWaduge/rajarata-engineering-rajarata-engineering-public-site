@@ -57,6 +57,37 @@ test('Firestore-managed content stays hidden until a server snapshot is applied'
   }
 });
 
+test('public footer uses admin-managed email and Facebook values', async () => {
+  const footer = await readFile(path.join(root, 'src', 'components', 'Footer.astro'), 'utf8');
+  const watcher = await readFile(path.join(root, 'src', 'lib', 'watchSiteSettings.ts'), 'utf8');
+  const hydration = await readFile(path.join(root, 'src', 'lib', 'contentHydration.ts'), 'utf8');
+
+  assert.match(footer, /data-site-email/);
+  assert.match(footer, /data-site-facebook-url/);
+  assert.doesNotMatch(footer, /Email and Facebook details are being confirmed/);
+  assert.match(watcher, /facebookUrl: 'facebook-url'/);
+  assert.match(watcher, /FIELD_ATTRIBUTES\[field\]/);
+  assert.match(hydration, /\[data-site-facebook-url\]/);
+  assert.match(watcher, /const data = snapshot\.data\(\) \?\? \{\}/);
+});
+
+test('footer uses the admin logo without rendering the obsolete fallback mark', async () => {
+  const footer = await readFile(path.join(root, 'src', 'components', 'Footer.astro'), 'utf8');
+
+  assert.match(footer, /data-site-logo-image[\s\S]*?data-live-media/);
+  assert.doesNotMatch(footer, /<Logo\b/);
+  await assert.rejects(readFile(path.join(root, 'src', 'components', 'Logo.astro')));
+});
+
+test('scroll reveal uses short transitions and respects reduced motion', async () => {
+  const css = await readFile(path.join(root, 'src', 'styles', 'global.css'), 'utf8');
+
+  assert.match(css, /transition: transform 500ms cubic-bezier\(0\.2, 0, 0, 1\)/);
+  assert.match(css, /transition: opacity 250ms cubic-bezier\(0\.2, 0, 0, 1\)/);
+  assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
+  assert.doesNotMatch(css, /transition: transform 1000ms/);
+});
+
 test('Spark contact page uses direct configured contact links without an inquiry form', async () => {
   const page = await readFile(path.join(root, 'src', 'pages', 'contact.astro'), 'utf8');
   const hero = await readFile(

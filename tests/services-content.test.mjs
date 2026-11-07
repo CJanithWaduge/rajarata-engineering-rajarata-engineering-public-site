@@ -210,6 +210,16 @@ test('falls back to the desktop description when mobile copy is blank', () => {
   );
 });
 
+test('Services metrics use mobile-safe columns and wrap long admin titles', async () => {
+  const hero = await readFile(
+    new URL('../src/components/services/ServicesHero.astro', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(hero, /grid-cols-1 sm:grid-cols-2 lg:grid-cols-4/);
+  assert.equal((hero.match(/min-w-0 break-words font-headline-md/g) ?? []).length, 4);
+});
+
 test('builds the expected Services hydration hooks', async () => {
   const html = await readFile(
     new URL('../dist/client/services/index.html', import.meta.url),

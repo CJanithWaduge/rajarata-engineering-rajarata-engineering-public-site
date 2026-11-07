@@ -7,15 +7,13 @@
  * The foreground uses inverse tokens for readable contrast on the dark
  * surface. See the WhatsApp block in global.css for the deliberate CTA color.
  *
- * Business details are baked into the static build from build-time environment
- * values; nothing is fetched at runtime.
+ * The build-time values provide an initial render; the public settings watcher
+ * replaces them with admin-managed Firestore values.
  *
- * Brand. As in the header, the logo is the emblem only (`markOnly`) because
- * the stacked "Rajarata / Engineering" wordmark sits beside it. The full
- * lockup would print the company name twice.
+ * The logo image is managed in Site Settings; the adjacent text keeps the
+ * brand name visible while the live settings document loads.
  */
 import Container from './Container.astro';
-import Logo from './Logo.astro';
 import FacebookIcon from './ui/FacebookIcon.astro';
 import WhatsAppIcon from './ui/WhatsAppIcon.astro';
 import { phoneContact, whatsappContact } from '../lib/publicContact';
@@ -71,7 +69,14 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
       <!-- Column 1 — brand -->
       <div class="lg:col-span-4 flex flex-col space-y-4">
         <a href="/" class={`flex items-center gap-3 w-fit ${focus}`}>
-          <Logo markOnly variant="dark" class="h-10 w-auto" />
+          <img
+            src=""
+            alt=""
+            class="h-10 w-auto object-contain"
+            data-site-logo-image
+            data-live-media
+            hidden
+          />
           <span class="flex flex-col">
             <span class="font-title-lg text-title-lg tracking-tight text-inverse-on-surface uppercase"
               >Rajarata</span
@@ -83,7 +88,7 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
           </span>
         </a>
         <p class="font-body-md text-body-md pr-4 leading-relaxed">
-          Contact the team directly by WhatsApp or phone. Email and Facebook details are being confirmed.
+          Contact our team directly about your electrical engineering requirements.
         </p>
         <div class="flex items-center gap-2 pt-2">
           {
@@ -187,7 +192,7 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
             <FacebookIcon class="h-5 w-5 text-tertiary-fixed" />
             <a
               class="break-all underline-offset-4 hover:text-inverse-primary hover:underline"
-              data-site-facebookUrl
+              data-site-facebook-url
               href={facebookContact.status === 'ready' ? facebookContact.value : '#'}
             ><span data-site-value>{facebookContact.status === 'ready' ? formatFacebookUrl(facebookContact.value) : 'Facebook page link to be confirmed'}</span></a>
           </div>

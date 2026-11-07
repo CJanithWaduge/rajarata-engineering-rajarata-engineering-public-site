@@ -6,6 +6,7 @@ import {
   type HomeImage,
   type HomeProject,
 } from './homeContent';
+import { readHomeService, type HomeService } from './homeServices';
 
 /**
  * Live hydration for the Home page.
@@ -40,11 +41,36 @@ function applyProject(index: number, project: HomeProject) {
   const card = document.querySelector<HTMLElement>(`[data-home-project="${index}"]`);
   if (!card) return;
 
-  applyImage(card.querySelector<HTMLImageElement>('[data-home-project-image]'), project.image);
+  if (project.image) {
+    applyImage(
+      card.querySelector<HTMLImageElement>('[data-home-project-image]'),
+      project.image,
+    );
+  }
   setText(card, '[data-home-project-category]', project.category);
   setText(card, '[data-home-project-venue]', project.venue);
   setText(card, '[data-home-project-topic]', project.topic);
   setText(card, '[data-home-project-tag]', project.tag);
+}
+
+/**
+ * Every service field is optional, so only non-empty values are written
+ * through. A blank field leaves the build-time icon, copy, or link intact.
+ */
+function applyService(index: number, service: HomeService) {
+  const card = document.querySelector<HTMLElement>(`[data-home-service="${index}"]`);
+  if (!card) return;
+
+  if (service.icon) setText(card, '[data-home-service-icon]', service.icon);
+  if (service.title) setText(card, '[data-home-service-title]', service.title);
+  if (service.description) {
+    setText(card, '[data-home-service-description]', service.description);
+  }
+
+  if (service.href) {
+    const link = card.querySelector<HTMLAnchorElement>('[data-home-service-link]');
+    if (link) link.setAttribute('href', service.href);
+  }
 }
 
 /**
@@ -80,6 +106,12 @@ export function watchHomeContent(onFirstResult?: () => void): () => void {
             data.featuredProjects.slice(0, 3).forEach((value, index) => {
               const project = readHomeProject(value);
               if (project) applyProject(index + 1, project);
+            });
+          }
+
+          if (Array.isArray(data.featuredServices)) {
+            data.featuredServices.slice(0, 6).forEach((value, index) => {
+              applyService(index + 1, readHomeService(value));
             });
           }
         } finally {

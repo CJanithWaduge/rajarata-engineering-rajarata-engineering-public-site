@@ -22,9 +22,19 @@ import { parseWhatsAppNumber } from './whatsapp';
 type Field = 'phone' | 'whatsapp' | 'email' | 'address' | 'facebookUrl' | 'location';
 
 const FIELDS: Field[] = ['phone', 'whatsapp', 'email', 'address', 'facebookUrl', 'location'];
+const FIELD_ATTRIBUTES: Record<Field, string> = {
+  phone: 'phone',
+  whatsapp: 'whatsapp',
+  email: 'email',
+  address: 'address',
+  facebookUrl: 'facebook-url',
+  location: 'location',
+};
 
 function applyField(field: Field, value: string, facebookLabel = '') {
-  const targets = document.querySelectorAll<HTMLElement>(`[data-site-${field}]`);
+  const targets = document.querySelectorAll<HTMLElement>(
+    `[data-site-${FIELD_ATTRIBUTES[field]}]`,
+  );
   const unset = value.trim() === '';
 
   targets.forEach((el) => {
@@ -71,7 +81,7 @@ function applyField(field: Field, value: string, facebookLabel = '') {
   });
 }
 
-/** Patches the header logo image when the admin supplies one. */
+/** Patches every shared-site logo image when the admin supplies one. */
 function applyLogo(data: Record<string, unknown>) {
   const url =
     typeof data.logoUrl === 'string' ? data.logoUrl.trim() : '';
@@ -188,8 +198,7 @@ export function watchSiteSettings(onFirstResult?: () => void): () => void {
         if (snapshot.metadata.fromCache) return;
 
         try {
-          const data = snapshot.data();
-          if (!data) return;
+          const data = snapshot.data() ?? {};
           const facebookLabel =
             typeof data.facebookLabel === 'string' ? data.facebookLabel : '';
           FIELDS.forEach((field) => {

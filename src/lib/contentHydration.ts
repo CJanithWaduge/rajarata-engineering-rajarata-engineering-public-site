@@ -39,13 +39,14 @@ const HYDRATORS: Hydrator[] = [
   {
     // Contact details live in the shared header and footer.
     selector:
-      '[data-site-phone], [data-site-whatsapp], [data-site-email], [data-site-address], [data-site-facebook], [data-site-primary-contact], [data-site-logo-image], [data-site-map-embed]',
+      '[data-site-phone], [data-site-whatsapp], [data-site-email], [data-site-address], [data-site-facebook-url], [data-site-primary-contact], [data-site-logo-image], [data-site-map-embed]',
     load: (onFirstResult) =>
       import('./watchSiteSettings').then((module) => module.watchSiteSettings(onFirstResult)),
   },
   {
     // Home page only.
-    selector: '[data-home-hero-image], [data-home-project]',
+    selector:
+      '[data-home-hero-image], [data-home-project], [data-home-service], [data-home-service-icon], [data-home-service-title], [data-home-service-description], [data-home-service-link]',
     load: (onFirstResult) =>
       import('./watchHomeContent').then((module) => module.watchHomeContent(onFirstResult)),
   },
