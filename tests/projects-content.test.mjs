@@ -177,3 +177,17 @@ test('builds the expected Projects hydration hooks', async () => {
     'header must stay static',
   );
 });
+
+test('project filter selection uses the red active state and a red hover glow', async () => {
+  const component = await readFile(
+    new URL('../src/components/projects/ProjectPortfolio.astro', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(component, /aria-pressed="true"/);
+  assert.match(component, /btn\.setAttribute\('aria-pressed', String\(on\)\)/);
+  assert.match(component, /aria-pressed:bg-primary-container/);
+  assert.match(component, /aria-pressed:text-on-primary/);
+  assert.match(component, /hover:shadow-\[0_0_0_3px_rgba\(211,47,47,0\.16\),0_0_16px_rgba\(211,47,47,0\.24\)\]/);
+  assert.match(component, /focus-visible:outline-primary-container/);
+});

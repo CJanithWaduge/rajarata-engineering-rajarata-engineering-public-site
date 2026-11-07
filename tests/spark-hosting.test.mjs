@@ -31,6 +31,32 @@ test('mutable public image assets revalidate instead of using a week-long browse
   }
 });
 
+test('Firestore-managed content stays hidden until a server snapshot is applied', async () => {
+  const css = await readFile(path.join(root, 'src', 'styles', 'global.css'), 'utf8');
+  const base = await readFile(path.join(root, 'src', 'layouts', 'Base.astro'), 'utf8');
+  const watcherNames = [
+    'watchSiteSettings.ts',
+    'watchHomeContent.ts',
+    'watchServicesContent.ts',
+    'watchAboutContent.ts',
+    'watchProjectsContent.ts',
+  ];
+
+  assert.match(css, /html\[data-live-content="pending"\]/);
+  assert.match(css, /\[data-site-phone-call\]/);
+  assert.match(css, /\[data-home-project\]/);
+  assert.match(css, /\[data-service-card\]/);
+  assert.match(css, /\[data-about-hero-title\]/);
+  assert.match(css, /\[data-project-card\]/);
+  assert.match(base, /setAttribute\('data-live-content', 'pending'\)/);
+
+  for (const watcherName of watcherNames) {
+    const watcher = await readFile(path.join(root, 'src', 'lib', watcherName), 'utf8');
+    assert.match(watcher, /includeMetadataChanges:\s*true/, watcherName);
+    assert.match(watcher, /snapshot\.metadata\.fromCache/, watcherName);
+  }
+});
+
 test('Spark contact page uses direct configured contact links without an inquiry form', async () => {
   const page = await readFile(path.join(root, 'src', 'pages', 'contact.astro'), 'utf8');
   const hero = await readFile(

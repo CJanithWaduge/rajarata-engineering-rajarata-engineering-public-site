@@ -347,14 +347,71 @@
     }
   }
 
-  /* Live-media gate (see src/lib/contentHydration.ts).
-     The prerendered fallback image may be older than the Firestore value, so
-     while the first server-confirmed snapshot is in flight it is hidden rather
-     than painted and then swapped. `visibility` keeps the element's box, so
-     nothing shifts when the live image is revealed. The attribute is only set
-     when JavaScript runs,
-     so the no-JS page still shows the build-time artwork. */
-  html[data-live-content="pending"] [data-live-media] {
+  /* Keep build-time values out of the first paint while their Firestore feed
+     is being confirmed. Visibility preserves layout until the live snapshot
+     patches the opted-in media and copy. Without JavaScript, the static page
+     remains visible because the gate is never set. */
+  html[data-live-content="pending"] :is(
+    [data-live-media],
+    [data-site-row],
+    [data-site-primary-contact],
+    [data-site-phone-call],
+    [data-site-logo-image],
+    [data-home-project],
+    [data-services-hero-eyebrow],
+    [data-services-hero-title],
+    [data-services-hero-intro],
+    [data-services-quick-link],
+    [data-services-metric],
+    [data-services-directory-eyebrow],
+    [data-services-directory-title],
+    [data-services-directory-intro],
+    [data-service-card],
+    [data-services-process-eyebrow],
+    [data-services-process-title],
+    [data-services-process-intro],
+    [data-services-step],
+    [data-services-cta-eyebrow],
+    [data-services-cta-title],
+    [data-services-cta-body],
+    [data-services-cta-point],
+    [data-about-hero-eyebrow],
+    [data-about-hero-title],
+    [data-about-hero-intro],
+    [data-about-snapshot],
+    [data-about-overlay-title],
+    [data-about-overlay-description],
+    [data-about-overlay-stage],
+    [data-about-heritage-eyebrow],
+    [data-about-heritage-title],
+    [data-about-heritage-narrative],
+    [data-about-heritage-approach],
+    [data-about-milestone],
+    [data-about-card],
+    [data-about-pillars-eyebrow],
+    [data-about-pillars-title],
+    [data-about-pillars-intro],
+    [data-about-pillar],
+    [data-about-methodology-eyebrow],
+    [data-about-methodology-title],
+    [data-about-methodology-intro],
+    [data-about-method-step],
+    [data-about-industries-eyebrow],
+    [data-about-industries-title],
+    [data-about-industries-intro],
+    [data-about-sector],
+    [data-about-cta-eyebrow],
+    [data-about-cta-title],
+    [data-about-cta-body],
+    [data-projects-hero-eyebrow],
+    [data-projects-hero-title],
+    [data-projects-hero-intro],
+    [data-project-card],
+    [data-projects-track-record-column],
+    [data-projects-cta-eyebrow],
+    [data-projects-cta-title],
+    [data-projects-cta-body]
+  ) {
     visibility: hidden;
   }
 

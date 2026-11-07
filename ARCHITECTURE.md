@@ -165,9 +165,10 @@ skipped, so the build-time markup remains. There is no placeholder fallback.
 The build-time media is only a fallback: it can be older than the document the
 admin panel publishes, so the client must not paint it and then swap it. A tiny
 inline script in `Base.astro` sets `data-live-content="pending"` on `<html>`
-before the first paint, and `global.css` hides every `[data-live-media]` image
-while that attribute is present. Elements opt in with `data-live-media`
-(the Home hero and cards, the About hero, and the Projects cards).
+before the first paint, and `global.css` hides opted-in media and
+Firestore-managed content while that attribute is present. Images opt in with
+`data-live-media`; text and cards are selected through their existing `data-*`
+hooks.
 `contentHydration.ts` starts as soon as the page script runs, dynamically
 imports only the feeds the current document needs, and releases the gate once
 each feed has delivered a server-confirmed snapshot (or failed) and the

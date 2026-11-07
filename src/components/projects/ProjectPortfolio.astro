@@ -125,7 +125,7 @@ const demoProjects = [
       <div class="w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden py-1">
         <div class="flex items-center gap-2 sm:gap-3 min-w-max">
           <button
-            class="filter-btn px-4 py-2 rounded-xl font-label-md text-label-md bg-primary-container text-on-primary transition-all duration-150 shadow-sm flex items-center gap-2"
+            class="filter-btn px-4 py-2 rounded-xl font-label-md text-label-md bg-surface-container-lowest text-secondary aria-pressed:bg-primary-container aria-pressed:text-on-primary transition-all duration-150 shadow-sm hover:shadow-[0_0_0_3px_rgba(211,47,47,0.16),0_0_16px_rgba(211,47,47,0.24)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container flex items-center gap-2"
             data-filter="all"
             type="button"
             aria-pressed="true"
@@ -134,7 +134,7 @@ const demoProjects = [
             <span>All Projects</span>
           </button>
           <button
-            class="filter-btn px-4 py-2 rounded-xl font-label-md text-label-md bg-surface-container-lowest text-secondary hover:text-on-surface hover:bg-surface-container transition-all duration-150 shadow-sm flex items-center gap-2"
+            class="filter-btn px-4 py-2 rounded-xl font-label-md text-label-md bg-surface-container-lowest text-secondary aria-pressed:bg-primary-container aria-pressed:text-on-primary transition-all duration-150 shadow-sm hover:shadow-[0_0_0_3px_rgba(211,47,47,0.16),0_0_16px_rgba(211,47,47,0.24)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container flex items-center gap-2"
             data-filter="residential"
             type="button"
             aria-pressed="false"
@@ -143,7 +143,7 @@ const demoProjects = [
             <span>Residential</span>
           </button>
           <button
-            class="filter-btn px-4 py-2 rounded-xl font-label-md text-label-md bg-surface-container-lowest text-secondary hover:text-on-surface hover:bg-surface-container transition-all duration-150 shadow-sm flex items-center gap-2"
+            class="filter-btn px-4 py-2 rounded-xl font-label-md text-label-md bg-surface-container-lowest text-secondary aria-pressed:bg-primary-container aria-pressed:text-on-primary transition-all duration-150 shadow-sm hover:shadow-[0_0_0_3px_rgba(211,47,47,0.16),0_0_16px_rgba(211,47,47,0.24)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container flex items-center gap-2"
             data-filter="commercial"
             type="button"
             aria-pressed="false"
@@ -152,7 +152,7 @@ const demoProjects = [
             <span>Commercial</span>
           </button>
           <button
-            class="filter-btn px-4 py-2 rounded-xl font-label-md text-label-md bg-surface-container-lowest text-secondary hover:text-on-surface hover:bg-surface-container transition-all duration-150 shadow-sm flex items-center gap-2"
+            class="filter-btn px-4 py-2 rounded-xl font-label-md text-label-md bg-surface-container-lowest text-secondary aria-pressed:bg-primary-container aria-pressed:text-on-primary transition-all duration-150 shadow-sm hover:shadow-[0_0_0_3px_rgba(211,47,47,0.16),0_0_16px_rgba(211,47,47,0.24)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container flex items-center gap-2"
             data-filter="industrial"
             type="button"
             aria-pressed="false"
@@ -161,7 +161,7 @@ const demoProjects = [
             <span>Industrial</span>
           </button>
           <button
-            class="filter-btn px-4 py-2 rounded-xl font-label-md text-label-md bg-surface-container-lowest text-secondary hover:text-on-surface hover:bg-surface-container transition-all duration-150 shadow-sm flex items-center gap-2"
+            class="filter-btn px-4 py-2 rounded-xl font-label-md text-label-md bg-surface-container-lowest text-secondary aria-pressed:bg-primary-container aria-pressed:text-on-primary transition-all duration-150 shadow-sm hover:shadow-[0_0_0_3px_rgba(211,47,47,0.16),0_0_16px_rgba(211,47,47,0.24)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container flex items-center gap-2"
             data-filter="elv"
             type="button"
             aria-pressed="false"
@@ -170,7 +170,7 @@ const demoProjects = [
             <span>ELV Solutions</span>
           </button>
           <button
-            class="filter-btn px-4 py-2 rounded-xl font-label-md text-label-md bg-surface-container-lowest text-secondary hover:text-on-surface hover:bg-surface-container transition-all duration-150 shadow-sm flex items-center gap-2"
+            class="filter-btn px-4 py-2 rounded-xl font-label-md text-label-md bg-surface-container-lowest text-secondary aria-pressed:bg-primary-container aria-pressed:text-on-primary transition-all duration-150 shadow-sm hover:shadow-[0_0_0_3px_rgba(211,47,47,0.16),0_0_16px_rgba(211,47,47,0.24)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container flex items-center gap-2"
             data-filter="maintenance"
             type="button"
             aria-pressed="false"
@@ -221,16 +221,11 @@ const demoProjects = [
   const projectCards = document.querySelectorAll<HTMLElement>('.project-card');
   const counterDisplay = document.getElementById('project-count');
 
-  const activeClasses = ['bg-primary-container', 'text-on-primary'];
-  const inactiveClasses = ['bg-surface-container-lowest', 'text-secondary'];
-
   const applyFilter = (active: HTMLButtonElement) => {
     const filterValue = active.dataset.filter ?? 'all';
 
     filterButtons.forEach((btn) => {
       const on = btn === active;
-      btn.classList.remove(...(on ? inactiveClasses : activeClasses));
-      btn.classList.add(...(on ? activeClasses : inactiveClasses));
       btn.setAttribute('aria-pressed', String(on));
     });
 

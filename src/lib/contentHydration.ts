@@ -9,7 +9,8 @@
  *
  * Until this module has applied the first server-confirmed snapshot for every
  * feed the page renders, `Base.astro` puts `data-live-content="pending"` on
- * `<html>` and `global.css` hides `[data-live-media]`. The gate is released once:
+ * `<html>` and `global.css` hides opted-in live media and Firestore-managed
+ * content. The gate is released once:
  *
  * - every feed the page needs has delivered a server-confirmed snapshot (or
  *   failed), and the replacement images have loaded; or

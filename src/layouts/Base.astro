@@ -44,11 +44,11 @@ const { title, description } = Astro.props;
     <link rel="preconnect" href="https://firestore.googleapis.com" />
 
     <!--
-      The build-time artwork can be older than the Firestore content. Hide it
-      before the first paint so the page never shows old media and then swaps
-      it. Hydration releases the gate after server-confirmed snapshots (or
-      errors); a failed client script releases it to show the static fallback.
-      Without JavaScript this never runs, so the static artwork stays visible.
+      The prerendered content can be older than Firestore. Hide opted-in live
+      media and copy before first paint so stale values do not flash while the
+      server snapshot is loading. Hydration releases the gate after
+      server-confirmed snapshots (or errors); a failed client script releases
+      it to show the static fallback. Without JavaScript the gate is never set.
     -->
     <script is:inline>
       document.documentElement.setAttribute('data-live-content', 'pending');
