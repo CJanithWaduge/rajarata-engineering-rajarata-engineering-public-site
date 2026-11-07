@@ -76,21 +76,25 @@ function applyLogo(data: Record<string, unknown>) {
     typeof data.logoUrl === 'string' ? data.logoUrl.trim() : '';
   const alt =
     typeof data.logoAlt === 'string' ? data.logoAlt.trim() : '';
-  const img = document.querySelector<HTMLImageElement>(
-    '[data-site-logo-image]',
-  );
-  const svg = document.querySelector<HTMLElement>('[data-site-logo-svg]');
-  if (!img || !svg) return;
+  const imgs = document.querySelectorAll<HTMLImageElement>('[data-site-logo-image]');
+  if (imgs.length === 0) return;
 
-  if (url) {
-    img.src = url;
-    if (alt) img.alt = alt;
-    img.hidden = false;
-    svg.hidden = true;
-  } else {
-    img.hidden = true;
-    svg.hidden = false;
-  }
+  imgs.forEach((img) => {
+    if (url) {
+      img.src = url;
+      img.alt = alt || '';
+      img.hidden = false;
+    } else {
+      img.hidden = true;
+    }
+  });
+
+  imgs.forEach((img) => {
+    const svg = img.parentElement?.querySelector<HTMLElement>('svg[data-site-logo-svg]');
+    if (svg) {
+      svg.hidden = !!url;
+    }
+  });
 }
 
 /** Updates the Services CTA buttons from the same settings document. */

@@ -198,11 +198,17 @@ function strictImage(value: unknown): ProjectImage | null {
   if (url === '') return emptyImage();
   if (!isSafeImageUrl(url)) return null;
 
+  const width = readDimension(value.imageWidth);
+  const height = readDimension(value.imageHeight);
+  if (width > 0 && height > 0 && Math.abs(width / height - 3 / 2) > 0.01) {
+    return null;
+  }
+
   return {
     url,
     alt: typeof value.imageAlt === 'string' ? value.imageAlt.trim() : '',
-    width: readDimension(value.imageWidth),
-    height: readDimension(value.imageHeight),
+    width,
+    height,
   };
 }
 

@@ -18,7 +18,6 @@
  * has no text beside its logo, so it keeps the complete lockup.
  */
 import Container from './Container.astro';
-import Logo from './Logo.astro';
 import Button from './ui/Button.astro';
 import { getPublicContactActions } from '../lib/publicContact';
 
@@ -51,11 +50,10 @@ const focusRing =
 >
   <Container class="h-20 flex items-center justify-between">
     <a href="/" class={`flex items-center gap-3 ${focusRing}`}>
-      <Logo markOnly class="h-9 lg:h-10 w-auto" data-site-logo-svg />
       <img
         src=""
         alt=""
-        class="h-9 lg:h-10 w-auto"
+        class="h-9 lg:h-10 w-auto object-contain"
         data-site-logo-image
         hidden
       />
@@ -137,7 +135,22 @@ const focusRing =
   <div class="p-6">
     <div class="flex items-center justify-between pb-6">
       <a href="/" class={`flex items-center gap-3 ${focusRing}`}>
-        <Logo class="h-8 w-auto" />
+        <img
+          src=""
+          alt=""
+          class="h-8 w-auto object-contain"
+          data-site-logo-image
+          hidden
+        />
+        <span class="flex flex-col">
+          <span class="font-title-md text-title-md tracking-tight text-on-surface uppercase"
+            >Rajarata</span
+          >
+          <span
+            class="font-label-caps text-label-caps tracking-widest text-primary uppercase"
+            >Engineering</span
+          >
+        </span>
       </a>
       <button
         type="button"

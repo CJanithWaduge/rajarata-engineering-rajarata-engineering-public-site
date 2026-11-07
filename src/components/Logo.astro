@@ -33,7 +33,7 @@ interface Props {
   class?: string;
 }
 
-const { variant = 'light', markOnly = false, class: className } = Astro.props;
+const { variant = 'light', markOnly = false, class: className, ...restProps } = Astro.props;
 
 const isDark = variant === 'dark';
 
@@ -44,6 +44,7 @@ const accentFill = isDark ? '#ffffff' : '#D32F2F';
 ---
 
 <svg
+  {...restProps}
   xmlns="http://www.w3.org/2000/svg"
   viewBox={markOnly ? '2 5 40 40' : '0 0 240 50'}
   fill="none"
