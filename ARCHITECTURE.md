@@ -133,7 +133,7 @@ dark sections.
 | --- | --- | --- |
 | `src/lib/scrollReveal.ts` | Viewport reveal, respects `prefers-reduced-motion`, content visible without JS, never re-hides the first screen | `implemented` |
 | `src/lib/cardTilt.ts` | Progressive pointer interaction on cards | `implemented` |
-| `src/lib/contentHydration.ts` | Schedules the Firestore feeds after `load` on an idle slot, and only for feeds whose `data-*` hooks exist in the document | `implemented` |
+| `src/lib/contentHydration.ts` | Starts the Firestore feeds as soon as the page script runs, hides opted-in media until the first server-confirmed snapshot is applied, and only loads feeds whose `data-*` hooks exist in the document | `implemented` |
 | `src/lib/publicContact.ts` | Builds the WhatsApp and telephone actions from the two public environment values | `implemented` |
 | `src/lib/whatsapp.ts` | WhatsApp number validation and `wa.me` link building | `implemented` |
 | `src/lib/phone.ts` | International phone number validation and `tel:` link building | `implemented` |
@@ -162,11 +162,24 @@ Projects hero, the six fixed project cards, the track-record columns, and CTA.
 A missing or malformed field is
 skipped, so the build-time markup remains. There is no placeholder fallback.
 
-Firestore is **not** on the critical path. `contentHydration.ts` waits for the
-`load` event, takes an idle slot (capped at 2 s), and then dynamically imports
-only the feeds the current document needs. The page is already complete from
-static HTML before any of that happens, so the Firestore SDK (a ~140 KB gzipped
-chunk) never delays the first paint and a feed with no hooks is never fetched.
+The build-time media is only a fallback: it can be older than the document the
+admin panel publishes, so the client must not paint it and then swap it. A tiny
+inline script in `Base.astro` sets `data-live-content="pending"` on `<html>`
+before the first paint, and `global.css` hides every `[data-live-media]` image
+while that attribute is present. Elements opt in with `data-live-media`
+(the Home hero and cards, the About hero, and the Projects cards).
+`contentHydration.ts` starts as soon as the page script runs, dynamically
+imports only the feeds the current document needs, and releases the gate once
+each feed has delivered a server-confirmed snapshot (or failed) and the
+replacement images have loaded. Each Firestore listener includes metadata
+changes and ignores snapshots marked `fromCache`, preventing stale local
+content from being applied before the server value. A failed client script
+releases the gate to show the static fallback; without JavaScript, the gate is
+never set. A feed with no hooks is never fetched.
+
+Unhashed files in `public/images/` use `Cache-Control: no-cache` in both Hosting
+configs so browsers revalidate fixed image URLs after a deployment. Hashed
+`/_astro/` assets remain immutable.
 
 ### 3.6 Self-hosted webfonts
 

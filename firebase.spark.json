@@ -31,7 +31,13 @@
       {
         "source": "**/*.@(webp|png|jpg|jpeg|svg|ico)",
         "headers": [
-          { "key": "Cache-Control", "value": "public, max-age=604800" }
+          { "key": "Cache-Control", "value": "no-cache" }
+        ]
+      },
+      {
+        "regex": "^(?:/|/about-us/?|/services/?|/projects/?|/contact/?|.*\\.html)$",
+        "headers": [
+          { "key": "Cache-Control", "value": "no-cache" }
         ]
       }
     ]

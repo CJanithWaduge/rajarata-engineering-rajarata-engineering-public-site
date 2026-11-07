@@ -47,33 +47,54 @@ function applyProject(index: number, project: HomeProject) {
   setText(card, '[data-home-project-tag]', project.tag);
 }
 
-/** Returns an unsubscribe function, or a no-op when Firebase is unavailable. */
-export function watchHomeContent(): () => void {
+/**
+ * Returns an unsubscribe function, or a no-op when Firebase is unavailable.
+ *
+ * `onFirstResult` fires once the first server snapshot has been applied (or
+ * the read failed), which lets `contentHydration.ts` reveal the media gate.
+ */
+export function watchHomeContent(onFirstResult?: () => void): () => void {
+  let settled = false;
+  const settle = () => {
+    if (settled) return;
+    settled = true;
+    onFirstResult?.();
+  };
+
   try {
     const { db } = getFirebase();
     return onSnapshot(
       doc(db, 'site', 'home'),
+      { includeMetadataChanges: true },
       (snapshot) => {
-        const data = snapshot.data();
-        if (!data) return;
+        if (snapshot.metadata.fromCache) return;
 
-        const hero = readHomeImage(data.hero);
-        if (hero) applyHero(hero);
+        try {
+          const data = snapshot.data();
+          if (!data) return;
 
-        if (Array.isArray(data.featuredProjects)) {
-          data.featuredProjects.slice(0, 3).forEach((value, index) => {
-            const project = readHomeProject(value);
-            if (project) applyProject(index + 1, project);
-          });
+          const hero = readHomeImage(data.hero);
+          if (hero) applyHero(hero);
+
+          if (Array.isArray(data.featuredProjects)) {
+            data.featuredProjects.slice(0, 3).forEach((value, index) => {
+              const project = readHomeProject(value);
+              if (project) applyProject(index + 1, project);
+            });
+          }
+        } finally {
+          settle();
         }
       },
       (error) => {
         // Never fall back to placeholder content; leave the build-time HTML.
         console.warn('Home content subscription failed; showing build-time content.', error);
+        settle();
       },
     );
   } catch (error) {
     console.warn('Home content unavailable; showing build-time content.', error);
+    settle();
     return () => {};
   }
 }

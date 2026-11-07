@@ -347,6 +347,17 @@
     }
   }
 
+  /* Live-media gate (see src/lib/contentHydration.ts).
+     The prerendered fallback image may be older than the Firestore value, so
+     while the first server-confirmed snapshot is in flight it is hidden rather
+     than painted and then swapped. `visibility` keeps the element's box, so
+     nothing shifts when the live image is revealed. The attribute is only set
+     when JavaScript runs,
+     so the no-JS page still shows the build-time artwork. */
+  html[data-live-content="pending"] [data-live-media] {
+    visibility: hidden;
+  }
+
   .card-interactive:is(a, button) {
     transition:
       box-shadow 200ms cubic-bezier(0.2, 0, 0, 1),

@@ -40,6 +40,28 @@ const { title, description } = Astro.props;
     {description && <meta property="og:description" content={description} />}
 
     <meta name="generator" content={Astro.generator} />
+
+    <link rel="preconnect" href="https://firestore.googleapis.com" />
+
+    <!--
+      The build-time artwork can be older than the Firestore content. Hide it
+      before the first paint so the page never shows old media and then swaps
+      it. Hydration releases the gate after server-confirmed snapshots (or
+      errors); a failed client script releases it to show the static fallback.
+      Without JavaScript this never runs, so the static artwork stays visible.
+    -->
+    <script is:inline>
+      document.documentElement.setAttribute('data-live-content', 'pending');
+      window.addEventListener(
+        'error',
+        function (event) {
+          if (event.target instanceof HTMLScriptElement) {
+            document.documentElement.removeAttribute('data-live-content');
+          }
+        },
+        true,
+      );
+    </script>
   </head>
   <body class="bg-background text-on-surface font-sans antialiased">
     <slot />
@@ -50,9 +72,7 @@ const { title, description } = Astro.props;
 
       initCardTilt();
       initScrollReveal();
-      // Keeps contact details, the Home hero and the Services copy in sync
-      // with the admin panel. Imports Firestore after load, on an idle slot,
-      // and only for the feeds this page actually renders.
+      // Hydrates admin-managed content from server-confirmed Firestore snapshots.
       startContentHydration();
     </script>
   </body>

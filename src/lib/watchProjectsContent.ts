@@ -98,23 +98,42 @@ function applyCta(cta: NonNullable<ProjectsPatch['cta']>) {
   setTextAll('[data-projects-cta-body]', cta.body);
 }
 
-/** Returns an unsubscribe function, or a no-op when Firebase is unavailable. */
-export function watchProjectsContent(): () => void {
+/**
+ * Returns an unsubscribe function, or a no-op when Firebase is unavailable.
+ *
+ * `onFirstResult` fires once the first server snapshot has been applied (or
+ * the read failed), which lets `contentHydration.ts` reveal the media gate.
+ */
+export function watchProjectsContent(onFirstResult?: () => void): () => void {
+  let settled = false;
+  const settle = () => {
+    if (settled) return;
+    settled = true;
+    onFirstResult?.();
+  };
+
   try {
     const { db } = getFirebase();
     return onSnapshot(
       doc(db, 'site', 'projects'),
+      { includeMetadataChanges: true },
       (snapshot) => {
-        const data = snapshot.data();
-        if (!data) return;
+        if (snapshot.metadata.fromCache) return;
 
-        const patch = parseProjectsContentPatch(data);
-        if (!patch) return;
+        try {
+          const data = snapshot.data();
+          if (!data) return;
 
-        if (patch.hero) applyHero(patch.hero);
-        if (patch.portfolio) applyProjects(patch.portfolio.projects);
-        if (patch.trackRecord) applyTrackRecord(patch.trackRecord.columns);
-        if (patch.cta) applyCta(patch.cta);
+          const patch = parseProjectsContentPatch(data);
+          if (!patch) return;
+
+          if (patch.hero) applyHero(patch.hero);
+          if (patch.portfolio) applyProjects(patch.portfolio.projects);
+          if (patch.trackRecord) applyTrackRecord(patch.trackRecord.columns);
+          if (patch.cta) applyCta(patch.cta);
+        } finally {
+          settle();
+        }
       },
       (error) => {
         // Never fall back to placeholder content; leave the build-time HTML.
@@ -122,10 +141,12 @@ export function watchProjectsContent(): () => void {
           'Projects content subscription failed; showing build-time content.',
           error,
         );
+        settle();
       },
     );
   } catch (error) {
     console.warn('Projects content unavailable; showing build-time content.', error);
+    settle();
     return () => {};
   }
 }

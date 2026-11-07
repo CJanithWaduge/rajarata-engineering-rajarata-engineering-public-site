@@ -119,24 +119,43 @@ function applyCta(cta: NonNullable<ServicesPatch['cta']>) {
   });
 }
 
-/** Returns an unsubscribe function, or a no-op when Firebase is unavailable. */
-export function watchServicesContent(): () => void {
+/**
+ * Returns an unsubscribe function, or a no-op when Firebase is unavailable.
+ *
+ * `onFirstResult` fires once the first server snapshot has been applied (or
+ * the read failed), which lets `contentHydration.ts` reveal the media gate.
+ */
+export function watchServicesContent(onFirstResult?: () => void): () => void {
+  let settled = false;
+  const settle = () => {
+    if (settled) return;
+    settled = true;
+    onFirstResult?.();
+  };
+
   try {
     const { db } = getFirebase();
     return onSnapshot(
       doc(db, 'site', 'services'),
+      { includeMetadataChanges: true },
       (snapshot) => {
-        const data = snapshot.data();
-        if (!data) return;
+        if (snapshot.metadata.fromCache) return;
 
-        const patch = parseServicesContentPatch(data);
-        if (!patch) return;
+        try {
+          const data = snapshot.data();
+          if (!data) return;
 
-        if (patch.hero) applyHero(patch.hero);
-        if (patch.directory) applyDirectory(patch.directory);
-        if (patch.services) applyServices(patch.services);
-        if (patch.process) applyProcess(patch.process);
-        if (patch.cta) applyCta(patch.cta);
+          const patch = parseServicesContentPatch(data);
+          if (!patch) return;
+
+          if (patch.hero) applyHero(patch.hero);
+          if (patch.directory) applyDirectory(patch.directory);
+          if (patch.services) applyServices(patch.services);
+          if (patch.process) applyProcess(patch.process);
+          if (patch.cta) applyCta(patch.cta);
+        } finally {
+          settle();
+        }
       },
       (error) => {
         // Never fall back to placeholder content; leave the build-time HTML.
@@ -144,10 +163,12 @@ export function watchServicesContent(): () => void {
           'Services content subscription failed; showing build-time content.',
           error,
         );
+        settle();
       },
     );
   } catch (error) {
     console.warn('Services content unavailable; showing build-time content.', error);
+    settle();
     return () => {};
   }
 }

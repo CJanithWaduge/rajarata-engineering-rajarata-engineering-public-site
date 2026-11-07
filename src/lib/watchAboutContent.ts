@@ -185,26 +185,45 @@ function applyCta(cta: NonNullable<AboutPatch['cta']>) {
   setTextAll('[data-about-cta-body]', cta.body);
 }
 
-/** Returns an unsubscribe function, or a no-op when Firebase is unavailable. */
-export function watchAboutContent(): () => void {
+/**
+ * Returns an unsubscribe function, or a no-op when Firebase is unavailable.
+ *
+ * `onFirstResult` fires once the first server snapshot has been applied (or
+ * the read failed), which lets `contentHydration.ts` reveal the media gate.
+ */
+export function watchAboutContent(onFirstResult?: () => void): () => void {
+  let settled = false;
+  const settle = () => {
+    if (settled) return;
+    settled = true;
+    onFirstResult?.();
+  };
+
   try {
     const { db } = getFirebase();
     return onSnapshot(
       doc(db, 'site', 'about'),
+      { includeMetadataChanges: true },
       (snapshot) => {
-        const data = snapshot.data();
-        if (!data) return;
+        if (snapshot.metadata.fromCache) return;
 
-        const patch = parseAboutContentPatch(data);
-        if (!patch) return;
+        try {
+          const data = snapshot.data();
+          if (!data) return;
 
-        if (patch.hero) applyHero(patch.hero);
-        if (patch.heritage) applyHeritage(patch.heritage);
-        if (patch.visionMission) applyVisionMission(patch.visionMission);
-        if (patch.pillars) applyPillars(patch.pillars);
-        if (patch.methodology) applyMethodology(patch.methodology);
-        if (patch.industries) applyIndustries(patch.industries);
-        if (patch.cta) applyCta(patch.cta);
+          const patch = parseAboutContentPatch(data);
+          if (!patch) return;
+
+          if (patch.hero) applyHero(patch.hero);
+          if (patch.heritage) applyHeritage(patch.heritage);
+          if (patch.visionMission) applyVisionMission(patch.visionMission);
+          if (patch.pillars) applyPillars(patch.pillars);
+          if (patch.methodology) applyMethodology(patch.methodology);
+          if (patch.industries) applyIndustries(patch.industries);
+          if (patch.cta) applyCta(patch.cta);
+        } finally {
+          settle();
+        }
       },
       (error) => {
         // Never fall back to placeholder content; leave the build-time HTML.
@@ -212,10 +231,12 @@ export function watchAboutContent(): () => void {
           'About content subscription failed; showing build-time content.',
           error,
         );
+        settle();
       },
     );
   } catch (error) {
     console.warn('About content unavailable; showing build-time content.', error);
+    settle();
     return () => {};
   }
 }

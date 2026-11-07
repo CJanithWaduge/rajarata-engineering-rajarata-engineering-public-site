@@ -127,31 +127,52 @@ function applyServicesCta(data: Record<string, unknown>) {
   }
 }
 
-/** Returns an unsubscribe function, or a no-op when Firebase is unavailable. */
-export function watchSiteSettings(): () => void {
+/**
+ * Returns an unsubscribe function, or a no-op when Firebase is unavailable.
+ *
+ * `onFirstResult` fires once the first server snapshot has been applied (or
+ * the read failed), which lets `contentHydration.ts` reveal the media gate.
+ */
+export function watchSiteSettings(onFirstResult?: () => void): () => void {
+  let settled = false;
+  const settle = () => {
+    if (settled) return;
+    settled = true;
+    onFirstResult?.();
+  };
+
   try {
     const { db } = getFirebase();
     return onSnapshot(
       doc(db, 'site', 'settings'),
+      { includeMetadataChanges: true },
       (snapshot) => {
-        const data = snapshot.data();
-        if (!data) return;
-        const facebookLabel =
-          typeof data.facebookLabel === 'string' ? data.facebookLabel : '';
-        FIELDS.forEach((field) => {
-          const value = data[field];
-          applyField(field, typeof value === 'string' ? value : '', facebookLabel);
-        });
-        applyLogo(data);
-        applyServicesCta(data);
+        if (snapshot.metadata.fromCache) return;
+
+        try {
+          const data = snapshot.data();
+          if (!data) return;
+          const facebookLabel =
+            typeof data.facebookLabel === 'string' ? data.facebookLabel : '';
+          FIELDS.forEach((field) => {
+            const value = data[field];
+            applyField(field, typeof value === 'string' ? value : '', facebookLabel);
+          });
+          applyLogo(data);
+          applyServicesCta(data);
+        } finally {
+          settle();
+        }
       },
       (error) => {
         // Never fall back to placeholder content; leave the build-time HTML.
         console.warn('Site settings subscription failed; showing build-time values.', error);
+        settle();
       },
     );
   } catch (error) {
     console.warn('Site settings unavailable; showing build-time values.', error);
+    settle();
     return () => {};
   }
 }

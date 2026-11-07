@@ -18,6 +18,19 @@ test('Spark Hosting config serves only static public output and does not deploy 
   ));
 });
 
+test('mutable public image assets revalidate instead of using a week-long browser cache', async () => {
+  for (const filename of ['firebase.json', 'firebase.spark.json']) {
+    const config = JSON.parse(await readFile(path.join(root, filename), 'utf8'));
+    const imageHeaders = config.hosting.headers.find(
+      (entry) => entry.source === '**/*.@(webp|png|jpg|jpeg|svg|ico)',
+    );
+    assert.ok(imageHeaders, `${filename} must define image cache headers`);
+    assert.ok(imageHeaders.headers.some(
+      (header) => header.key === 'Cache-Control' && header.value === 'no-cache',
+    ));
+  }
+});
+
 test('Spark contact page uses direct configured contact links without an inquiry form', async () => {
   const page = await readFile(path.join(root, 'src', 'pages', 'contact.astro'), 'utf8');
   const hero = await readFile(
