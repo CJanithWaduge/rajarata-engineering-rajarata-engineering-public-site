@@ -2,6 +2,7 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import { getFirebase } from './firebase';
 import { getPrimaryContactAction } from './publicContact';
 import { parsePhoneNumber } from './phone';
+import { googleMapsLinkForEmbed, parseMapEmbedUrl } from './mapEmbed';
 import { formatFacebookUrl } from './siteSettings';
 import { parseWhatsAppNumber } from './whatsapp';
 
@@ -97,6 +98,43 @@ function applyLogo(data: Record<string, unknown>) {
   });
 }
 
+/**
+ * Replaces the Contact page's fallback OpenStreetMap frame with the Google
+ * Maps embed saved in the admin panel. A missing or malformed value is skipped,
+ * so the build-time map and its link stay exactly as they were.
+ */
+function applyMap(data: Record<string, unknown>) {
+  const raw = typeof data.mapEmbedUrl === 'string' ? data.mapEmbedUrl : '';
+  const embed = parseMapEmbedUrl(raw);
+  if (embed.status !== 'ready') return;
+
+  const frame = document.querySelector<HTMLIFrameElement>('[data-site-map-embed]');
+  if (!frame) return;
+
+  frame.src = embed.value;
+  frame.title = 'Head office location on Google Maps';
+  frame.setAttribute('aria-label', 'Head office location on Google Maps');
+
+  const link = document.querySelector<HTMLAnchorElement>('[data-site-map-link]');
+  if (!link) return;
+
+  const mapsLink = googleMapsLinkForEmbed(embed.value);
+  if (!mapsLink) {
+    // No coordinates to open: hide the link rather than send visitors to an
+    // unrelated place. The frame itself still shows the admin's map.
+    link.hidden = true;
+    return;
+  }
+
+  link.hidden = false;
+  link.href = mapsLink;
+  link.textContent = 'Open in Google Maps';
+  link.setAttribute(
+    'aria-label',
+    'Open the head office location in Google Maps (opens in a new tab)',
+  );
+}
+
 /** Updates the Services CTA buttons from the same settings document. */
 function applyServicesCta(data: Record<string, unknown>) {
   const phone = parsePhoneNumber(data.phone);
@@ -159,6 +197,7 @@ export function watchSiteSettings(onFirstResult?: () => void): () => void {
             applyField(field, typeof value === 'string' ? value : '', facebookLabel);
           });
           applyLogo(data);
+          applyMap(data);
           applyServicesCta(data);
         } finally {
           settle();

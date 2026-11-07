@@ -188,6 +188,7 @@ test('project filter selection uses the red active state and a red hover glow', 
   assert.match(component, /btn\.setAttribute\('aria-pressed', String\(on\)\)/);
   assert.match(component, /aria-pressed:bg-primary-container/);
   assert.match(component, /aria-pressed:text-on-primary/);
-  assert.match(component, /hover:shadow-\[0_0_0_3px_rgba\(211,47,47,0\.16\),0_0_16px_rgba\(211,47,47,0\.24\)\]/);
+  assert.match(component, /hover:shadow-\[0_0_14px_rgba\(211,47,47,0\.28\)\]/);
+  assert.doesNotMatch(component, /hover:shadow-\[0_0_0_3px/);
   assert.match(component, /focus-visible:outline-primary-container/);
 });

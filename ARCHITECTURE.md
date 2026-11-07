@@ -139,7 +139,7 @@ dark sections.
 | `src/lib/phone.ts` | International phone number validation and `tel:` link building | `implemented` |
 | `src/lib/firebase.ts` | Lazily initialises the Firebase app and the named Firestore database | `implemented` |
 | `src/lib/siteSettings.ts` | Reads and normalises `site/settings` | `implemented` |
-| `src/lib/watchSiteSettings.ts` | Subscribes to `site/settings` and patches `data-site-*` elements, including the Services CTA actions | `implemented` |
+| `src/lib/watchSiteSettings.ts` | Subscribes to `site/settings` and patches `data-site-*` elements, including the Contact page map and the Services CTA actions | `implemented` |
 | `src/lib/homeContent.ts` | Reads and validates `site/home`; types for the hero and three cards | `implemented` |
 | `src/lib/watchHomeContent.ts` | Subscribes to `site/home` and patches `data-home-*` elements | `implemented` |
 | `src/lib/servicesContentParser.ts` | Firebase-free types and strict/partial parsers for `site/services` | `implemented` |
@@ -231,7 +231,10 @@ Every published string, image reference, and link has a build-time value owned b
 the component that renders it. The admin panel can override three groups at
 runtime:
 
-- `site/settings` — contact details, links, and location label.
+- `site/settings` — contact details, links, location label, and the optional
+  Google Maps embed shown on the Contact page's Head Office card. The embed must
+  be an `https://www.google.com/maps/embed?pb=...` URL; a missing or malformed
+  value leaves the build-time OpenStreetMap frame in place.
 - `site/home` — the Home hero image and the three Featured Engineering Projects
   cards. Images are Firebase Storage URLs when a bucket exists; on the current
   Spark project they are compressed raster data URLs stored inline in the

@@ -18,6 +18,7 @@ export interface SiteSettings {
   facebookUrl: string;
   facebookLabel: string;
   location: string;
+  mapEmbedUrl: string;
 }
 
 export const EMPTY_SETTINGS: SiteSettings = {
@@ -28,6 +29,7 @@ export const EMPTY_SETTINGS: SiteSettings = {
   facebookUrl: '',
   facebookLabel: '',
   location: '',
+  mapEmbedUrl: '',
 };
 
 /** A field is "unset" when it is absent or blank; the UI hides unset rows. */
@@ -48,6 +50,7 @@ function toSettings(data: Record<string, unknown> | undefined): SiteSettings {
     facebookUrl: read('facebookUrl'),
     facebookLabel: read('facebookLabel'),
     location: read('location'),
+    mapEmbedUrl: read('mapEmbedUrl'),
   };
 }
 

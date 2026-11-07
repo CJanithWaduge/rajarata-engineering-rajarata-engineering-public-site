@@ -16,7 +16,8 @@
     "test:services": "node --experimental-strip-types --test tests/services-content.test.mjs",
     "test:about": "node --experimental-strip-types --test tests/about-content.test.mjs",
     "test:projects": "node --experimental-strip-types --test tests/projects-content.test.mjs",
-    "test:site": "npm run check && npm run build && npm run test:spark && npm run test:services && npm run test:about && npm run test:projects && npm run test:whatsapp && npm run test:phone",
+    "test:map": "node --experimental-strip-types --test tests/map-embed.test.mjs",
+    "test:site": "npm run check && npm run build && npm run test:spark && npm run test:services && npm run test:about && npm run test:projects && npm run test:map && npm run test:whatsapp && npm run test:phone",
     "build:spark": "node --env-file-if-exists=.env scripts/build-spark.mjs",
     "deploy:spark": "node --env-file-if-exists=.env scripts/deploy-spark.mjs",
     "astro": "astro"
