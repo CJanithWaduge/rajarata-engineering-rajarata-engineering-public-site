@@ -8,6 +8,15 @@
     ],
     "headers": [
       {
+        "source": "**",
+        "headers": [
+          { "key": "X-Content-Type-Options", "value": "nosniff" },
+          { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+          { "key": "X-Frame-Options", "value": "DENY" },
+          { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' https://firestore.googleapis.com https://*.googleapis.com; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; font-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'none';" }
+        ]
+      },
+      {
         "regex": "^(?:/|/about-us/?|/services/?|/projects/?|/contact/?|.*\\.html)$",
         "headers": [
           { "key": "Cache-Control", "value": "no-cache" }

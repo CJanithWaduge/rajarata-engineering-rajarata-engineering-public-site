@@ -69,6 +69,12 @@ function auditBuild() {
     /"private_key"\s*:/i,
     /CONTACT_SMTP_PASSWORD/i,
     /CONTACT_RATE_LIMIT_SALT/i,
+    // Stripe secret keys (test or live)
+    /sk_(?:live|test)_[A-Za-z0-9]{20,}/i,
+    // Cloud provider secrets (AWS / Azure / GCP)
+    /(?:AWS|AZURE|GCP)_[A-Z_]+(?:SECRET|ACCESS_KEY|TOKEN)\s*[:=]\s*["'][^"']{8,}["']/i,
+    // Database URLs and connection strings
+    /(?:DATABASE_URL|CONNECTION_STRING)\s*[:=]\s*["'][^"']{8,}["']/i,
   ];
   const privateMatches = privatePatterns.filter((pattern) => pattern.test(publicText));
   const findings = [];
