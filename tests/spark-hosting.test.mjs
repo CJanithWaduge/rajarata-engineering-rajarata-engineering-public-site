@@ -73,9 +73,14 @@ test('public footer uses admin-managed email and Facebook values', async () => {
 
 test('footer uses the admin logo without rendering the obsolete fallback mark', async () => {
   const footer = await readFile(path.join(root, 'src', 'components', 'Footer.astro'), 'utf8');
+  const base = await readFile(path.join(root, 'src', 'layouts', 'Base.astro'), 'utf8');
+  const watcher = await readFile(path.join(root, 'src', 'lib', 'watchSiteSettings.ts'), 'utf8');
 
   assert.match(footer, /data-site-logo-image[\s\S]*?data-live-media/);
   assert.doesNotMatch(footer, /<Logo\b/);
+  assert.match(base, /rel="icon"[^>]*data-site-favicon[^>]*data-default-href="\/favicon\.svg"/);
+  assert.match(watcher, /querySelector<HTMLLinkElement>\('link\[data-site-favicon\]'\)/);
+  assert.match(watcher, /favicon\.href = url \|\| favicon\.dataset\.defaultHref/);
   await assert.rejects(readFile(path.join(root, 'src', 'components', 'Logo.astro')));
 });
 

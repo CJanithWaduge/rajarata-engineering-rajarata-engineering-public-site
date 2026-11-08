@@ -87,6 +87,11 @@ function applyLogo(data: Record<string, unknown>) {
     typeof data.logoUrl === 'string' ? data.logoUrl.trim() : '';
   const alt =
     typeof data.logoAlt === 'string' ? data.logoAlt.trim() : '';
+  const favicon = document.querySelector<HTMLLinkElement>('link[data-site-favicon]');
+  if (favicon) {
+    favicon.href = url || favicon.dataset.defaultHref || '/favicon.svg';
+  }
+
   const imgs = document.querySelectorAll<HTMLImageElement>('[data-site-logo-image]');
   if (imgs.length === 0) return;
 
