@@ -7,6 +7,8 @@ import {
 
 const embedUrl =
   'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3948.0778077008304!2d80.41277907454942!3d8.295055791740014!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2slk!4v1794028086994!5m2!1sen!2slk';
+const placeEmbedUrl =
+  'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3948.0038428459457!2d80.3971768!3d8.3024149!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3afcf5e65e84350b%3A0xe4cc9359d5a3bee8!2sRajarata%20Engineering!5e0!3m2!1sen!2slk';
 
 test('accepts a Google Maps embed URL', () => {
   const result = parseMapEmbedUrl(embedUrl);
@@ -38,10 +40,17 @@ test('rejects a missing, non-Google, non-https, or non-embed value', () => {
   );
 });
 
-test('builds an Open in Google Maps link from the embed coordinates', () => {
+test('builds an Open in Google Maps link from the embedded place CID', () => {
   assert.equal(
-    googleMapsLinkForEmbed(embedUrl),
-    'https://www.google.com/maps/search/?api=1&query=8.295055791740014,80.41277907454942',
+    googleMapsLinkForEmbed(placeEmbedUrl),
+    'https://www.google.com/maps?cid=16486714349942193896',
   );
-  assert.equal(googleMapsLinkForEmbed('https://www.google.com/maps/embed?pb=!1m18'), null);
+});
+
+test('does not use viewport coordinates as the place link when CID is absent', () => {
+  assert.equal(googleMapsLinkForEmbed(embedUrl), null);
+  assert.equal(
+    googleMapsLinkForEmbed('https://www.google.com/maps/embed?pb=!1m18'),
+    null,
+  );
 });

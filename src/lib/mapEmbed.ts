@@ -51,21 +51,20 @@ export function parseMapEmbedUrl(value: string | undefined | null): MapEmbedResu
 }
 
 /**
- * Builds an "Open in Google Maps" link from the coordinates inside the embed's
- * `pb` parameter (`!3d` is latitude, `!2d` is longitude). Returns null when the
- * coordinates are absent, so the caller can hide the link instead of pointing
- * somewhere unrelated.
+ * Builds an "Open in Google Maps" link from the place CID in the embed's `pb`
+ * parameter. Viewport coordinates in an embed are not necessarily the place's
+ * location, so no link is returned when the embed has no place CID.
  */
 export function googleMapsLinkForEmbed(value: string): string | null {
   try {
     const pb = new URL(value).searchParams.get('pb');
     if (!pb) return null;
 
-    const latitude = /!3d(-?\d+(?:\.\d+)?)/.exec(pb)?.[1];
-    const longitude = /!2d(-?\d+(?:\.\d+)?)/.exec(pb)?.[1];
-    if (!latitude || !longitude) return null;
+    const cidHex = /!3m3!1m2!1s0x[0-9a-f]+:0x([0-9a-f]+)/i.exec(pb)?.[1];
+    if (!cidHex) return null;
 
-    return `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+    const cid = BigInt(`0x${cidHex}`).toString(10);
+    return `https://www.google.com/maps?cid=${cid}`;
   } catch {
     return null;
   }
