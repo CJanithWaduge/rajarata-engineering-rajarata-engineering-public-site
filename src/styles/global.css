@@ -539,3 +539,31 @@
   -webkit-font-feature-settings: "liga";
   -webkit-font-smoothing: antialiased;
 }
+
+/* -----------------------------------------------------------------------
+   On-demand icons (admin-picked Material Symbols names outside the subset)
+
+   The admin panel searches Iconify and stores names like
+   `material-symbols:camera`. The self-hosted subset above only holds the 67
+   icons the build-time pages use, so an admin-picked icon is swapped to a CSS
+   mask pointing at Iconify's SVG. Kept unlayered, next to the font face, so it
+   matches the fixed 24px sizing of the font path.
+   ----------------------------------------------------------------------- */
+.iconify-symbol {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  font-size: 24px;
+  line-height: 1;
+  color: inherit;
+  background-color: currentColor;
+  -webkit-mask-image: var(--iconify-icon);
+  mask-image: var(--iconify-icon);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-font-smoothing: antialiased;
+}

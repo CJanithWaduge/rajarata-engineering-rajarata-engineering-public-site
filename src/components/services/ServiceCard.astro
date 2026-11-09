@@ -114,7 +114,7 @@ const cardIndex = parseInt(number, 10) - 1;
       <span class="btn-text">Read Detailed Specifications</span>
       <span class="material-symbols-outlined text-[18px] transition-transform duration-200 expand-icon">keyboard_arrow_down</span>
     </button>
-    <a class="p-2 rounded-xl bg-surface-container hover:bg-primary-container hover:text-on-primary text-secondary transition-all focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container" data-path="contact" aria-label={primaryContactAction.label} href={primaryContactAction.href}>
+    <a class="p-2 rounded-xl bg-surface-container hover:bg-primary-container hover:text-on-primary text-secondary transition-all focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container" data-path="contact" data-site-primary-contact aria-label={primaryContactAction.label} href={primaryContactAction.href} target={primaryContactAction.opensInNewTab ? '_blank' : undefined} rel={primaryContactAction.opensInNewTab ? 'noopener noreferrer' : undefined}>
       <span class="material-symbols-outlined text-[20px] block">arrow_forward</span>
     </a>
   </div>

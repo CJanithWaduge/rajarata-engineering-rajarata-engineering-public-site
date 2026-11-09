@@ -1,7 +1,7 @@
 ---
 /**
- * Homepage preview of six featured services. The Services page retains the
- * complete directory, including the panel and cable installation entries.
+ * Homepage preview of the three featured services. The Services page retains
+ * the complete directory.
  */
 import Container from "../Container.astro";
 ---
@@ -22,7 +22,7 @@ import Container from "../Container.astro";
         Comprehensive electrical engineering, contracting, and ELV solutions delivered with technical excellence.
       </p>
     </div>
-    <!-- Six featured services: three columns on desktop keeps both rows balanced. -->
+    <!-- Three featured services: one balanced row on desktop. -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <!-- Service 01 -->
       <div
@@ -45,10 +45,10 @@ import Container from "../Container.astro";
             </div>
           </div>
           <h3 class="font-title-lg text-title-lg text-on-surface" data-home-service-title
-            >Residential &amp; Commercial Wiring</h3
+            >Residential, Commercial &amp; Industrial Electrical Installations</h3
           >
           <p class="font-body-md text-body-md text-secondary" data-home-service-description>
-            Complete wiring for homes, offices, and retail spaces — conduit routing, socket and lighting circuits, and balanced load distribution.
+            Complete electrical wiring, power distribution, and installation for homes, offices, commercial buildings, and industrial facilities with high safety standards.
           </p>
         </div>
         <div class="pt-6">
@@ -79,15 +79,15 @@ import Container from "../Container.astro";
               class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary-container"
             >
               <span class="material-symbols-outlined text-2xl" data-home-service-icon
-                >precision_manufacturing</span
+                >security</span
               >
             </div>
           </div>
           <h3 class="font-title-lg text-title-lg text-on-surface" data-home-service-title
-            >Industrial Electrical Installations</h3
+            >CCTV Camera Installation &amp; Maintenance</h3
           >
           <p class="font-body-md text-body-md text-secondary" data-home-service-description>
-            High-demand manufacturing floor power drops, transformer stations, motor controls, and heavy feeder wiring.
+            Professional security camera setup, advanced surveillance configuration, and regular maintenance to ensure maximum protection for your premises.
           </p>
         </div>
         <div class="pt-6">
@@ -95,7 +95,7 @@ import Container from "../Container.astro";
             class="inline-flex items-center gap-1.5 font-label-md text-label-md text-primary-container hover:text-primary transition-colors"
             data-path="services"
             data-home-service-link
-            href="/services#service-02">
+            href="/services#service-07">
             <span>Learn More</span>
             <span class="material-symbols-outlined text-base">arrow_forward</span>
           </a>
@@ -118,15 +118,15 @@ import Container from "../Container.astro";
               class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary-container"
             >
               <span class="material-symbols-outlined text-2xl" data-home-service-icon
-                >assignment_turned_in</span
+                >electric_meter</span
               >
             </div>
           </div>
           <h3 class="font-title-lg text-title-lg text-on-surface" data-home-service-title
-            >Testing &amp; Commissioning</h3
+            >MDB / SMDB Panel Installation</h3
           >
           <p class="font-body-md text-body-md text-secondary" data-home-service-description>
-            Insulation resistance, loop impedance, earth electrode validation, thermal surveys, and formal handover certs.
+            Expert installation, wiring, and configuration of Main Distribution Boards (MDB) and Sub Main Distribution Boards (SMDB) for reliable and efficient power control.
           </p>
         </div>
         <div class="pt-6">
@@ -134,118 +134,7 @@ import Container from "../Container.astro";
             class="inline-flex items-center gap-1.5 font-label-md text-label-md text-primary-container hover:text-primary transition-colors"
             data-path="services"
             data-home-service-link
-            href="/services#service-05">
-            <span>Learn More</span>
-            <span class="material-symbols-outlined text-base">arrow_forward</span>
-          </a>
-        </div>
-      </div>
-
-      <!-- Service 04 -->
-      <div
-        class="card-interactive card-tilt group flex flex-col justify-between p-6 rounded-2xl bg-surface-container-lowest shadow-sm"
-        data-card-tilt
-        data-home-service="4"
-      >
-        <div class="flex flex-col space-y-4">
-          <div class="flex items-center justify-between">
-            <span
-              class="font-headline-sm text-headline-sm font-bold text-surface-container-highest group-hover:text-primary-container transition-colors"
-              >04</span
-            >
-            <div
-              class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary-container"
-            >
-              <span class="material-symbols-outlined text-2xl" data-home-service-icon>build_circle</span>
-            </div>
-          </div>
-          <h3 class="font-title-lg text-title-lg text-on-surface" data-home-service-title
-            >Maintenance &amp; Troubleshooting</h3
-          >
-          <p class="font-body-md text-body-md text-secondary" data-home-service-description>
-            Fault finding, inspection, repair, and preventive upkeep of installed LV systems and equipment to keep them running safely.
-          </p>
-        </div>
-        <div class="pt-6">
-          <a
-            class="inline-flex items-center gap-1.5 font-label-md text-label-md text-primary-container hover:text-primary transition-colors"
-            data-path="services"
-            data-home-service-link
-            href="/services#service-06">
-            <span>Learn More</span>
-            <span class="material-symbols-outlined text-base">arrow_forward</span>
-          </a>
-        </div>
-      </div>
-
-      <!-- Service 05 -->
-      <div
-        class="card-interactive card-tilt group flex flex-col justify-between p-6 rounded-2xl bg-surface-container-lowest shadow-sm"
-        data-card-tilt
-        data-home-service="5"
-      >
-        <div class="flex flex-col space-y-4">
-          <div class="flex items-center justify-between">
-            <span
-              class="font-headline-sm text-headline-sm font-bold text-surface-container-highest group-hover:text-primary-container transition-colors"
-              >05</span
-            >
-            <div
-              class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary-container"
-            >
-              <span class="material-symbols-outlined text-2xl" data-home-service-icon>lan</span>
-            </div>
-          </div>
-          <h3 class="font-title-lg text-title-lg text-on-surface" data-home-service-title
-            >All Kinds of ELV Solutions</h3
-          >
-          <p class="font-body-md text-body-md text-secondary" data-home-service-description>
-            Structured cabling, access control, CCTV networks, addressable fire alarms, and Building Management Systems (BMS).
-          </p>
-        </div>
-        <div class="pt-6">
-          <a
-            class="inline-flex items-center gap-1.5 font-label-md text-label-md text-primary-container hover:text-primary transition-colors"
-            data-path="services"
-            data-home-service-link
-            href="/services#service-07">
-            <span>Learn More</span>
-            <span class="material-symbols-outlined text-base">arrow_forward</span>
-          </a>
-        </div>
-      </div>
-
-      <!-- Service 06 -->
-      <div
-        class="card-interactive card-tilt group flex flex-col justify-between p-6 rounded-2xl bg-surface-container-lowest shadow-sm"
-        data-card-tilt
-        data-home-service="6"
-      >
-        <div class="flex flex-col space-y-4">
-          <div class="flex items-center justify-between">
-            <span
-              class="font-headline-sm text-headline-sm font-bold text-surface-container-highest group-hover:text-primary-container transition-colors"
-              >06</span
-            >
-            <div
-              class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary-container"
-            >
-              <span class="material-symbols-outlined text-2xl" data-home-service-icon>bolt</span>
-            </div>
-          </div>
-          <h3 class="font-title-lg text-title-lg text-on-surface" data-home-service-title
-            >Lightning Protection System (LPS)</h3
-          >
-          <p class="font-body-md text-body-md text-secondary" data-home-service-description>
-            ESE and conventional air terminal networks, down-conductor dissipation paths, and transient surge suppression (SPD).
-          </p>
-        </div>
-        <div class="pt-6">
-          <a
-            class="inline-flex items-center gap-1.5 font-label-md text-label-md text-primary-container hover:text-primary transition-colors"
-            data-path="services"
-            data-home-service-link
-            href="/services#service-08">
+            href="/services#service-03">
             <span>Learn More</span>
             <span class="material-symbols-outlined text-base">arrow_forward</span>
           </a>

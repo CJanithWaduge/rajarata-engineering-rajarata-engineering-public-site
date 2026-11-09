@@ -36,9 +36,10 @@ function applyField(field: Field, value: string, facebookLabel = '') {
     `[data-site-${FIELD_ATTRIBUTES[field]}]`,
   );
   const unset = value.trim() === '';
+  const whatsapp = field === 'whatsapp' ? parseWhatsAppNumber(value) : null;
 
   targets.forEach((el) => {
-    if (unset) {
+    if (unset || (whatsapp && whatsapp.status !== 'ready')) {
       // Hide the whole row, not just the text, so icons and labels go with it.
       const row = el.closest<HTMLElement>('[data-site-row]');
       (row ?? el).hidden = true;
@@ -53,11 +54,17 @@ function applyField(field: Field, value: string, facebookLabel = '') {
       if (field === 'phone') {
         el.href = `tel:${value.replace(/[\s().-]/g, '')}`;
       } else if (field === 'whatsapp') {
-        const digits = value.replace(/[^\d]/g, '');
-        el.href = `https://wa.me/${digits}`;
+        if (!whatsapp || whatsapp.status !== 'ready') return;
+        el.href = whatsapp.href;
+        el.setAttribute(
+          'aria-label',
+          `Chat with Rajarata Engineering on WhatsApp at ${whatsapp.displayNumber}`,
+        );
       } else if (field === 'facebookUrl') {
         el.href = value;
         el.setAttribute('aria-label', 'Visit Rajarata Engineering on Facebook');
+        el.target = '_blank';
+        el.rel = 'noopener noreferrer';
         // The owner can override the visible text; otherwise show the address
         // they entered rather than the generic word "Facebook".
         const label = facebookLabel.trim();
@@ -66,17 +73,22 @@ function applyField(field: Field, value: string, facebookLabel = '') {
         return;
       } else if (field === 'email') {
         el.href = `mailto:${value}`;
+        el.target = '_blank';
+        el.rel = 'noopener noreferrer';
       }
-      el.setAttribute('aria-label', value);
+      if (field !== 'whatsapp') el.setAttribute('aria-label', value);
     }
 
     // `data-site-format` keeps the displayed form separate from the raw value.
     const format = el.dataset.siteFormat;
     const text =
       format === 'whatsapp'
-        ? `+${value.replace(/[^\d]/g, '')}`
+        ? whatsapp?.status === 'ready'
+          ? whatsapp.displayNumber
+          : value
         : value;
     const valueTarget = el.querySelector<HTMLElement>('[data-site-value]') ?? el;
+    if (field === 'whatsapp' && valueTarget === el) return;
     valueTarget.textContent = text;
   });
 }
@@ -155,16 +167,25 @@ function applyServicesCta(data: Record<string, unknown>) {
   const phone = parsePhoneNumber(data.phone);
   const whatsapp = parseWhatsAppNumber(data.whatsapp);
 
-  const primary = document.querySelector<HTMLAnchorElement>(
+  const primaryActions = document.querySelectorAll<HTMLAnchorElement>(
     '[data-site-primary-contact]',
   );
-  if (primary && (phone.status === 'ready' || whatsapp.status === 'ready')) {
+  if (phone.status === 'ready' || whatsapp.status === 'ready') {
     const action = getPrimaryContactAction(whatsapp, phone);
-    primary.href = action.href;
-    primary.setAttribute('aria-label', action.label);
-    const label =
-      primary.querySelector<HTMLElement>('[data-site-primary-label]') ?? primary;
-    label.textContent = action.label;
+    primaryActions.forEach((primary) => {
+      primary.href = action.href;
+      primary.setAttribute('aria-label', action.label);
+      if (action.opensInNewTab) {
+        primary.target = '_blank';
+        primary.rel = 'noopener noreferrer';
+      } else {
+        primary.removeAttribute('target');
+        primary.removeAttribute('rel');
+      }
+      const label =
+        primary.querySelector<HTMLElement>('[data-site-primary-label]') ?? primary;
+      label.textContent = action.label;
+    });
   }
 
   const call = document.querySelector<HTMLAnchorElement>('[data-site-phone-call]');

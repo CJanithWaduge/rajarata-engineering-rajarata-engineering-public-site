@@ -18,11 +18,17 @@ interface Props {
   variant?: 'primary' | 'secondary' | 'outline';
   size?: 'sm' | 'md';
   href?: string;
+  /** Anchor target, e.g. `_blank` for links that leave the site. */
+  target?: '_blank' | '_self';
+  /** Anchor rel, e.g. `noopener noreferrer` for new-tab links. */
+  rel?: string;
   type?: 'button' | 'submit' | 'reset';
   /** Marks the control unavailable. Only valid on <button>. */
   disabled?: boolean;
   /** Accessible name when the visible content is an icon. */
   'aria-label'?: string;
+  /** Marks a primary contact action for live Site Settings updates. */
+  'data-site-primary-contact'?: boolean;
   class?: string;
 }
 
@@ -45,8 +51,11 @@ const {
   variant = 'primary',
   size = 'md',
   href,
+  target,
+  rel,
   type = 'button',
   disabled = false,
+  'data-site-primary-contact': primaryContact = false,
   class: className,
 } = Astro.props;
 
@@ -81,7 +90,14 @@ const classesForAnchor = disabled
 
 {
   href ? (
-    <a class={classesForAnchor} href={href} aria-label={Astro.props['aria-label']}>
+    <a
+      class={classesForAnchor}
+      href={href}
+      target={target}
+      rel={rel}
+      aria-label={Astro.props['aria-label']}
+      data-site-primary-contact={primaryContact || undefined}
+    >
       <slot />
     </a>
   ) : (

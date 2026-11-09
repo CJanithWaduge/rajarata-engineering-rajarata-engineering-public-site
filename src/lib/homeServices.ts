@@ -1,13 +1,17 @@
+import { isIconifyIconName } from './iconify';
+
 /**
  * Home page "Our Electrical Services" cards written by the admin panel at
  * `site/home`.
  *
  * Every field is optional. A blank or malformed field is returned as an empty
  * string so the watcher can skip it and leave the build-time card in place.
- * Icons and links are restricted to the same allowlists as the admin form, and
- * the link target is an internal Services anchor, never arbitrary markup.
+ * Icons are either a curated name from the self-hosted font subset or a safe
+ * `material-symbols:<slug>` name chosen from the admin panel's Iconify search;
+ * links are restricted to the internal Services anchors, never arbitrary
+ * markup.
  */
-export const HOME_SERVICE_COUNT = 6;
+export const HOME_SERVICE_COUNT = 3;
 
 const ICONS = new Set([
   'home_repair_service',
@@ -16,6 +20,8 @@ const ICONS = new Set([
   'build_circle',
   'lan',
   'bolt',
+  'security',
+  'electric_meter',
   'apartment',
   'developer_board',
   'linear_scale',
@@ -66,14 +72,14 @@ export function readHomeService(value: unknown): HomeService {
   const href = readString(record.href).trim();
 
   return {
-    icon: ICONS.has(icon) ? icon : '',
+    icon: ICONS.has(icon) || isIconifyIconName(icon) ? icon : '',
     title: readText(record.title, TITLE_MAX_LENGTH),
     description: readText(record.description, DESCRIPTION_MAX_LENGTH),
     href: LINKS.has(href) ? href : '',
   };
 }
 
-/** Pads the stored array to exactly six slots without inventing content. */
+/** Pads the stored array to exactly three slots without inventing content. */
 export function readHomeServices(value: unknown): HomeService[] {
   const items = Array.isArray(value) ? value.slice(0, HOME_SERVICE_COUNT) : [];
 

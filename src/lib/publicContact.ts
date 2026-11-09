@@ -15,17 +15,32 @@ if (phoneContact.status === 'invalid') {
   console.warn('PUBLIC_CONTACT_PHONE must be an international phone number.');
 }
 
+export type PrimaryContactAction = {
+  href: string;
+  label: string;
+  /** WhatsApp leaves the site, so its links open in a new tab. */
+  opensInNewTab: boolean;
+};
+
 export function getPrimaryContactAction(
   whatsapp = whatsappContact,
   phone = phoneContact,
-): { href: string; label: string } {
+): PrimaryContactAction {
   if (whatsapp.status === 'ready') {
-    return { href: whatsapp.href, label: 'Chat on WhatsApp' };
+    return {
+      href: whatsapp.href,
+      label: 'Chat on WhatsApp',
+      opensInNewTab: true,
+    };
   }
   if (phone.status === 'ready') {
-    return { href: phone.href, label: 'Call us' };
+    return { href: phone.href, label: 'Call us', opensInNewTab: false };
   }
-  return { href: '/contact#contact-options', label: 'Contact us' };
+  return {
+    href: '/contact#contact-options',
+    label: 'Contact us',
+    opensInNewTab: false,
+  };
 }
 
 export function getPublicContactActions(
@@ -33,7 +48,7 @@ export function getPublicContactActions(
 ): {
   phone: ReturnType<typeof parsePhoneNumber>;
   whatsapp: ReturnType<typeof parseWhatsAppNumber>;
-  primary: { href: string; label: string };
+  primary: PrimaryContactAction;
 } {
   const phone = business ? parsePhoneNumber(business.phone) : phoneContact;
   const whatsapp = business ? parseWhatsAppNumber(business.whatsapp) : whatsappContact;

@@ -168,6 +168,8 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
                 href={publicWhatsApp.href}
                 data-site-whatsapp
                 data-site-format="whatsapp"
+                target="_blank"
+                rel="noopener noreferrer"
                 referrerpolicy="no-referrer"
                 aria-label={`Chat with Rajarata Engineering on WhatsApp at ${publicWhatsApp.displayNumber}`}
                 class={`inline-flex min-h-11 max-w-full flex-wrap items-center gap-2 break-all rounded-control bg-whatsapp px-3 py-2 font-label-sm text-label-sm text-white transition-colors hover:bg-whatsapp-hover active:translate-y-px ${focus}`}
@@ -184,11 +186,15 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
                 class="break-all underline-offset-4 hover:text-inverse-primary hover:underline"
                 data-site-email
                 href={`mailto:${emailContact.value}`}
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 {emailContact.value}
               </a>
             ) : (
-              <span class="break-all" data-site-email>Email address to be confirmed</span>
+              <a class="break-all underline-offset-4 hover:text-inverse-primary hover:underline" data-site-email>
+                Email address to be confirmed
+              </a>
             )}
           </div>
           <div class="flex items-start gap-2 font-body-sm text-body-sm" data-site-row>
@@ -202,6 +208,8 @@ const focus = 'focus:outline-none focus-visible:outline-2 focus-visible:outline-
               data-site-facebook-url
               referrerpolicy="no-referrer"
               href={facebookContact.status === 'ready' ? facebookContact.value : '#'}
+              target={facebookContact.status === 'ready' ? '_blank' : undefined}
+              rel={facebookContact.status === 'ready' ? 'noopener noreferrer' : undefined}
             ><span data-site-value>{facebookContact.status === 'ready' ? formatFacebookUrl(facebookContact.value) : 'Facebook page link to be confirmed'}</span></a>
           </div>
         </div>

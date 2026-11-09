@@ -7,6 +7,7 @@ import {
   type HomeProject,
 } from './homeContent';
 import { readHomeService, type HomeService } from './homeServices';
+import { iconifyIconUrl } from './iconify';
 
 /**
  * Live hydration for the Home page.
@@ -54,6 +55,31 @@ function applyProject(index: number, project: HomeProject) {
 }
 
 /**
+ * Icons inside the self-hosted subset keep using the Material Symbols ligature
+ * font. A `material-symbols:<slug>` name is outside that subset, so it becomes
+ * an on-demand Iconify SVG mask instead of the literal name being rendered as
+ * text. The URL only reaches Iconify when an admin actually picks such an icon.
+ */
+function applyServiceIcon(element: HTMLElement | null, icon: string) {
+  if (!element) return;
+
+  const remoteUrl = iconifyIconUrl(icon);
+
+  if (remoteUrl) {
+    element.textContent = '';
+    element.classList.remove('material-symbols-outlined');
+    element.classList.add('iconify-symbol');
+    element.style.setProperty('--iconify-icon', `url("${remoteUrl}")`);
+    return;
+  }
+
+  element.classList.remove('iconify-symbol');
+  element.style.removeProperty('--iconify-icon');
+  element.classList.add('material-symbols-outlined');
+  element.textContent = icon;
+}
+
+/**
  * Every service field is optional, so only non-empty values are written
  * through. A blank field leaves the build-time icon, copy, or link intact.
  */
@@ -61,7 +87,12 @@ function applyService(index: number, service: HomeService) {
   const card = document.querySelector<HTMLElement>(`[data-home-service="${index}"]`);
   if (!card) return;
 
-  if (service.icon) setText(card, '[data-home-service-icon]', service.icon);
+  if (service.icon) {
+    applyServiceIcon(
+      card.querySelector<HTMLElement>('[data-home-service-icon]'),
+      service.icon,
+    );
+  }
   if (service.title) setText(card, '[data-home-service-title]', service.title);
   if (service.description) {
     setText(card, '[data-home-service-description]', service.description);
@@ -110,7 +141,7 @@ export function watchHomeContent(onFirstResult?: () => void): () => void {
           }
 
           if (Array.isArray(data.featuredServices)) {
-            data.featuredServices.slice(0, 6).forEach((value, index) => {
+            data.featuredServices.slice(0, 3).forEach((value, index) => {
               applyService(index + 1, readHomeService(value));
             });
           }

@@ -32,9 +32,12 @@ const { phone: phoneContact, primary: primaryContactAction } = getPublicContactA
         <a
           class="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-primary-container text-on-primary font-label-md text-label-md shadow-md hover:bg-primary transition-all active:translate-y-[1px] text-center focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container"
           data-path="contact"
+          data-site-primary-contact
           href={primaryContactAction.href}
+          target={primaryContactAction.opensInNewTab ? '_blank' : undefined}
+          rel={primaryContactAction.opensInNewTab ? 'noopener noreferrer' : undefined}
         >
-          <span>{primaryContactAction.label}</span>
+          <span data-site-primary-label>{primaryContactAction.label}</span>
           <span class="material-symbols-outlined text-[18px]">east</span>
         </a>
         {phoneContact.status === 'ready' && (

@@ -89,7 +89,15 @@ const focusRing =
 
     <!-- Desktop actions -->
     <div class="hidden lg:flex items-center space-x-5">
-      <Button size="sm" href={primaryContactAction.href}>{primaryContactAction.label}</Button>
+      <Button
+        size="sm"
+        href={primaryContactAction.href}
+        target={primaryContactAction.opensInNewTab ? '_blank' : undefined}
+        rel={primaryContactAction.opensInNewTab ? 'noopener noreferrer' : undefined}
+        data-site-primary-contact
+      >
+        {primaryContactAction.label}
+      </Button>
     </div>
 
     <!-- Mobile actions -->
@@ -182,7 +190,15 @@ const focusRing =
     </nav>
 
     <div class="mt-8 pt-6">
-      <Button href={primaryContactAction.href} class="w-full">{primaryContactAction.label}</Button>
+      <Button
+        href={primaryContactAction.href}
+        target={primaryContactAction.opensInNewTab ? '_blank' : undefined}
+        rel={primaryContactAction.opensInNewTab ? 'noopener noreferrer' : undefined}
+        class="w-full"
+        data-site-primary-contact
+      >
+        {primaryContactAction.label}
+      </Button>
     </div>
   </div>
 
@@ -192,11 +208,15 @@ const focusRing =
         <a
           class="flex min-h-11 items-center gap-3 py-1 text-on-surface underline-offset-4 hover:underline focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container"
           href={whatsappContact.href}
+          data-site-whatsapp
+          data-site-format="whatsapp"
+          target="_blank"
+          rel="noopener noreferrer"
           referrerpolicy="no-referrer"
           aria-label={`Chat with Rajarata Engineering on WhatsApp at ${whatsappContact.displayNumber}`}
         >
           <span class="material-symbols-outlined text-primary text-[20px]">chat</span>
-          <span>WhatsApp {whatsappContact.displayNumber}</span>
+          <span>WhatsApp <span data-site-value>{whatsappContact.displayNumber}</span></span>
         </a>
       )}
       {phoneContact.status === 'ready' && (

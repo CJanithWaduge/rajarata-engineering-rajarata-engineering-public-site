@@ -71,6 +71,50 @@ test('public footer uses admin-managed email and Facebook values', async () => {
   assert.match(watcher, /const data = snapshot\.data\(\) \?\? \{\}/);
 });
 
+test('all primary contact actions and direct WhatsApp links follow Site Settings', async () => {
+  const primaryActionFiles = [
+    'Header.astro',
+    path.join('home', 'Hero.astro'),
+    path.join('home', 'ClosingCta.astro'),
+    path.join('about', 'AboutHero.astro'),
+    path.join('about', 'AboutCta.astro'),
+    path.join('projects', 'ProjectsCta.astro'),
+    path.join('services', 'ServiceCard.astro'),
+    path.join('services', 'ServicesCta.astro'),
+  ];
+
+  for (const filename of primaryActionFiles) {
+    const component = await readFile(
+      path.join(root, 'src', 'components', filename),
+      'utf8',
+    );
+    assert.match(component, /data-site-primary-contact/, filename);
+  }
+
+  const button = await readFile(path.join(root, 'src', 'components', 'ui', 'Button.astro'), 'utf8');
+  assert.match(button, /data-site-primary-contact=\{primaryContact/);
+
+  for (const filename of [
+    'Header.astro',
+    path.join('Footer.astro'),
+    path.join('about', 'AboutCta.astro'),
+    path.join('contact', 'OperationalDesks.astro'),
+  ]) {
+    const component = await readFile(
+      path.join(root, 'src', 'components', filename),
+      'utf8',
+    );
+    assert.match(component, /data-site-whatsapp/, filename);
+  }
+
+  const watcher = await readFile(path.join(root, 'src', 'lib', 'watchSiteSettings.ts'), 'utf8');
+  assert.match(watcher, /parseWhatsAppNumber\(value\)/);
+  assert.match(watcher, /el\.href = whatsapp\.href/);
+  assert.match(watcher, /whatsapp\.displayNumber/);
+  assert.match(watcher, /querySelectorAll<HTMLAnchorElement>\([\s\S]*?\[data-site-primary-contact\]/);
+  assert.match(watcher, /primaryActions\.forEach\(\(primary\) =>/);
+});
+
 test('footer uses the admin logo without rendering the obsolete fallback mark', async () => {
   const footer = await readFile(path.join(root, 'src', 'components', 'Footer.astro'), 'utf8');
   const base = await readFile(path.join(root, 'src', 'layouts', 'Base.astro'), 'utf8');

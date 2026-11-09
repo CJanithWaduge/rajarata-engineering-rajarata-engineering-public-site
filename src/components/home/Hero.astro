@@ -101,8 +101,14 @@ const { primary: primaryContactAction } = getPublicContactActions();
         <div
           class="flex w-full flex-col items-stretch gap-4 pt-2 sm:w-auto sm:flex-row sm:items-center"
         >
-          <Button variant="primary" href={primaryContactAction.href}>
-            <span>{primaryContactAction.label}</span>
+          <Button
+            variant="primary"
+            href={primaryContactAction.href}
+            target={primaryContactAction.opensInNewTab ? '_blank' : undefined}
+            rel={primaryContactAction.opensInNewTab ? 'noopener noreferrer' : undefined}
+            data-site-primary-contact
+          >
+            <span data-site-primary-label>{primaryContactAction.label}</span>
             <span class="material-symbols-outlined text-lg" aria-hidden="true">arrow_forward</span>
           </Button>
           <Button variant="secondary" href="#services-list">EXPLORE SERVICES</Button>

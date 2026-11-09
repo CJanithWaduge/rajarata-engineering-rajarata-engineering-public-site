@@ -218,6 +218,12 @@ pip install fonttools brotli          # one-off, not a project dependency
 #    populate(text="\n".join(icons), glyphs=[resolved ligature targets])
 ```
 
+A new build-time icon needs this subset rebuild; an admin-picked internet icon
+does not. It is stored as `material-symbols:<slug>` (validated by
+`src/lib/iconify.ts`) and rendered as an on-demand Iconify SVG mask
+(`src/lib/watchHomeContent.ts` + the `.iconify-symbol` rule in
+`src/styles/global.css`).
+
 `layout_closure=False` matters: with closure on, the ligature alphabet pulls
 every one of the font's 3,525 glyphs back in and the "subset" stays 250 KB.
 After rebuilding, assert that each name still collapses to a single glyph

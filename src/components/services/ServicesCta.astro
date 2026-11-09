@@ -38,7 +38,7 @@ const { phone: phoneContact, primary: primaryContactAction } = getPublicContactA
           </div>
         </div>
         <div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-4 justify-end">
-          <a class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-primary-container text-on-primary font-label-md text-label-md hover:bg-primary shadow-md transition-all duration-150 active:translate-y-[1px] gap-2" data-path="contact" data-site-primary-contact href={primaryContactAction.href}>
+          <a class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-primary-container text-on-primary font-label-md text-label-md hover:bg-primary shadow-md transition-all duration-150 active:translate-y-[1px] gap-2" data-path="contact" data-site-primary-contact href={primaryContactAction.href} target={primaryContactAction.opensInNewTab ? '_blank' : undefined} rel={primaryContactAction.opensInNewTab ? 'noopener noreferrer' : undefined}>
             <span data-site-primary-label>{primaryContactAction.label}</span>
             <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
           </a>
