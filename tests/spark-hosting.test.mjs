@@ -79,7 +79,6 @@ test('all primary contact actions and direct WhatsApp links follow Site Settings
     path.join('about', 'AboutHero.astro'),
     path.join('about', 'AboutCta.astro'),
     path.join('projects', 'ProjectsCta.astro'),
-    path.join('services', 'ServiceCard.astro'),
     path.join('services', 'ServicesCta.astro'),
   ];
 
@@ -90,6 +89,13 @@ test('all primary contact actions and direct WhatsApp links follow Site Settings
     );
     assert.match(component, /data-site-primary-contact/, filename);
   }
+
+  const serviceCard = await readFile(
+    path.join(root, 'src', 'components', 'services', 'ServiceCard.astro'),
+    'utf8',
+  );
+  assert.doesNotMatch(serviceCard, /data-site-primary-contact/);
+  assert.match(serviceCard, /data-service-toggle/);
 
   const button = await readFile(path.join(root, 'src', 'components', 'ui', 'Button.astro'), 'utf8');
   assert.match(button, /data-site-primary-contact=\{primaryContact/);

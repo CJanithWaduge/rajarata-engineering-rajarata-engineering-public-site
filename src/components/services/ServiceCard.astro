@@ -2,11 +2,8 @@
 /**
  * Reusable service card (Step S3.19)
  * Number, category badge, title, "What It Is" copy, expandable details,
- * suitable-for chips, and contact link.
+ * and suitable-for chips.
  */
-import { getPublicContactActions } from '../../lib/publicContact';
-
-const { primary: primaryContactAction } = getPublicContactActions();
 
 interface Props {
   id: string;
@@ -104,7 +101,7 @@ const cardIndex = parseInt(number, 10) - 1;
       </div>
     </div>
   </div>
-  <div class="pt-6 mt-6 flex items-center justify-between">
+  <div class="pt-6 mt-6">
     <button
       class="inline-flex items-center gap-2 font-label-md text-label-md text-primary font-semibold hover:text-primary-container focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-colors"
       aria-expanded="false"
@@ -114,9 +111,6 @@ const cardIndex = parseInt(number, 10) - 1;
       <span class="btn-text">Read Detailed Specifications</span>
       <span class="material-symbols-outlined text-[18px] transition-transform duration-200 expand-icon">keyboard_arrow_down</span>
     </button>
-    <a class="p-2 rounded-xl bg-surface-container hover:bg-primary-container hover:text-on-primary text-secondary transition-all focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container" data-path="contact" data-site-primary-contact aria-label={primaryContactAction.label} href={primaryContactAction.href} target={primaryContactAction.opensInNewTab ? '_blank' : undefined} rel={primaryContactAction.opensInNewTab ? 'noopener noreferrer' : undefined}>
-      <span class="material-symbols-outlined text-[20px] block">arrow_forward</span>
-    </a>
   </div>
 </article>
 

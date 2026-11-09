@@ -1,74 +1,47 @@
 ---
 /**
  * Engineering consultation CTA (Steps A4.44–A4.48)
- * Inverse CTA panel, grid background motif, actions, and contact methods.
+ * Dark grid CTA panel with direct contact and project actions.
  */
 import Container from '../Container.astro';
 import { getPublicContactActions } from '../../lib/publicContact';
 
-const { phone: phoneContact, whatsapp: whatsappContact, primary: primaryContactAction } =
-  getPublicContactActions();
+const { primary: primaryContactAction } = getPublicContactActions();
 ---
 
-<section class="w-full py-16 bg-surface-container-lowest" data-scroll-reveal>
+<section class="w-full bg-surface-container-lowest px-4 py-14 sm:px-6 sm:py-20 lg:px-8" data-scroll-reveal>
   <Container>
-    <div class="bg-inverse-surface rounded-3xl p-8 sm:p-12 lg:p-16 relative overflow-hidden shadow-2xl">
-      <!-- Technical Grid Background Pattern Accent -->
-      <div class="absolute inset-0 opacity-5 pointer-events-none">
+    <div class="relative mx-auto max-w-6xl overflow-hidden rounded-3xl border border-white/10 bg-[#1e1e1e] p-6 shadow-2xl sm:p-10 md:p-16">
+      <div class="pointer-events-none absolute inset-0 opacity-[0.04]">
         <svg height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <pattern height="40" id="cta-grid" patternUnits="userSpaceOnUse" width="40">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffffff" stroke-width="1"></path>
+            <pattern height="24" id="about-cta-grid" patternUnits="userSpaceOnUse" width="24">
+              <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#ffffff" stroke-width="1"></path>
             </pattern>
           </defs>
-          <rect fill="url(#cta-grid)" height="100%" width="100%"></rect>
+          <rect fill="url(#about-cta-grid)" height="100%" width="100%"></rect>
         </svg>
       </div>
-      <div class="relative z-10 max-w-3xl">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-on-surface/20 text-error-container font-label-caps text-label-caps uppercase tracking-wider mb-6">
-          <span class="material-symbols-outlined text-[16px]">engineering</span>
+      <div class="relative z-10">
+        <div class="mb-7 inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/5 px-3 py-1.5 font-label-caps text-label-caps uppercase tracking-wider text-gray-200">
+          <span class="material-symbols-outlined text-[16px] text-gray-400">engineering</span>
           <span data-about-cta-eyebrow>Engineering Consultation</span>
         </div>
-        <h2 class="font-headline-lg text-headline-md lg:text-headline-lg text-white tracking-tight mb-4" data-about-cta-title>
+        <h2 class="mb-4 max-w-4xl font-display-hero text-headline-lg leading-tight tracking-tight text-white sm:text-display-hero" data-about-cta-title>
           Plan Your Next Electrical Installation
         </h2>
-        <p class="font-body-lg text-body-lg text-gray-300 leading-relaxed mb-8" data-about-cta-body>
+        <p class="mb-9 max-w-4xl font-body-md text-body-md leading-relaxed text-gray-300 sm:font-body-lg sm:text-[22px] sm:leading-9" data-about-cta-body>
           Reach the team directly by WhatsApp or phone to discuss MV/LV distribution, panel installation, cable work, testing and commissioning, or ELV and automation for your site.
         </p>
         <div class="flex flex-wrap items-center gap-4">
-          <a class="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-primary text-on-primary font-label-md text-label-md shadow-lg hover:bg-primary-container transition-all active:translate-y-[1px] focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container" data-path="contact" data-site-primary-contact href={primaryContactAction.href} target={primaryContactAction.opensInNewTab ? '_blank' : undefined} rel={primaryContactAction.opensInNewTab ? 'noopener noreferrer' : undefined}>
+          <a class="inline-flex items-center justify-center gap-2.5 rounded-xl bg-primary-container px-7 py-4 font-label-md text-label-md text-on-primary shadow-lg shadow-primary/20 transition-all duration-200 hover:bg-primary active:scale-[0.98] focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-fixed-dim sm:text-lg" data-path="contact" data-site-primary-contact href={primaryContactAction.href} target={primaryContactAction.opensInNewTab ? '_blank' : undefined} rel={primaryContactAction.opensInNewTab ? 'noopener noreferrer' : undefined}>
             <span data-site-primary-label>{primaryContactAction.label}</span>
-            <span class="material-symbols-outlined text-[20px]">send</span>
+            <span class="material-symbols-outlined -rotate-12 text-[18px]">send</span>
           </a>
-          <a class="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-on-surface/20 text-white font-label-md text-label-md hover:bg-on-surface/30 transition-colors focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container"           data-path="projects" href="/projects">
-            <span>View Past Projects</span>
-            <span class="material-symbols-outlined text-[20px]">layers</span>
+          <a class="inline-flex items-center justify-center gap-2.5 rounded-xl border border-white/10 bg-white/5 px-7 py-4 font-label-md text-label-md text-gray-200 transition-colors duration-200 hover:border-white/20 hover:bg-white/10 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-fixed-dim sm:text-lg" data-path="projects" href="/projects">
+            <span data-about-cta-projects-label>View Past Projects</span>
+            <span class="material-symbols-outlined text-[18px] text-gray-400">layers</span>
           </a>
-        </div>
-        <!-- Secondary Quick Contact Details -->
-        <div class="mt-12 pt-8 border-t border-on-surface/20 grid grid-cols-1 sm:grid-cols-2 gap-6 text-gray-400">
-          <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-primary text-[24px]">call</span>
-            <div>
-              <div class="font-label-caps text-label-caps uppercase text-gray-400">Phone</div>
-              {phoneContact.status === 'ready' ? (
-                <a class="font-title-md text-title-md text-white underline-offset-4 hover:underline" href={phoneContact.href}>{phoneContact.displayNumber}</a>
-              ) : (
-                <div class="font-title-md text-title-md text-white">Phone contact unavailable</div>
-              )}
-            </div>
-          </div>
-          <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-primary text-[24px]">chat</span>
-            <div>
-              <div class="font-label-caps text-label-caps uppercase text-gray-400">WhatsApp</div>
-              {whatsappContact.status === 'ready' ? (
-                <a class="font-title-md text-title-md text-white underline-offset-4 hover:underline" data-site-whatsapp data-site-format="whatsapp" href={whatsappContact.href} target="_blank" rel="noopener noreferrer"><span data-site-value>{whatsappContact.displayNumber}</span></a>
-              ) : (
-                <div class="font-title-md text-title-md text-white">WhatsApp contact unavailable</div>
-              )}
-            </div>
-          </div>
         </div>
       </div>
     </div>

@@ -43,6 +43,8 @@ function applyHero(hero: NonNullable<AboutPatch['hero']>) {
   setTextAll('[data-about-hero-eyebrow]', hero.eyebrow);
   setTextAll('[data-about-hero-title]', hero.title);
   setTextAll('[data-about-hero-intro]', hero.intro);
+  setTextAll('[data-about-hero-approach-label]', hero.approachLabel);
+  setTextAll('[data-about-hero-snapshot-label]', hero.snapshotLabel);
 
   if (hero.image) {
     applyImage(
@@ -73,6 +75,7 @@ function applyHero(hero: NonNullable<AboutPatch['hero']>) {
       hero.overlay.description,
     );
     setTextAll('[data-about-overlay-stage]', hero.overlay.stage);
+    setTextAll('[data-about-overlay-stage-label]', hero.overlay.stageLabel);
   }
 }
 
@@ -81,6 +84,9 @@ function applyHeritage(heritage: NonNullable<AboutPatch['heritage']>) {
   setTextAll('[data-about-heritage-title]', heritage.title);
   setTextAll('[data-about-heritage-narrative]', heritage.narrative);
   setTextAll('[data-about-heritage-approach]', heritage.approach);
+  setTextAll('[data-about-heritage-based-in-label]', heritage.basedInLabel);
+  setTextAll('[data-about-heritage-based-in-value]', heritage.basedInValue);
+  setTextAll('[data-about-heritage-approach-label]', heritage.approachLabel);
 
   heritage.milestones?.forEach((milestone, index) => {
     if (!milestone) return;
@@ -142,6 +148,11 @@ function applyMethodology(methodology: NonNullable<AboutPatch['methodology']>) {
   setTextAll('[data-about-methodology-eyebrow]', methodology.eyebrow);
   setTextAll('[data-about-methodology-title]', methodology.title);
   setTextAll('[data-about-methodology-intro]', methodology.intro);
+  setTextAll(
+    '[data-about-methodology-protocol-label]',
+    methodology.protocolLabel,
+  );
+  setTextAll('[data-about-methodology-stages-label]', methodology.stagesLabel);
 
   methodology.steps?.forEach((step, index) => {
     if (!step) return;
@@ -183,6 +194,9 @@ function applyCta(cta: NonNullable<AboutPatch['cta']>) {
   setTextAll('[data-about-cta-eyebrow]', cta.eyebrow);
   setTextAll('[data-about-cta-title]', cta.title);
   setTextAll('[data-about-cta-body]', cta.body);
+  setTextAll('[data-about-cta-projects-label]', cta.projectsLabel);
+  setTextAll('[data-about-cta-phone-label]', cta.phoneLabel);
+  setTextAll('[data-about-cta-whatsapp-label]', cta.whatsappLabel);
 }
 
 /**

@@ -10,36 +10,35 @@ import { getPublicContactActions } from '../../lib/publicContact';
 const { primary: primaryContactAction } = getPublicContactActions();
 ---
 
-<section class="relative w-full overflow-hidden bg-surface-container-lowest pb-16 pt-8 sm:pb-24 sm:pt-12" data-scroll-reveal>
+<section class="relative isolate w-full overflow-hidden bg-surface-container-lowest pb-14 pt-8 sm:pb-20 sm:pt-10" data-scroll-reveal>
+  <div class="pointer-events-none absolute -right-36 top-24 -z-10 h-96 w-96 rounded-full bg-primary/5 blur-3xl"></div>
   <Container class="relative">
-    <!-- Breadcrumb -->
-    <nav aria-label="Breadcrumb" class="flex items-center gap-2 mb-6 sm:mb-8">
+    <nav aria-label="Breadcrumb" class="mb-8 flex items-center gap-2">
       <a
         href="/"
-        class="font-label-sm text-label-sm text-secondary hover:text-primary transition-colors flex items-center gap-1.5 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container"
+        class="flex items-center gap-1.5 font-label-sm text-label-sm text-secondary transition-colors hover:text-primary focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container"
       >
         <span class="material-symbols-outlined text-[16px]">home</span>
         <span>Home</span>
       </a>
       <span class="material-symbols-outlined text-[14px] text-secondary">chevron_right</span>
-      <span class="font-label-sm text-label-sm text-primary font-semibold">About Us</span>
+      <span class="font-label-sm text-label-sm font-semibold text-primary">About Us</span>
     </nav>
-    <!-- Hero content layout -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-      <div class="lg:col-span-6 flex flex-col space-y-6">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-secondary-container text-on-secondary-fixed font-label-caps text-label-caps tracking-widest uppercase self-start">
-          <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+    <div class="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12">
+      <div class="flex flex-col gap-6 lg:col-span-5">
+        <div class="inline-flex self-start items-center gap-2 border-l-2 border-primary bg-primary/5 px-3 py-2 font-label-caps text-label-caps uppercase tracking-[0.18em] text-primary">
+          <span class="h-1.5 w-1.5 rounded-full bg-primary"></span>
           <span data-about-hero-eyebrow>Electrical Engineering &amp; Contracting</span>
         </div>
-        <h1 class="font-display-hero text-headline-lg lg:text-display-hero text-on-surface tracking-tight leading-none text-balance" data-about-hero-title>
+        <h1 class="max-w-[12ch] font-display-hero text-headline-lg leading-[0.94] tracking-tight text-on-surface text-balance sm:text-display-hero" data-about-hero-title>
           About Rajarata Engineering
         </h1>
-        <p class="font-body-lg text-body-lg text-secondary leading-relaxed" data-about-hero-intro>
+        <p class="w-full font-body-lg text-body-lg leading-relaxed text-secondary" data-about-hero-intro>
           Rajarata Engineering is an electrical engineering and contracting company based in Anuradhapura. The practice plans, installs, tests, and commissions MV/LV distribution, industrial installations, MDB/SMDB panels, cable tray and cable laying, lightning protection systems, ELV and automation, and residential and commercial wiring.
         </p>
-        <div class="flex flex-wrap items-center gap-4 pt-2">
+        <div class="flex flex-wrap items-center gap-3 pt-1">
           <a
-            class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary-container text-on-primary font-label-md text-label-md shadow-sm hover:bg-primary hover:shadow-md transition-all active:translate-y-[1px] focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container"
+            class="inline-flex items-center gap-2 rounded-lg bg-primary-container px-5 py-3 font-label-md text-label-md text-on-primary shadow-sm transition-all hover:bg-primary hover:shadow-md active:translate-y-[1px] focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container"
             data-path="contact"
             data-site-primary-contact
             href={primaryContactAction.href}
@@ -50,62 +49,59 @@ const { primary: primaryContactAction } = getPublicContactActions();
             <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
           </a>
           <a
-            class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-surface-container-high text-on-surface font-label-md text-label-md hover:bg-surface-variant transition-colors focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container"
+            class="inline-flex items-center gap-2 rounded-lg border border-outline-variant bg-surface-container-lowest px-5 py-3 font-label-md text-label-md text-on-surface transition-colors hover:bg-surface-container-low focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-container"
             href="#story"
           >
-            <span>Our Approach &amp; Methodology</span>
+            <span data-about-hero-approach-label>Our Approach &amp; Methodology</span>
             <span class="material-symbols-outlined text-[18px]">south</span>
           </a>
         </div>
-        <!-- Company snapshot / telemetry badges -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 pt-6">
-          <div class="card-interactive card-tilt min-w-0 p-4 rounded-xl bg-surface-container-low flex flex-col" data-card-tilt data-about-snapshot="0">
-            <span class="font-label-caps text-label-caps text-secondary uppercase">Scope</span>
-            <span class="min-w-0 break-words font-title-md text-title-md sm:font-title-lg sm:text-title-lg text-on-surface mt-1" data-about-snapshot-title>MV/LV Distribution</span>
-            <span class="min-w-0 break-words font-body-sm text-body-sm text-secondary mt-0.5" data-about-snapshot-description>Panels, cable tray and laying</span>
-          </div>
-          <div class="card-interactive card-tilt min-w-0 p-4 rounded-xl bg-surface-container-low flex flex-col" data-card-tilt data-about-snapshot="1">
-            <span class="font-label-caps text-label-caps text-secondary uppercase">Scope</span>
-            <span class="min-w-0 break-words font-title-md text-title-md sm:font-title-lg sm:text-title-lg text-primary mt-1" data-about-snapshot-title>Testing &amp; Commissioning</span>
-            <span class="min-w-0 break-words font-body-sm text-body-sm text-secondary mt-0.5" data-about-snapshot-description>Checks before handover</span>
-          </div>
-          <div class="card-interactive card-tilt min-w-0 p-4 rounded-xl bg-surface-container-low flex flex-col" data-card-tilt data-about-snapshot="2">
-            <span class="font-label-caps text-label-caps text-secondary uppercase">Scope</span>
-            <span class="min-w-0 break-words font-title-md text-title-md sm:font-title-lg sm:text-title-lg text-on-surface mt-1" data-about-snapshot-title>ELV &amp; Automation</span>
-            <span class="min-w-0 break-words font-body-sm text-body-sm text-secondary mt-0.5" data-about-snapshot-description>Structured cabling and controls</span>
-          </div>
-        </div>
       </div>
-      <div class="lg:col-span-6 relative">
-        <!-- Hero visual with telemetry overlay -->
-        <div class="relative rounded-2xl overflow-hidden shadow-xl bg-surface-container-high">
+      <div class="relative lg:col-span-7">
+        <div class="relative aspect-video overflow-hidden rounded-2xl bg-surface-container-high shadow-2xl shadow-inverse-surface/15 ring-1 ring-outline-variant/50">
           <img
             alt="Electrical engineer inspecting a control panel in an industrial facility"
-            class="w-full h-[460px] object-cover object-center"
+            class="absolute inset-0 h-full w-full object-cover object-center"
             data-about-hero-image
             data-live-media
-            height="1100"
+            height="1080"
             src="/images/about.png"
-            width="1429"
+            width="1920"
           />
           <div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/80 via-inverse-surface/20 to-transparent"></div>
-          <!-- Precision Overlay Card -->
-          <div class="absolute bottom-6 left-6 right-6 p-4 rounded-xl bg-surface-container-lowest/95 backdrop-blur-md shadow-lg flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-lg bg-primary-fixed flex items-center justify-center text-primary">
+          <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-3 rounded-xl border border-white/30 bg-surface-container-lowest/95 p-3 shadow-lg backdrop-blur-md sm:bottom-5 sm:left-5 sm:right-5 sm:p-4">
+            <div class="flex min-w-0 items-center gap-3">
+              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary-fixed text-primary">
                 <span class="material-symbols-outlined text-[24px]">verified</span>
               </div>
-              <div>
+              <div class="min-w-0">
                 <div class="font-title-md text-title-md text-on-surface" data-about-overlay-title>Commissioning Panel Checks</div>
                 <div class="font-body-sm text-body-sm text-secondary" data-about-overlay-description>Insulation, earthing, and functional testing before handover</div>
               </div>
             </div>
-            <div class="hidden sm:flex flex-col items-end">
-              <span class="font-label-caps text-label-caps text-primary uppercase">Work Stage</span>
+            <div class="hidden shrink-0 flex-col items-end md:flex">
+              <span class="font-label-caps text-label-caps uppercase text-primary" data-about-overlay-stage-label>Work Stage</span>
               <span class="font-title-md text-title-md text-on-surface" data-about-overlay-stage>Test &amp; Handover</span>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3 lg:mt-12">
+      <div class="card-interactive card-tilt flex h-full min-w-0 flex-col rounded-2xl bg-surface-container-lowest p-5 shadow-sm sm:p-6" data-card-tilt data-about-snapshot="0">
+        <span class="font-label-caps text-label-caps uppercase tracking-wider text-secondary" data-about-hero-snapshot-label>Scope</span>
+        <span class="mt-2 block min-w-0 break-words font-title-md text-title-md text-on-surface" data-about-snapshot-title>MV/LV Distribution</span>
+        <span class="mt-1 block min-w-0 break-words font-body-sm text-body-sm text-secondary" data-about-snapshot-description>Panels, cable tray and laying</span>
+      </div>
+      <div class="card-interactive card-tilt flex h-full min-w-0 flex-col rounded-2xl bg-surface-container-lowest p-5 shadow-sm sm:p-6" data-card-tilt data-about-snapshot="1">
+        <span class="font-label-caps text-label-caps uppercase tracking-wider text-secondary" data-about-hero-snapshot-label>Scope</span>
+        <span class="mt-2 block min-w-0 break-words font-title-md text-title-md text-primary" data-about-snapshot-title>Testing &amp; Commissioning</span>
+        <span class="mt-1 block min-w-0 break-words font-body-sm text-body-sm text-secondary" data-about-snapshot-description>Checks before handover</span>
+      </div>
+      <div class="card-interactive card-tilt flex h-full min-w-0 flex-col rounded-2xl bg-surface-container-lowest p-5 shadow-sm sm:p-6" data-card-tilt data-about-snapshot="2">
+        <span class="font-label-caps text-label-caps uppercase tracking-wider text-secondary" data-about-hero-snapshot-label>Scope</span>
+        <span class="mt-2 block min-w-0 break-words font-title-md text-title-md text-on-surface" data-about-snapshot-title>ELV &amp; Automation</span>
+        <span class="mt-1 block min-w-0 break-words font-body-sm text-body-sm text-secondary" data-about-snapshot-description>Structured cabling and controls</span>
       </div>
     </div>
   </Container>

@@ -43,15 +43,21 @@ const LIMITS = {
   heroTitle: 100,
   heroIntro: 600,
   heroAlt: 160,
+  heroApproachLabel: 48,
+  snapshotLabel: 32,
   snapshotTitle: 32,
   snapshotDescription: 100,
   overlayTitle: 60,
   overlayDescription: 120,
   overlayStage: 40,
+  overlayStageLabel: 40,
   heritageEyebrow: 48,
   heritageTitle: 100,
   heritageNarrative: 900,
   heritageApproach: 300,
+  heritageBasedInLabel: 40,
+  heritageBasedInValue: 80,
+  heritageApproachLabel: 40,
   milestoneKicker: 40,
   milestoneBadge: 24,
   milestoneTitle: 80,
@@ -69,6 +75,8 @@ const LIMITS = {
   methodologyEyebrow: 48,
   methodologyTitle: 100,
   methodologyIntro: 400,
+  methodologyProtocolLabel: 40,
+  methodologyStagesLabel: 40,
   methodStepTitle: 40,
   methodStepDescription: 300,
   methodStepFooter: 40,
@@ -80,6 +88,9 @@ const LIMITS = {
   ctaEyebrow: 48,
   ctaTitle: 100,
   ctaBody: 600,
+  ctaProjectsLabel: 40,
+  ctaPhoneLabel: 24,
+  ctaWhatsappLabel: 24,
 } as const;
 
 export interface AboutImage {
@@ -98,6 +109,7 @@ export interface AboutOverlay {
   title: string;
   description: string;
   stage: string;
+  stageLabel: string;
 }
 
 export interface AboutMilestone {
@@ -139,6 +151,8 @@ export interface AboutContent {
     eyebrow: string;
     title: string;
     intro: string;
+    approachLabel: string;
+    snapshotLabel: string;
     image: AboutImage;
     snapshots: AboutSnapshot[];
     overlay: AboutOverlay;
@@ -148,6 +162,9 @@ export interface AboutContent {
     title: string;
     narrative: string;
     approach: string;
+    basedInLabel: string;
+    basedInValue: string;
+    approachLabel: string;
     milestones: AboutMilestone[];
   };
   visionMission: {
@@ -164,6 +181,8 @@ export interface AboutContent {
     eyebrow: string;
     title: string;
     intro: string;
+    protocolLabel: string;
+    stagesLabel: string;
     steps: AboutMethodStep[];
   };
   industries: {
@@ -176,6 +195,9 @@ export interface AboutContent {
     eyebrow: string;
     title: string;
     body: string;
+    projectsLabel: string;
+    phoneLabel: string;
+    whatsappLabel: string;
   };
 }
 
@@ -188,6 +210,7 @@ export interface AboutOverlayPatch {
   title: string | null;
   description: string | null;
   stage: string | null;
+  stageLabel: string | null;
 }
 
 export interface AboutMilestonePatch {
@@ -229,6 +252,8 @@ export interface AboutPatch {
     eyebrow: string | null;
     title: string | null;
     intro: string | null;
+    approachLabel: string | null;
+    snapshotLabel: string | null;
     image: AboutImage | null;
     snapshots: Array<AboutSnapshotPatch | null> | null;
     overlay: AboutOverlayPatch | null;
@@ -238,6 +263,9 @@ export interface AboutPatch {
     title: string | null;
     narrative: string | null;
     approach: string | null;
+    basedInLabel: string | null;
+    basedInValue: string | null;
+    approachLabel: string | null;
     milestones: Array<AboutMilestonePatch | null> | null;
   } | null;
   visionMission: {
@@ -254,6 +282,8 @@ export interface AboutPatch {
     eyebrow: string | null;
     title: string | null;
     intro: string | null;
+    protocolLabel: string | null;
+    stagesLabel: string | null;
     steps: Array<AboutMethodStepPatch | null> | null;
   } | null;
   industries: {
@@ -266,6 +296,9 @@ export interface AboutPatch {
     eyebrow: string | null;
     title: string | null;
     body: string | null;
+    projectsLabel: string | null;
+    phoneLabel: string | null;
+    whatsappLabel: string | null;
   } | null;
 }
 
@@ -343,6 +376,7 @@ function readOverlay(value: unknown): AboutOverlayPatch | null {
     title: readText(value.title, LIMITS.overlayTitle),
     description: readText(value.description, LIMITS.overlayDescription),
     stage: readText(value.stage, LIMITS.overlayStage),
+    stageLabel: readText(value.stageLabel, LIMITS.overlayStageLabel),
   };
 }
 
@@ -406,6 +440,11 @@ export function parseAboutContentPatch(
         eyebrow: readText(data.hero.eyebrow, LIMITS.heroEyebrow),
         title: readText(data.hero.title, LIMITS.heroTitle),
         intro: readText(data.hero.intro, LIMITS.heroIntro),
+        approachLabel: readText(
+          data.hero.approachLabel,
+          LIMITS.heroApproachLabel,
+        ),
+        snapshotLabel: readText(data.hero.snapshotLabel, LIMITS.snapshotLabel),
         image: readImage(data.hero.image),
         snapshots: readList(data.hero.snapshots, SNAPSHOT_COUNT, readSnapshot),
         overlay: isRecord(data.hero.overlay)
@@ -420,6 +459,18 @@ export function parseAboutContentPatch(
         title: readText(data.heritage.title, LIMITS.heritageTitle),
         narrative: readText(data.heritage.narrative, LIMITS.heritageNarrative),
         approach: readText(data.heritage.approach, LIMITS.heritageApproach),
+        basedInLabel: readText(
+          data.heritage.basedInLabel,
+          LIMITS.heritageBasedInLabel,
+        ),
+        basedInValue: readText(
+          data.heritage.basedInValue,
+          LIMITS.heritageBasedInValue,
+        ),
+        approachLabel: readText(
+          data.heritage.approachLabel,
+          LIMITS.heritageApproachLabel,
+        ),
         milestones: readList(
           data.heritage.milestones,
           MILESTONE_COUNT,
@@ -453,6 +504,14 @@ export function parseAboutContentPatch(
         eyebrow: readText(data.methodology.eyebrow, LIMITS.methodologyEyebrow),
         title: readText(data.methodology.title, LIMITS.methodologyTitle),
         intro: readText(data.methodology.intro, LIMITS.methodologyIntro),
+        protocolLabel: readText(
+          data.methodology.protocolLabel,
+          LIMITS.methodologyProtocolLabel,
+        ),
+        stagesLabel: readText(
+          data.methodology.stagesLabel,
+          LIMITS.methodologyStagesLabel,
+        ),
         steps: readList(
           data.methodology.steps,
           METHOD_STEP_COUNT,
@@ -475,6 +534,15 @@ export function parseAboutContentPatch(
         eyebrow: readText(data.cta.eyebrow, LIMITS.ctaEyebrow),
         title: readText(data.cta.title, LIMITS.ctaTitle),
         body: readText(data.cta.body, LIMITS.ctaBody),
+        projectsLabel: readText(
+          data.cta.projectsLabel,
+          LIMITS.ctaProjectsLabel,
+        ),
+        phoneLabel: readText(data.cta.phoneLabel, LIMITS.ctaPhoneLabel),
+        whatsappLabel: readText(
+          data.cta.whatsappLabel,
+          LIMITS.ctaWhatsappLabel,
+        ),
       }
     : null;
 
@@ -486,6 +554,17 @@ function strictText(value: unknown, max: number): string | null {
   if (typeof value !== 'string') return null;
   const text = value.trim();
   return text.length > max ? null : text;
+}
+
+/**
+ * A label field added after the first release. A document written before the
+ * field existed has no value, which means "keep the build-time label" — an
+ * empty string here, not a rejected document. A present but malformed value is
+ * still invalid.
+ */
+function strictOptionalText(value: unknown, max: number): string | null {
+  if (value === undefined || value === null) return '';
+  return strictText(value, max);
 }
 
 function strictIcon(value: unknown): string | null {
@@ -557,8 +636,19 @@ function strictOverlay(value: unknown): AboutOverlay | null {
       LIMITS.overlayDescription,
     );
     const stage = strictText(record.stage, LIMITS.overlayStage);
-    if (title === null || description === null || stage === null) return null;
-    return { title, description, stage };
+    const stageLabel = strictOptionalText(
+      record.stageLabel,
+      LIMITS.overlayStageLabel,
+    );
+    if (
+      title === null ||
+      description === null ||
+      stage === null ||
+      stageLabel === null
+    ) {
+      return null;
+    }
+    return { title, description, stage, stageLabel };
   });
 }
 
@@ -665,6 +755,14 @@ export function parseAboutContent(
     const eyebrow = strictText(record.eyebrow, LIMITS.heroEyebrow);
     const title = strictText(record.title, LIMITS.heroTitle);
     const intro = strictText(record.intro, LIMITS.heroIntro);
+    const approachLabel = strictOptionalText(
+      record.approachLabel,
+      LIMITS.heroApproachLabel,
+    );
+    const snapshotLabel = strictOptionalText(
+      record.snapshotLabel,
+      LIMITS.snapshotLabel,
+    );
     const image = strictImage(record.image);
     const snapshots = strictList(record.snapshots, SNAPSHOT_COUNT, strictSnapshot);
     const overlay = strictOverlay(record.overlay);
@@ -673,6 +771,8 @@ export function parseAboutContent(
       eyebrow === null ||
       title === null ||
       intro === null ||
+      approachLabel === null ||
+      snapshotLabel === null ||
       !image ||
       !snapshots ||
       !overlay
@@ -680,7 +780,16 @@ export function parseAboutContent(
       return null;
     }
 
-    return { eyebrow, title, intro, image, snapshots, overlay };
+    return {
+      eyebrow,
+      title,
+      intro,
+      approachLabel,
+      snapshotLabel,
+      image,
+      snapshots,
+      overlay,
+    };
   });
   if (!hero) return null;
 
@@ -689,6 +798,18 @@ export function parseAboutContent(
     const title = strictText(record.title, LIMITS.heritageTitle);
     const narrative = strictText(record.narrative, LIMITS.heritageNarrative);
     const approach = strictText(record.approach, LIMITS.heritageApproach);
+    const basedInLabel = strictOptionalText(
+      record.basedInLabel,
+      LIMITS.heritageBasedInLabel,
+    );
+    const basedInValue = strictOptionalText(
+      record.basedInValue,
+      LIMITS.heritageBasedInValue,
+    );
+    const approachLabel = strictOptionalText(
+      record.approachLabel,
+      LIMITS.heritageApproachLabel,
+    );
     const milestones = strictList(
       record.milestones,
       MILESTONE_COUNT,
@@ -700,12 +821,24 @@ export function parseAboutContent(
       title === null ||
       narrative === null ||
       approach === null ||
+      basedInLabel === null ||
+      basedInValue === null ||
+      approachLabel === null ||
       !milestones
     ) {
       return null;
     }
 
-    return { eyebrow, title, narrative, approach, milestones };
+    return {
+      eyebrow,
+      title,
+      narrative,
+      approach,
+      basedInLabel,
+      basedInValue,
+      approachLabel,
+      milestones,
+    };
   });
   if (!heritage) return null;
 
@@ -735,13 +868,28 @@ export function parseAboutContent(
     const eyebrow = strictText(record.eyebrow, LIMITS.methodologyEyebrow);
     const title = strictText(record.title, LIMITS.methodologyTitle);
     const intro = strictText(record.intro, LIMITS.methodologyIntro);
+    const protocolLabel = strictOptionalText(
+      record.protocolLabel,
+      LIMITS.methodologyProtocolLabel,
+    );
+    const stagesLabel = strictOptionalText(
+      record.stagesLabel,
+      LIMITS.methodologyStagesLabel,
+    );
     const steps = strictList(record.steps, METHOD_STEP_COUNT, strictMethodStep);
 
-    if (eyebrow === null || title === null || intro === null || !steps) {
+    if (
+      eyebrow === null ||
+      title === null ||
+      intro === null ||
+      protocolLabel === null ||
+      stagesLabel === null ||
+      !steps
+    ) {
       return null;
     }
 
-    return { eyebrow, title, intro, steps };
+    return { eyebrow, title, intro, protocolLabel, stagesLabel, steps };
   });
   if (!methodology) return null;
 
@@ -763,8 +911,36 @@ export function parseAboutContent(
     const eyebrow = strictText(record.eyebrow, LIMITS.ctaEyebrow);
     const title = strictText(record.title, LIMITS.ctaTitle);
     const body = strictText(record.body, LIMITS.ctaBody);
-    if (eyebrow === null || title === null || body === null) return null;
-    return { eyebrow, title, body };
+    const projectsLabel = strictOptionalText(
+      record.projectsLabel,
+      LIMITS.ctaProjectsLabel,
+    );
+    const phoneLabel = strictOptionalText(
+      record.phoneLabel,
+      LIMITS.ctaPhoneLabel,
+    );
+    const whatsappLabel = strictOptionalText(
+      record.whatsappLabel,
+      LIMITS.ctaWhatsappLabel,
+    );
+    if (
+      eyebrow === null ||
+      title === null ||
+      body === null ||
+      projectsLabel === null ||
+      phoneLabel === null ||
+      whatsappLabel === null
+    ) {
+      return null;
+    }
+    return {
+      eyebrow,
+      title,
+      body,
+      projectsLabel,
+      phoneLabel,
+      whatsappLabel,
+    };
   });
   if (!cta) return null;
 

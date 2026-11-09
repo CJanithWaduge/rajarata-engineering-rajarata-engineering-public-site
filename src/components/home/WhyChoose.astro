@@ -1,9 +1,10 @@
 ---
 /**
  * Why choose us (Step 5.6)
- * Added Feature card 4: support_agent icon,
- * "Reliable Support" describes direct client communication.
- * Section 5 complete: all 4 feature cards rendered.
+ * Section refreshed to the client's six proven-value cards.
+ * Grid moved to 3 columns so six cards sit evenly (2 rows x 3 on desktop).
+ * All icons are names already present in the self-hosted Material Symbols
+ * subset, so no font rebuild is required.
  */
 import Container from "../Container.astro";
 ---
@@ -21,19 +22,19 @@ import Container from "../Container.astro";
         Engineering rigor, technical competence, and complete regulatory accountability deployed on every site.
       </p>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <!-- Feature 1 -->
       <div class="card-interactive card-tilt p-6 rounded-2xl bg-surface-container-low flex flex-col space-y-4" data-card-tilt>
         <div
           class="w-12 h-12 rounded-xl bg-surface-container-lowest flex items-center justify-center text-primary-container shadow-sm"
         >
           <span class="material-symbols-outlined text-2xl"
-            >health_and_safety</span
+            >verified_user</span
           >
         </div>
-        <h3 class="font-title-lg text-title-lg text-on-surface">Safety First</h3>
+        <h3 class="font-title-lg text-title-lg text-on-surface">Skilled and Experienced Team</h3>
         <p class="font-body-md text-body-md text-secondary leading-relaxed">
-          Safe working practice guides every site visit, from isolation and testing through to final handover.
+          Certified electricians with hands-on experience across MV/LV distribution, panel work, and ELV installations.
         </p>
       </div>
 
@@ -44,9 +45,9 @@ import Container from "../Container.astro";
         >
           <span class="material-symbols-outlined text-2xl">high_quality</span>
         </div>
-        <h3 class="font-title-lg text-title-lg text-on-surface">Quality Work</h3>
+        <h3 class="font-title-lg text-title-lg text-on-surface">Quality Workmanship</h3>
         <p class="font-body-md text-body-md text-secondary leading-relaxed">
-          Clean terminations, accurate labelling, and documented test results — work you can inspect long after we leave site.
+          Clean terminations, accurate labelling, and documented test results on every site.
         </p>
       </div>
 
@@ -55,13 +56,11 @@ import Container from "../Container.astro";
         <div
           class="w-12 h-12 rounded-xl bg-surface-container-lowest flex items-center justify-center text-primary-container shadow-sm"
         >
-          <span class="material-symbols-outlined text-2xl">engineering</span>
+          <span class="material-symbols-outlined text-2xl">health_and_safety</span>
         </div>
-        <h3 class="font-title-lg text-title-lg text-on-surface"
-          >Technical Expertise</h3
-        >
+        <h3 class="font-title-lg text-title-lg text-on-surface">Safety First</h3>
         <p class="font-body-md text-body-md text-secondary leading-relaxed">
-          Hands-on capability across MV/LV distribution, panel installation, cable work, and ELV systems, applied on every job.
+          Safe working practice guides every visit, from isolation and testing through to final handover.
         </p>
       </div>
 
@@ -70,13 +69,37 @@ import Container from "../Container.astro";
         <div
           class="w-12 h-12 rounded-xl bg-surface-container-lowest flex items-center justify-center text-primary-container shadow-sm"
         >
-          <span class="material-symbols-outlined text-2xl">support_agent</span>
+          <span class="material-symbols-outlined text-2xl">schedule</span>
         </div>
-        <h3 class="font-title-lg text-title-lg text-on-surface"
-          >Reliable Support</h3
-        >
+        <h3 class="font-title-lg text-title-lg text-on-surface">On-Time Project Completion</h3>
         <p class="font-body-md text-body-md text-secondary leading-relaxed">
-          Direct contact with the team handling your work — clear answers on scope, progress, and handover.
+          Scheduled milestones and clear handover dates so your project finishes when promised.
+        </p>
+      </div>
+
+      <!-- Feature 5 -->
+      <div class="card-interactive card-tilt p-6 rounded-2xl bg-surface-container-low flex flex-col space-y-4" data-card-tilt>
+        <div
+          class="w-12 h-12 rounded-xl bg-surface-container-lowest flex items-center justify-center text-primary-container shadow-sm"
+        >
+          <span class="material-symbols-outlined text-2xl">balance</span>
+        </div>
+        <h3 class="font-title-lg text-title-lg text-on-surface">Competitive Pricing</h3>
+        <p class="font-body-md text-body-md text-secondary leading-relaxed">
+          Fair, transparent pricing with no hidden costs on electrical contracting work.
+        </p>
+      </div>
+
+      <!-- Feature 6 -->
+      <div class="card-interactive card-tilt p-6 rounded-2xl bg-surface-container-low flex flex-col space-y-4" data-card-tilt>
+        <div
+          class="w-12 h-12 rounded-xl bg-surface-container-lowest flex items-center justify-center text-primary-container shadow-sm"
+        >
+          <span class="material-symbols-outlined text-2xl">done_all</span>
+        </div>
+        <h3 class="font-title-lg text-title-lg text-on-surface">Customer Satisfaction</h3>
+        <p class="font-body-md text-body-md text-secondary leading-relaxed">
+          Finished work you can trust, with clear communication and a clean handover every time.
         </p>
       </div>
     </div>

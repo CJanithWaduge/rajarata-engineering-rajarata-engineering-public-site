@@ -11,8 +11,8 @@ function image(overrides = {}) {
     imageUrl: 'https://cdn.example.com/about/hero.png',
     imagePath: 'about/hero/abc.png',
     imageAlt: 'Electrical engineer inspecting a control panel',
-    imageWidth: 1600,
-    imageHeight: 1200,
+    imageWidth: 1920,
+    imageHeight: 1080,
     imageSize: 12400,
     imageContentType: 'image/webp',
     ...overrides,
@@ -203,7 +203,7 @@ function validAboutDocument() {
       ],
     },
     cta: {
-      eyebrow: 'Engineering Consultation',
+      eyebrow: 'engineering',
       title: 'Plan Your Next Electrical Installation',
       body: 'Reach the team directly by WhatsApp or phone to discuss your project.',
     },
@@ -306,29 +306,151 @@ test('rejects wrong fixed counts without inventing slots', () => {
   assert.equal(parseAboutContent(data), null);
 });
 
+test('optional labels keep build-time copy when missing and patch when set', () => {
+  const data = validAboutDocument();
+
+  // Documents written before the labels became editable have no such fields.
+  const older = parseAboutContent(data);
+  assert.ok(older);
+  assert.equal(older.hero.approachLabel, '');
+  assert.equal(older.hero.snapshotLabel, '');
+  assert.equal(older.hero.overlay.stageLabel, '');
+  assert.equal(older.heritage.basedInLabel, '');
+  assert.equal(older.heritage.basedInValue, '');
+  assert.equal(older.heritage.approachLabel, '');
+  assert.equal(older.methodology.protocolLabel, '');
+  assert.equal(older.methodology.stagesLabel, '');
+  assert.equal(older.cta.projectsLabel, '');
+  assert.equal(older.cta.phoneLabel, '');
+  assert.equal(older.cta.whatsappLabel, '');
+
+  const olderPatch = parseAboutContentPatch(data);
+  assert.equal(olderPatch?.hero?.approachLabel, null);
+  assert.equal(olderPatch?.hero?.snapshotLabel, null);
+  assert.equal(olderPatch?.hero?.overlay?.stageLabel, null);
+  assert.equal(olderPatch?.heritage?.basedInLabel, null);
+  assert.equal(olderPatch?.heritage?.basedInValue, null);
+  assert.equal(olderPatch?.heritage?.approachLabel, null);
+  assert.equal(olderPatch?.methodology?.protocolLabel, null);
+  assert.equal(olderPatch?.methodology?.stagesLabel, null);
+  assert.equal(olderPatch?.cta?.projectsLabel, null);
+  assert.equal(olderPatch?.cta?.phoneLabel, null);
+  assert.equal(olderPatch?.cta?.whatsappLabel, null);
+
+  data.hero.approachLabel = 'Our Approach & Methodology';
+  data.hero.snapshotLabel = 'Scope';
+  data.hero.overlay.stageLabel = 'Work Stage';
+  data.heritage.basedInLabel = 'Based In';
+  data.heritage.basedInValue = 'Anuradhapura, Sri Lanka';
+  data.heritage.approachLabel = 'Our Approach';
+  data.methodology.protocolLabel = 'Lifecycle Protocol';
+  data.methodology.stagesLabel = 'Project Stages';
+  data.cta.projectsLabel = 'View Past Projects';
+  data.cta.phoneLabel = 'Phone';
+  data.cta.whatsappLabel = 'WhatsApp';
+
+  const content = parseAboutContent(data);
+  assert.ok(content);
+  assert.equal(content.hero.approachLabel, 'Our Approach & Methodology');
+  assert.equal(content.hero.snapshotLabel, 'Scope');
+  assert.equal(content.hero.overlay.stageLabel, 'Work Stage');
+  assert.equal(content.heritage.basedInLabel, 'Based In');
+  assert.equal(content.heritage.basedInValue, 'Anuradhapura, Sri Lanka');
+  assert.equal(content.heritage.approachLabel, 'Our Approach');
+  assert.equal(content.methodology.protocolLabel, 'Lifecycle Protocol');
+  assert.equal(content.methodology.stagesLabel, 'Project Stages');
+  assert.equal(content.cta.projectsLabel, 'View Past Projects');
+  assert.equal(content.cta.phoneLabel, 'Phone');
+  assert.equal(content.cta.whatsappLabel, 'WhatsApp');
+
+  const patch = parseAboutContentPatch(data);
+  assert.equal(patch?.hero?.approachLabel, 'Our Approach & Methodology');
+  assert.equal(patch?.hero?.snapshotLabel, 'Scope');
+  assert.equal(patch?.hero?.overlay?.stageLabel, 'Work Stage');
+  assert.equal(patch?.heritage?.basedInLabel, 'Based In');
+  assert.equal(patch?.heritage?.basedInValue, 'Anuradhapura, Sri Lanka');
+  assert.equal(patch?.heritage?.approachLabel, 'Our Approach');
+  assert.equal(patch?.methodology?.protocolLabel, 'Lifecycle Protocol');
+  assert.equal(patch?.methodology?.stagesLabel, 'Project Stages');
+  assert.equal(patch?.cta?.projectsLabel, 'View Past Projects');
+  assert.equal(patch?.cta?.phoneLabel, 'Phone');
+  assert.equal(patch?.cta?.whatsappLabel, 'WhatsApp');
+});
+
 test('About hero scope cards fit narrow screens and wrap long text', async () => {
   const hero = await readFile(
     new URL('../src/components/about/AboutHero.astro', import.meta.url),
     'utf8',
   );
 
-  assert.match(hero, /grid-cols-2 sm:grid-cols-3/);
+  assert.match(hero, /grid-cols-1 gap-4[^"]*sm:grid-cols-3/);
   assert.equal((hero.match(/min-w-0 break-words font-title-md/g) ?? []).length, 3);
   assert.equal((hero.match(/min-w-0 break-words font-body-sm/g) ?? []).length, 3);
+  assert.equal((hero.match(/card-interactive card-tilt flex h-full min-w-0 flex-col rounded-2xl bg-surface-container-lowest/g) ?? []).length, 3);
+  assert.equal((hero.match(/data-card-tilt data-about-snapshot=/g) ?? []).length, 3);
+});
+
+test('About consultation CTA keeps its content hooks with the dark grid treatment', async () => {
+  const cta = await readFile(
+    new URL('../src/components/about/AboutCta.astro', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(cta, /bg-\[#1e1e1e\]/);
+  assert.match(cta, /about-cta-grid/);
+  assert.match(cta, /data-about-cta-eyebrow/);
+  assert.match(cta, /data-about-cta-title>\s*Plan Your Next Electrical Installation/);
+  assert.match(
+    cta,
+    /data-about-cta-body>\s*Reach the team directly by WhatsApp or phone to discuss MV\/LV distribution, panel installation, cable work, testing and commissioning, or ELV and automation for your site\./,
+  );
+  assert.match(cta, /data-about-cta-projects-label/);
+  assert.match(cta, /data-site-primary-contact/);
+  assert.doesNotMatch(cta, /data-about-cta-phone-label|data-about-cta-whatsapp-label/);
+  assert.match(cta, /max-w-6xl/);
+  assert.match(cta, /bg-\[#1e1e1e\]/);
+  assert.match(cta, /data-path="projects" href="\/projects"/);
 });
 
 test('builds the expected About hydration hooks', async () => {
+  const heroComponent = await readFile(
+    new URL('../src/components/about/AboutHero.astro', import.meta.url),
+    'utf8',
+  );
   const html = await readFile(
     new URL('../dist/client/about-us/index.html', import.meta.url),
     'utf8',
   );
 
+  assert.match(
+    heroComponent,
+    /data-about-hero-eyebrow>Electrical Engineering &amp; Contracting/,
+  );
+  assert.match(heroComponent, /data-about-hero-title>\s*About Rajarata Engineering/);
+  assert.match(
+    heroComponent,
+    /data-about-hero-intro>\s*Rajarata Engineering is an electrical engineering and contracting company based in Anuradhapura\. The practice plans, installs, tests, and commissions MV\/LV distribution, industrial installations, MDB\/SMDB panels, cable tray and cable laying, lightning protection systems, ELV and automation, and residential and commercial wiring\./,
+  );
+  assert.match(heroComponent, /aspect-video[^"]*rounded-2xl/);
+  assert.doesNotMatch(heroComponent, /lg:aspect-auto|lg:min-h-/);
+  assert.match(heroComponent, /width="1920"/);
+  assert.match(heroComponent, /height="1080"/);
   assert.match(html, /data-about-hero-eyebrow/);
   assert.match(html, /data-about-hero-title/);
   assert.match(html, /data-about-hero-intro/);
   assert.match(html, /data-about-hero-image/);
   assert.match(html, /data-about-overlay-title/);
   assert.match(html, /data-about-overlay-stage/);
+  assert.match(html, /data-about-overlay-stage-label/);
+  assert.match(html, /data-about-hero-approach-label/);
+  assert.match(html, /data-about-hero-snapshot-label/);
+  assert.match(html, /data-about-heritage-based-in-label/);
+  assert.match(html, /data-about-heritage-based-in-value/);
+  assert.match(html, /data-about-heritage-approach-label/);
+  assert.match(html, /data-about-methodology-protocol-label/);
+  assert.match(html, /data-about-methodology-stages-label/);
+  assert.match(html, /data-about-cta-projects-label/);
+  assert.doesNotMatch(html, /data-about-cta-phone-label|data-about-cta-whatsapp-label/);
   assert.match(html, /data-about-heritage-narrative/);
   assert.match(html, /data-about-cta-title/);
   assert.match(html, /data-about-pillars-title/);
